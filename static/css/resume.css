@@ -158,13 +158,32 @@ a:focus {
   cursor: default;
 }
 
-.experience .title {
+.work.experience {
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.work.experience > .lhs {
   display: inline-block;
+  float: left;
+  width: 75%;
+}
+
+.work.experience > .lhs .org,
+.work.experience > .lhs .description {
   margin: 0;
 }
 
-.experience .timeRange {
-  float: right;
+.work.experience > .rhs {
+  display: inline-block;
+  width: 30%;
+  position: absolute;
+  text-align: right;
+  right: 0;
+}
+
+.work.experience > .rhs .title
+.work.experience > .rhs .timeRange {
 }
 
 .work.experience .org {
@@ -277,4 +296,8 @@ img.thumbnail {
 .sectionContainer:first-child {
   padding-top: 0;
   border-top: 0;
+}
+
+abbr[title] {
+  border-bottom: 0;
 }
