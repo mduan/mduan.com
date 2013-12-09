@@ -1,0 +1,280 @@
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+* {
+  font-family: Helvetica, Arial, "Liberation Sans", FreeSans, sans-serif;
+  line-height: 1.4em;
+}
+
+/**
+ * From http://nicolasgallagher.com/micro-clearfix-hack/
+ *
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    contenteditable attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that are clearfixed.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+/**
+* For IE 6/7 only
+* Include this rule to trigger hasLayout and contain floats.
+*/
+.clearfix {
+    *zoom: 1;
+}
+
+.hide {
+  display: none;
+}
+
+h1 {
+  font-size: 48px;
+  font-family: 'Open Sans', Century Gothic, sans-serif;
+  font-weight: normal;
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: normal;
+  text-transform: uppercase;
+  font-family: 'Open Sans', Century Gothic, sans-serif;
+  color: #09A5A5;
+}
+
+.section.h2 {
+  font-size: 14px;
+}
+
+h3 {
+  font-size: 14px;
+}
+
+.section.h3 {
+  font-size: 12px;
+}
+
+li {
+  margin-top: 5px;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: #2A6496;
+  text-decoration: underline;
+  border-bottom: 0;
+}
+
+a:active, a:hover {
+  outline: 0;
+}
+
+a:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+#header {
+  text-align: center;
+}
+#header .fn {
+  display: inline-block;
+  margin-bottom: 0;
+}
+/*
+#header .photo {
+  vertical-align: 50%;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  margin-left: 20px;
+}
+*/
+
+.contact {
+  padding: 20px 30px 0 30px;
+  border-bottom: 1px solid #EEE;
+}
+.contact .options {
+  display: table;
+  table-layout: fixed;
+  margin: 0 auto 20px auto;
+  width: 768px;
+  text-align: center;
+}
+.contact .options .option {
+  display: table-cell;
+  width: 2%;
+}
+
+.hresume > .lhs {
+  float: left;
+  width: 25%;
+}
+.hresume > .rhs {
+  border-left: 1px solid #EEE;
+  float: right;
+  width: 75%;
+}
+
+/**
+ * TODO(mack): For some reason adding skills class to below classes causes
+ * weierd overflow bug when position: fixed is set
+ */
+.skills {
+  list-style: none;
+  padding-left: 0;
+}
+
+.skill {
+  font-weight: normal;
+  display: inline-block;
+  margin: .4em .2em;
+  padding: .4em;
+  border: 1px solid #CCDFF0;
+  border-radius: .5em;
+  color: #333;
+  box-shadow: 0 0 2px #eee;
+  cursor: default;
+}
+
+.experience .title {
+  display: inline-block;
+  margin: 0;
+}
+
+.experience .timeRange {
+  float: right;
+}
+
+.work.experience .org {
+  margin-left: -2px;
+  padding-left: 25px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-repeat: no-repeat;
+  background-position-y: 40%;
+}
+.work.experience .org.microsoft {
+  background-image: url('/static/img/logo_microsoft.png');
+  background-size: 16px;
+  background-position-x: 4px;
+}
+.work.experience .org.mozilla {
+  background-image: url('/static/img/logo_mozilla.png');
+  background-size: 25px;
+  background-position-x: 0px;
+}
+.work.experience .org.wish {
+  background-image: url('/static/img/logo_wish.png');
+  background-size: 16px;
+  background-position-x: 4px;
+}
+.work.experience .org.facebook {
+  background-image: url('/static/img/logo_facebook.png');
+  background-size: 16px;
+  background-position-x: 4px;
+}
+.work.experience .org.uwaterloo {
+  background-image: url('/static/img/logo_uwaterloo.png');
+  background-size: 15px;
+  background-position-x: 7px;
+}
+.work.experience .org.xtremelabs {
+  background-image: url('/static/img/logo_xtremelabs.png');
+  background-size: 16px;
+  background-position-x: 4px;
+}
+
+.project.experience {
+  margin-bottom: 20px;
+}
+.project.experience > .lhs {
+  display: inline-block;
+  padding-right: 10px;
+  width: 45%;
+  float: left;
+  margin-top: 10px;
+}
+
+.project.experience > .rhs {
+  display: inline-block;
+  padding-left: 10px;
+  width: 55%;
+  float: right;
+}
+
+.project.experience > .rhs .thumbnail {
+  display: inline-block;
+  width: 100%;
+}
+
+.education .summary {
+  display: inline-block;
+  margin: 0;
+}
+
+.education .timeRange {
+  float: right;
+}
+
+.hresume {
+  padding-bottom: 50px;
+}
+
+a.external .fa-external-link {
+  padding-left: 4px;
+}
+
+.works,
+.projects,
+.educations {
+  padding-left: 10px;
+}
+
+img {
+  vertical-align: middle;
+}
+
+img.thumbnail {
+  display: inline-block;
+  height: auto;
+  max-width: 100%;
+  padding: 2px;
+  line-height: 1.428571429;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0px;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+.sectionContainer {
+  padding: 20px 30px 0 30px;
+  margin-top: 20px;
+  border-top: 1px solid #EEE;
+}
+.sectionContainer:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
