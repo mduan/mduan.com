@@ -21,14 +21,14 @@ $('.fancybox').fancybox({
   }
 });
 
-$(window).scroll(function() {
-  var offset = $('.contact').offset().top + $('.contact').outerHeight(true);
-  if (offset - $(this).scrollTop() > 0) {
-    $('.hresume > .lhs').css({ position: 'relative' });
-  } else {
-    $('.hresume > .lhs').css({ position: 'fixed', top: 0 });
-  }
-});
+//$(window).scroll(function() {
+//  var offset = $('.contact').offset().top + $('.contact').outerHeight(true);
+//  if (offset - $(this).scrollTop() > 0) {
+//    $('.hresume > .lhs').css({ position: 'relative' });
+//  } else {
+//    $('.hresume > .lhs').css({ position: 'fixed', top: 0 });
+//  }
+//});
 
 var EXPERIENCE_TO_SKILLS_MAPPING = {
   'workMicrosoft': ['windows', 'visualstudio', 'c', 'cpp', 'csharp'],

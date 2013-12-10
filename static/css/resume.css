@@ -138,6 +138,7 @@ a:focus {
 .hresume > .lhs {
   float: left;
   width: 25%;
+  position: fixed;
 }
 .hresume > .rhs {
   border-left: 1px solid #EEE;
