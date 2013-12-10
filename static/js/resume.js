@@ -42,7 +42,7 @@ var EXPERIENCE_TO_SKILLS_MAPPING = {
   'workFacebookRealtime': ['mac', 'php', 'erlang', 'svn'],
   'workXtremeLabs': ['windows', 'java', 'rails', 'eclipse', 'svn'],
   'projectGithub': ['mac', 'html', 'css', 'javascript', 'reactjs', 'backbone',
-      'jquery', 'vim', 'zsh', 'git'],
+      'jquery', 'vim', 'zsh', 'git', 'bootstrap'],
   'projectUWFlow': ['mac', 'html', 'css', 'javascript', 'requirejs', 'backbone',
       'python', 'flask', 'redis', 'mongodb', 'mongoengine', 'phantomjs', 'vim',
       'zsh', 'git'],

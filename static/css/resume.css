@@ -57,6 +57,11 @@ h2 {
   color: #09A5A5;
 }
 
+h2 .fa {
+  opacity: 0.5;
+  margin-right: 5px;
+}
+
 .section.h2 {
   font-size: 14px;
 }

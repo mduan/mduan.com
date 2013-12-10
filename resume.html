@@ -5,11 +5,8 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <link rel="stylesheet" href="/static/css/normalize.css" />
   <link rel="stylesheet" href="/static/ext/jquery.fancybox/jquery.fancybox.css" />
-  <!--
-  TODO(mack): Serve this from server rather than CDN
   <link rel="stylesheet" href="/static/ext/font-awesome/css/font-awesome.css" />
-  -->
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+  <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">-->
   <link rel="stylesheet" href="/static/css/resume.css" />
   <script src="/static/ext/jquery/jquery-2.0.3.js"></script>
   <script src="/static/ext/jquery.fancybox/jquery.fancybox.js"></script>
@@ -30,19 +27,25 @@
         -->
       </div>
       <div class="options">
-        <span class="option"><a class="external" href="http://mduan.com" class="url" rel="me">mduan.com</a></span>
         <span class="option">
-          <a href="mailto:mack@mduan.com" class="email">mack@mduan.com
-            <sup><i class="fa fa-envelope-o"></i></sup>
-          </a>
+          <i class="fa fa-globe"></i>
+          <a class="external" href="http://mduan.com" class="url" rel="me">mduan.com</a>
         </span>
-        <span class="option"><a class="external" href="https://github.com/mduan" class="url" rel="me">github.com/mduan</a></span>
+        <span class="option">
+          <i class="fa fa-envelope"></i>
+          <a href="mailto:mack@mduan.com" class="email">
+            mack@mduan.com</a>
+        </span>
+        <span class="option">
+          <i class="fa fa-github"></i>
+          <a class="external" href="https://github.com/mduan" class="url" rel="me">github.com/mduan</a>
+        </span>
       </div>
     </div>
 
     <div class="lhs clearfix">
       <div class="sectionContainer skillsSection">
-        <h2>Skills</h2>
+        <h2><i class="fa fa-tasks"></i> Skills</h2>
         <h3>Languages</h3>
         <ul class="skills languageSkills section h3">
           <li class="skill c" rel="tag"><a href="#">C</a></li>
@@ -60,8 +63,9 @@
         <h3>Frameworks</h3>
         <ul class="skills frameworkSkills section h3">
           <li class="skill flask" rel="tag"><a href="#">Flask</a></li>
-          <li class="skill sass" rel="tag"><a href="#">Sass</a></li>
           <li class="skill nodejs" rel="tag"><a href="#">Node.js</a></li>
+          <li class="skill sass" rel="tag"><a href="#">Sass</a></li>
+          <li class="skill bootstrap" rel="tag"><a href="#">Bootstrap</a></li>
           <li class="skill jquery" rel="tag"><a href="#">jQuery</a></li>
           <li class="skill backbone" rel="tag"><a href="#">Backbone</a></li>
           <li class="skill reactjs" rel="tag"><a href="#">React.js</a></li>
@@ -91,7 +95,7 @@
 
     <div class="rhs clearfix">
       <div class="sectionContainer worksContainer">
-        <h2>Work Experience</h2>
+        <h2><i class="fa fa-briefcase"></i> Work Experience</h2>
         <div class="works vcalendar section h2">
           <div id="workMicrosoft" class="microsoft work experience vevent vcard clearfix">
             <a class="include hide" href="#name"></a>
@@ -221,7 +225,7 @@
       </div>
 
       <div class="sectionContainer projectsContainer">
-        <h2>Projects</h2>
+        <h2><i class="fa fa-flask"></i> Projects</h2>
         <div class="vcalendar projects section h2">
           <div id="projectGithub" class="project experience vevent vcard clearfix">
             <a class="include hide" href="#name"></a>
@@ -288,9 +292,7 @@
           <div id="projectJobMine" class="project experience vevent vcard clearfix">
             <a class="include hide" href="#name"></a>
             <div class="header clearfix">
-              <h3 class="title summary">
-                <a class="external" href="(TODO: host on GitHub)">JobMine Improved</a>
-              </h3>
+              <h3 class="title summary">JobMine Improved</h3>
               <span class="timeRange">
                 <abbr class="dtstart" title="2010-07-01">Jul 2010</abbr>
               </span>
@@ -316,7 +318,7 @@
       </div>
 
       <div class="sectionContainer educationsContainer">
-        <h2>Education</h2>
+        <h2><i class="fa fa-book"></i>  Education</h2>
         <div class="educations vcalendar section h2">
           <div class="education vevent vcard">
             <div class="header">
@@ -332,7 +334,7 @@
       </div>
 
       <div class="sectionContainer awardsContainer">
-        <h2>Awards and Accomplishments</h2>
+        <h2><i class="fa fa-trophy"></i> Awards and Accomplishments</h2>
         <ul class="awards vcalendar section h2">
           <li class="experience vevent vcard">
             <a class="include hide" href="#name"></a>
