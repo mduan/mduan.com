@@ -156,6 +156,11 @@ a:focus {
   border-color: #FFCB99;
 }
 
+.hresume {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
 #header {
   text-align: center;
 }
@@ -192,6 +197,8 @@ a:focus {
 .hresume > .lhs {
   float: left;
   width: 25%;
+  /* Need to manually set max-width because of fixed position */
+  max-width: 380px;
   position: fixed;
 }
 .hresume > .rhs {
@@ -323,6 +330,7 @@ a:focus {
   display: inline-block;
   padding-right: 10px;
   width: 45%;
+  max-width: 400px;
   float: left;
   margin-top: 0;
 }
