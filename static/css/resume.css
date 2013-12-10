@@ -354,7 +354,7 @@ a:focus {
   padding-bottom: 50px;
 }
 
-a.external .fa-external-link {
+a .fa-external-link {
   padding-left: 4px;
 }
 

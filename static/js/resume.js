@@ -2,9 +2,11 @@ $(function() {
 
 $('a').each(function() {
   var $el = $(this);
-  if ($el.hasClass('external')) {
-    $el.attr('target', '_blank');
+  if ($el.hasClass('icon')) {
     $el.append($('<sup><i class="fa fa-external-link"></i></sup>'));
+  }
+  if (!$el.hasClass('internal')) {
+    $el.attr('target', '_blank');
   }
 });
 
