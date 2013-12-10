@@ -8,6 +8,20 @@ $('a').each(function() {
   }
 });
 
+var HIGHLIGHT = false;
+$('.option.highlighter').click(function() {
+  var $el = $(this);
+  if ($el.hasClass('active')) {
+    $el.removeClass('active');
+    $('.highlight').removeClass('highlight');
+  } else {
+    $el.addClass('active');
+    $('.hresume').addClass('highlight');
+  }
+  HIGHLIGHT = $el.hasClass('active');
+});
+$('.option.highlighter').click();
+
 $('.fancybox').fancybox({
   helpers: {
     title : {
@@ -66,11 +80,17 @@ $.each(EXPERIENCE_TO_SKILLS_MAPPING, function(experience, skills) {
 $.each(EXPERIENCE_TO_SKILLS_MAPPING, function(experience, skills) {
   $('#' + experience)
     .mouseenter(function() {
+      if (!HIGHLIGHT) {
+        return;
+      }
       $.each(skills, function(idx, skill) {
         $('.skill.' + skill).addClass('highlight');
       });
     })
     .mouseleave(function() {
+      if (!HIGHLIGHT) {
+        return;
+      }
       $.each(skills, function(idx, skill) {
         $('.skill.' + skill).removeClass('highlight');
       });
@@ -80,11 +100,17 @@ $.each(EXPERIENCE_TO_SKILLS_MAPPING, function(experience, skills) {
 $.each(SKILL_TO_EXPERIENCES_MAPPING, function(skill, experiences) {
   $('.skill.' + skill)
     .mouseenter(function() {
+      if (!HIGHLIGHT) {
+        return;
+      }
       $.each(experiences, function(idx, experience) {
         $('#' + experience).addClass('highlight');
       });
     })
     .mouseleave(function() {
+      if (!HIGHLIGHT) {
+        return;
+      }
       $.each(experiences, function(idx, experience) {
         $('#' + experience).removeClass('highlight');
       });

@@ -1,0 +1,77 @@
+h1 {
+  font-size: 30px !important;
+}
+
+h2 {
+  font-size: 18px !important;
+}
+
+.section.h2 {
+  font-size: 13px !important;
+}
+
+h3 {
+  font-size: 13px !important;
+}
+
+.options {
+  display: none;
+}
+
+.contact .contactOptions {
+  font-size: 11px !important;
+}
+
+.section.h3 {
+  font-size: 11px !important;
+}
+
+.hresume > .lhs {
+  width: 100% !important;
+  float: left !important;
+  position: static !important;
+}
+
+.hresume > .rhs {
+  width: 100% !important;
+  float: left !important;
+  clear: both !important;
+  border: 0 !important;
+}
+
+.skill {
+  /* Without setting background-color, chrome prints black boxes for skills */
+  background-color: #FFF !important;
+}
+
+.work.experience .org {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  background-image: none !important;
+}
+
+.project.experience > .lhs {
+  width: 40% !important;
+}
+
+.project.experience > .rhs {
+  width: 60% !important;
+}
+
+.section.h2 {
+  padding-left: 15px !important;
+}
+
+.skills {
+  padding-left: 20px !important;
+}
+
+.sectionContainer {
+  border: 0 !important;
+  margin-top: 25px !important;
+  margin-bottom: 0 !important;
+}
+
+.footer {
+  display: none;
+}

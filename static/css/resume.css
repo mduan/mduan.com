@@ -64,10 +64,16 @@ h2 .fa {
 
 .section.h2 {
   font-size: 14px;
+  padding-left: 15px;
+}
+.skillsSection .section.h2 {
+  padding-left: 0;
 }
 
 h3 {
   font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .section.h3 {
@@ -107,6 +113,49 @@ a:focus {
   outline-offset: -2px;
 }
 
+.options {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 12px;
+  z-index: 100;
+}
+
+.option {
+  opacity: 0.6;
+  padding: 6px 12px;
+}
+.option:hover {
+  opacity: 1.0;
+}
+
+.highlighter {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-weight: normal;
+  line-height: 1.428571429;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  user-select: text;
+  outline: none;
+  background-color: #FFF;
+}
+.highlighter.active {
+  -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+  -moz-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+  box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+  background-color: #FFFBCC;
+  border-color: #FFCB99;
+}
+
 #header {
   text-align: center;
 }
@@ -128,14 +177,14 @@ a:focus {
   padding: 20px 30px 0 30px;
   border-bottom: 1px solid #EEE;
 }
-.contact .options {
+.contact .contactOptions {
   display: table;
   table-layout: fixed;
   margin: 0 auto 20px auto;
   width: 768px;
   text-align: center;
 }
-.contact .options .option {
+.contact .contactOption {
   display: table-cell;
   width: 2%;
 }
@@ -155,13 +204,13 @@ a:focus {
   color: #AAA;
 }
 
-/**
- * TODO(mack): For some reason adding skills class to below classes causes
- * weierd overflow bug when position: fixed is set
- */
+.subSkillsSection {
+  padding-top: 2px;
+}
+
 .skills {
   list-style: none;
-  padding-left: 0;
+  padding-left: 5px;
 }
 
 .skill {
@@ -187,7 +236,6 @@ a:focus {
   width: 75%;
 }
 
-.work.experience > .org,
 .work.experience > .lhs .description {
   margin: 0;
 }
@@ -207,8 +255,6 @@ a:focus {
 .work.experience .org {
   margin-left: -2px;
   padding-left: 25px;
-  padding-top: 5px;
-  padding-bottom: 5px;
   background-repeat: no-repeat;
   background-position-y: 40%;
 }
@@ -244,15 +290,15 @@ a:focus {
   background-position-x: 4px;
 }
 
-.work:hover,
-.project:hover,
-.skill:hover {
+.hresume.highlight .work:hover,
+.hresume.highlight .project:hover,
+.hresume.highlight .skill:hover {
   background-color: #FFFBDD;
 }
 
-.work.highlight,
-.project.highlight,
-.skill.highlight {
+.hresume.highlight .work.highlight,
+.hresume.highlight .project.highlight,
+.hresume.highlight .skill.highlight {
   background-color: #FFFBCC;
 }
 
@@ -312,12 +358,6 @@ a.external .fa-external-link {
   padding-left: 4px;
 }
 
-.works,
-.projects,
-.educations {
-  padding-left: 15px;
-}
-
 img {
   vertical-align: middle;
 }
@@ -346,4 +386,12 @@ img.thumbnail {
 
 abbr[title] {
   border-bottom: 0;
+}
+
+.footer {
+  font-style: italic;
+  float: right;
+  padding: 10px;
+  color: #AAA;
+  font-size: 13px;
 }

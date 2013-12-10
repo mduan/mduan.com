@@ -6,13 +6,17 @@
   <link rel="stylesheet" href="/static/css/normalize.css" />
   <link rel="stylesheet" href="/static/ext/jquery.fancybox/jquery.fancybox.css" />
   <link rel="stylesheet" href="/static/ext/font-awesome/css/font-awesome.css" />
-  <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">-->
   <link rel="stylesheet" href="/static/css/resume.css" />
+  <link rel="stylesheet" media="print" href="/static/css/resume-print.css" />
   <script src="/static/ext/jquery/jquery-2.0.3.js"></script>
   <script src="/static/ext/jquery.fancybox/jquery.fancybox.js"></script>
   <script src="/static/js/resume.js"></script>
 </head>
 <body>
+  <div class="options">
+    <a class="option pdf" href="/static/files/resume.pdf"><i class="fa fa-file"></i> PDF version</a>
+    <button class="button option highlighter"><i class="fa fa-pencil"></i> Highlight</button>
+  </div>
   <div class="hresume clearfix">
     <div class="contact vcard clearfix">
       <div id="header">
@@ -26,18 +30,18 @@
           </a>
         -->
       </div>
-      <div class="options">
-        <span class="option">
+      <div class="contactOptions">
+        <span class="contactOption">
           <i class="fa fa-globe"></i>
           <a class="external" href="http://mduan.com" class="url" rel="me">mduan.com</a>
         </span>
-        <span class="option">
-          <i class="fa fa-envelope"></i>
+        <span class="contactOption">
+          <i class="fa fa-envelope-o"></i>
           <a href="mailto:mack@mduan.com" class="email">
             mack@mduan.com</a>
         </span>
-        <span class="option">
-          <i class="fa fa-github"></i>
+        <span class="contactOption">
+          <i class="fa fa-github-alt"></i>
           <a class="external" href="https://github.com/mduan" class="url" rel="me">github.com/mduan</a>
         </span>
       </div>
@@ -46,50 +50,56 @@
     <div class="lhs clearfix">
       <div class="sectionContainer skillsSection">
         <h2><i class="fa fa-tasks"></i> Skills</h2>
-        <h3>Languages</h3>
-        <ul class="skills languageSkills section h3">
-          <li class="skill c" rel="tag"><a href="#">C</a></li>
-          <li class="skill cpp" rel="tag"><a href="#">C++</a></li>
-          <li class="skill csharp" rel="tag"><a href="#">C#</a></li>
-          <li class="skill java" rel="tag"><a href="#">Java</a></li>
-          <li class="skill php" rel="tag"><a href="#">PHP</a></li>
-          <li class="skill python" rel="tag"><a href="#">Python</a></li>
-          <li class="skill erlang" rel="tag"><a href="#">Erlang</a></li>
-          <li class="skill rails" rel="tag"><a href="#">Ruby on Rails</a></li>
-          <li class="skill html" rel="tag"><a href="#">HTML</a></li>
-          <li class="skill css" rel="tag"><a href="#">CSS</a></li>
-          <li class="skill javascript" rel="tag"><a href="#">JavaScript</a></li>
-        </ul>
-        <h3>Frameworks</h3>
-        <ul class="skills frameworkSkills section h3">
-          <li class="skill flask" rel="tag"><a href="#">Flask</a></li>
-          <li class="skill nodejs" rel="tag"><a href="#">Node.js</a></li>
-          <li class="skill sass" rel="tag"><a href="#">Sass</a></li>
-          <li class="skill bootstrap" rel="tag"><a href="#">Bootstrap</a></li>
-          <li class="skill jquery" rel="tag"><a href="#">jQuery</a></li>
-          <li class="skill backbone" rel="tag"><a href="#">Backbone</a></li>
-          <li class="skill reactjs" rel="tag"><a href="#">React.js</a></li>
-          <li class="skill requirejs" rel="tag"><a href="#">Require.js</a></li>
-          <li class="skill phantomjs" rel="tag"><a href="#">PhantomJS</a></li>
-          <li class="skill mongodb" rel="tag"><a href="#">MongoDB</a></li>
-          <li class="skill mongoengine" rel="tag"><a href="#">mongoengine</a></li>
-          <li class="skill redis" rel="tag"><a href="#">Redis</a></li>
-          <li class="skill mysql" rel="tag"><a href="#">MySQL</a></li>
-          <li class="skill hadoop" rel="tag"><a href="#">Hadoop</a></li>
-          <li class="skill asp" rel="tag"><a href="#">ASP.NET</a></li>
-        </ul>
-        <h3>Tools</h3>
-        <ul class="skills toolSkills section h3">
-          <li class="skill windows" rel="tag"><a href="#">Windows</a></li>
-          <li class="skill mac" rel="tag"><a href="#">Mac OS X</a></li>
-          <li class="skill ubuntu" rel="tag"><a href="#">Ubuntu</a></li>
-          <li class="skill git" rel="tag"><a href="#">Git</a></li>
-          <li class="skill svn" rel="tag"><a href="#">SVN</a></li>
-          <li class="skill vim" rel="tag"><a href="#">Vim</a></li>
-          <li class="skill visualstudio" rel="tag"><a href="#">Visual Studio</a></li>
-          <li class="skill eclipse" rel="tag"><a href="#">Eclipse</a></li>
-          <li class="skill zsh" rel="tag"><a href="#">Zsh</a></li>
-        </ul>
+        <div class="section h2">
+          <h3>Languages</h3>
+          <ul class="skills languageSkills section h3">
+            <li class="skill c" rel="tag"><a href="#">C</a></li>
+            <li class="skill cpp" rel="tag"><a href="#">C++</a></li>
+            <li class="skill csharp" rel="tag"><a href="#">C#</a></li>
+            <li class="skill java" rel="tag"><a href="#">Java</a></li>
+            <li class="skill php" rel="tag"><a href="#">PHP</a></li>
+            <li class="skill python" rel="tag"><a href="#">Python</a></li>
+            <li class="skill erlang" rel="tag"><a href="#">Erlang</a></li>
+            <li class="skill rails" rel="tag"><a href="#">Ruby on Rails</a></li>
+            <li class="skill html" rel="tag"><a href="#">HTML</a></li>
+            <li class="skill css" rel="tag"><a href="#">CSS</a></li>
+            <li class="skill javascript" rel="tag"><a href="#">JavaScript</a></li>
+          </ul>
+        </div>
+        <div class="section h2">
+          <h3>Frameworks</h3>
+          <ul class="skills frameworkSkills section h3">
+            <li class="skill flask" rel="tag"><a href="#">Flask</a></li>
+            <li class="skill nodejs" rel="tag"><a href="#">Node.js</a></li>
+            <li class="skill sass" rel="tag"><a href="#">Sass</a></li>
+            <li class="skill bootstrap" rel="tag"><a href="#">Bootstrap</a></li>
+            <li class="skill jquery" rel="tag"><a href="#">jQuery</a></li>
+            <li class="skill backbone" rel="tag"><a href="#">Backbone</a></li>
+            <li class="skill reactjs" rel="tag"><a href="#">React.js</a></li>
+            <li class="skill requirejs" rel="tag"><a href="#">Require.js</a></li>
+            <li class="skill phantomjs" rel="tag"><a href="#">PhantomJS</a></li>
+            <li class="skill mongodb" rel="tag"><a href="#">MongoDB</a></li>
+            <li class="skill mongoengine" rel="tag"><a href="#">mongoengine</a></li>
+            <li class="skill redis" rel="tag"><a href="#">Redis</a></li>
+            <li class="skill mysql" rel="tag"><a href="#">MySQL</a></li>
+            <li class="skill hadoop" rel="tag"><a href="#">Hadoop</a></li>
+            <li class="skill asp" rel="tag"><a href="#">ASP.NET</a></li>
+          </ul>
+        </div>
+        <div class="section h2">
+          <h3>Tools</h3>
+          <ul class="skills toolSkills section h3">
+            <li class="skill windows" rel="tag"><a href="#">Windows</a></li>
+            <li class="skill mac" rel="tag"><a href="#">Mac OS X</a></li>
+            <li class="skill ubuntu" rel="tag"><a href="#">Ubuntu</a></li>
+            <li class="skill git" rel="tag"><a href="#">Git</a></li>
+            <li class="skill svn" rel="tag"><a href="#">SVN</a></li>
+            <li class="skill vim" rel="tag"><a href="#">Vim</a></li>
+            <li class="skill visualstudio" rel="tag"><a href="#">Visual Studio</a></li>
+            <li class="skill eclipse" rel="tag"><a href="#">Eclipse</a></li>
+            <li class="skill zsh" rel="tag"><a href="#">Zsh</a></li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -327,7 +337,7 @@
               <span class="timeRange"><abbr class="dtstart" title="2009-09-01">Nov 2013</abbr> &mdash; Present</span>
             </div>
             <ul>
-              <li><a class="external" href="TODO(mack): point to transcript">Cumulative average of 92.0%</a></li>
+              <li><a class="external" href="/static/files/transcript.pdf">Cumulative average of 92.0%</a></li>
             </ul>
           </div>
         </div>
@@ -359,6 +369,12 @@
         </ul>
       </div>
     </div>
+
   </div>
+
+  <span class="footer">
+    Last updated December 9th, 2013
+  </span>
+
 </body>
 </html>
