@@ -273,8 +273,8 @@ a:focus {
 }
 .work.mozilla .org {
   background-image: url('/static/img/logo_mozilla.png');
-  background-size: 25px;
-  background-position-x: 0px;
+  background-size: 17px;
+  background-position-x: 3px;
 }
 .work.wish .org {
   background-image: url('/static/img/logo_wish.png');
