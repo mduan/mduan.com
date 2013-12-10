@@ -157,7 +157,7 @@ a:focus {
 }
 
 .hresume {
-  max-width: 1440px;
+  max-width: 1280px;
   margin: 0 auto;
 }
 
@@ -198,7 +198,7 @@ a:focus {
   float: left;
   width: 25%;
   /* Need to manually set max-width because of fixed position */
-  max-width: 380px;
+  max-width: 320px;
   position: fixed;
 }
 .hresume > .rhs {
