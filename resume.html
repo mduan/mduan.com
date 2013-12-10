@@ -43,44 +43,48 @@
     <div class="lhs clearfix">
       <div class="sectionContainer skillsSection">
         <h2>Skills</h2>
-        <h3>Web Development</h3>
-        <ul class="skills webDevSkills section h3">
-          <li class="skill" rel="tag"><a href="#">PHP</a></li>
-          <li class="skill" rel="tag"><a href="#">Python</a></li>
-          <li class="skill" rel="tag"><a href="#">Flask</a></li>
-          <li class="skill" rel="tag"><a href="#">HTML</a></li>
-          <li class="skill" rel="tag"><a href="#">CSS</a></li>
-          <li class="skill" rel="tag"><a href="#">Sass</a></li>
-          <li class="skill" rel="tag"><a href="#">JavaScript</a></li>
-          <li class="skill" rel="tag"><a href="#">Node.js</a></li>
-          <li class="skill" rel="tag"><a href="#">jQuery</a></li>
-          <li class="skill" rel="tag"><a href="#">Backbone</a></li>
-          <li class="skill" rel="tag"><a href="#">React.js</a></li>
-          <li class="skill" rel="tag"><a href="#">Require.js</a></li>
-          <li class="skill" rel="tag"><a href="#">MongoDB</a></li>
-          <li class="skill" rel="tag"><a href="#">mongoengine</a></li>
-          <li class="skill" rel="tag"><a href="#">MySQL</a></li>
-          <li class="skill" rel="tag"><a href="#">Redis</a></li>
+        <h3>Languages</h3>
+        <ul class="skills languageSkills section h3">
+          <li class="skill c" rel="tag"><a href="#">C</a></li>
+          <li class="skill cpp" rel="tag"><a href="#">C++</a></li>
+          <li class="skill csharp" rel="tag"><a href="#">C#</a></li>
+          <li class="skill java" rel="tag"><a href="#">Java</a></li>
+          <li class="skill php" rel="tag"><a href="#">PHP</a></li>
+          <li class="skill python" rel="tag"><a href="#">Python</a></li>
+          <li class="skill erlang" rel="tag"><a href="#">Erlang</a></li>
+          <li class="skill rails" rel="tag"><a href="#">Ruby on Rails</a></li>
+          <li class="skill html" rel="tag"><a href="#">HTML</a></li>
+          <li class="skill css" rel="tag"><a href="#">CSS</a></li>
+          <li class="skill javascript" rel="tag"><a href="#">JavaScript</a></li>
         </ul>
-        <h3>App Development</h3>
-        <ul class="skills appDevSkills section h3">
-          <li class="skill" rel="tag"><a href="#">C</a></li>
-          <li class="skill" rel="tag"><a href="#">C++</a></li>
-          <li class="skill" rel="tag"><a href="#">C#</a></li>
-          <li class="skill" rel="tag"><a href="#">Java</a></li>
-          <li class="skill" rel="tag"><a href="#">Android</a></li>
+        <h3>Frameworks</h3>
+        <ul class="skills frameworkSkills section h3">
+          <li class="skill flask" rel="tag"><a href="#">Flask</a></li>
+          <li class="skill sass" rel="tag"><a href="#">Sass</a></li>
+          <li class="skill nodejs" rel="tag"><a href="#">Node.js</a></li>
+          <li class="skill jquery" rel="tag"><a href="#">jQuery</a></li>
+          <li class="skill backbone" rel="tag"><a href="#">Backbone</a></li>
+          <li class="skill reactjs" rel="tag"><a href="#">React.js</a></li>
+          <li class="skill requirejs" rel="tag"><a href="#">Require.js</a></li>
+          <li class="skill phantomjs" rel="tag"><a href="#">PhantomJS</a></li>
+          <li class="skill mongodb" rel="tag"><a href="#">MongoDB</a></li>
+          <li class="skill mongoengine" rel="tag"><a href="#">mongoengine</a></li>
+          <li class="skill redis" rel="tag"><a href="#">Redis</a></li>
+          <li class="skill mysql" rel="tag"><a href="#">MySQL</a></li>
+          <li class="skill hadoop" rel="tag"><a href="#">Hadoop</a></li>
+          <li class="skill asp" rel="tag"><a href="#">ASP.NET</a></li>
         </ul>
         <h3>Tools</h3>
         <ul class="skills toolSkills section h3">
-          <li class="skill" rel="tag"><a href="#">Windows</a></li>
-          <li class="skill" rel="tag"><a href="#">Mac OS X</a></li>
-          <li class="skill" rel="tag"><a href="#">Ubuntu</a></li>
-          <li class="skill" rel="tag"><a href="#">Git</a></li>
-          <li class="skill" rel="tag"><a href="#">SVN</a></li>
-          <li class="skill" rel="tag"><a href="#">Vim</a></li>
-          <li class="skill" rel="tag"><a href="#">Visual Studio</a></li>
-          <li class="skill" rel="tag"><a href="#">Zsh</a></li>
-          <li class="skill" rel="tag"><a href="#">Tmux</a></li>
+          <li class="skill windows" rel="tag"><a href="#">Windows</a></li>
+          <li class="skill mac" rel="tag"><a href="#">Mac OS X</a></li>
+          <li class="skill ubuntu" rel="tag"><a href="#">Ubuntu</a></li>
+          <li class="skill git" rel="tag"><a href="#">Git</a></li>
+          <li class="skill svn" rel="tag"><a href="#">SVN</a></li>
+          <li class="skill vim" rel="tag"><a href="#">Vim</a></li>
+          <li class="skill visualstudio" rel="tag"><a href="#">Visual Studio</a></li>
+          <li class="skill eclipse" rel="tag"><a href="#">Eclipse</a></li>
+          <li class="skill zsh" rel="tag"><a href="#">Zsh</a></li>
         </ul>
       </div>
     </div>
@@ -89,9 +93,9 @@
       <div class="sectionContainer worksContainer">
         <h2>Work Experience</h2>
         <div class="works vcalendar section h2">
-          <div class="work experience vevent vcard clearfix">
+          <div id="workMicrosoft" class="microsoft work experience vevent vcard clearfix">
             <a class="include hide" href="#name"></a>
-            <h3 class="org microsoft"><a href="http://www.microsoft.com">Microsoft</a></h3>
+            <h3 class="org"><a href="http://www.microsoft.com">Microsoft</a></h3>
             <div class="lhs">
               <ul class="description">
                 <li>Added logging to Windows to track video memory allocations</li>
@@ -106,9 +110,9 @@
               </div>
             </div>
           </div>
-          <div class="work experience vevent vcard clearfix">
+          <div id="workMozilla" class="mozilla work experience vevent vcard clearfix">
             <a class="include hide" href="#name"></a>
-            <h3 class="org mozilla"><a href="http://www.mozilla.org">Mozilla</a></h3>
+            <h3 class="org"><a href="http://www.mozilla.org">Mozilla</a></h3>
             <div class="lhs">
               <ul class="description">
                 <li><a class="external" href="https://air.mozilla.org/intern-pdfjs/">Worked on PDF.js, PDF viewer in Firefox written in JavaScript</a></li>
@@ -124,9 +128,9 @@
               </div>
             </div>
           </div>
-          <div class="work experience vevent vcard clearfix">
+          <div id="workWish" class="wish work experience vevent vcard clearfix">
             <a class="include hide" href="#name"></a>
-            <h3 class="org wish"><a href="https://www.wish.com">Wish.com</a></h3>
+            <h3 class="org"><a href="https://www.wish.com">Wish.com</a></h3>
             <div class="lhs">
               <ul class="description">
                 <li>Worked on user-facing features of Wish</li>
@@ -142,9 +146,9 @@
               </div>
             </div>
           </div>
-          <div class="work experience vevent vcard clearfix">
+          <div id="workFacebookLocation" class="facebook work experience vevent vcard clearfix">
             <a class="include hide" href="#name"></a>
-            <h3 class="org facebook"><a href="https://www.facebook.com">Facebook</a></h3>
+            <h3 class="org"><a href="https://www.facebook.com">Facebook</a></h3>
             <div class="lhs">
               <ul class="description">
                 <li>Worked on user-visible changes to gather to gather location data from user content</li>
@@ -160,9 +164,9 @@
               </div>
             </div>
           </div>
-          <div class="work experience vevent vcard clearfix">
+          <div id="workUwaterloo" class="uwaterloo work experience vevent vcard clearfix">
             <a class="include hide" href="#name"></a>
-            <h3 class="org uwaterloo"><a href="http://uwaterloo.com">University of Waterloo</a></h3>
+            <h3 class="org"><a href="http://uwaterloo.com">University of Waterloo</a></h3>
             <div class="lhs">
               <ul class="description">
                 <li>Built search engine interface to be used in research experiments</li>
@@ -179,9 +183,9 @@
               </div>
             </div>
           </div>
-          <div class="work experience vevent vcard clearfix">
+          <div id="workFacebookRealtime" class="facebook work experience vevent vcard clearfix">
             <a class="include hide" href="#name"></a>
-            <h3 class="org facebook"><a href="http://facebook.com">Facebook</a></h3>
+            <h3 class="org"><a href="http://facebook.com">Facebook</a></h3>
             <div class="lhs">
               <ul class="description">
                 <li>Implemented system to support load balancing on Facebook's chat servers, significantly reducing number of needed servers
@@ -196,9 +200,9 @@
               </div>
             </div>
           </div>
-          <div class="work experience vevent vcard clearfix">
+          <div id="workXtremeLabs" class="xtremelabs work experience vevent vcard clearfix">
             <a class="include hide" href="#name"></a>
-            <h3 class="org xtremelabs"><a href="http://xtremelabs.com">Xtreme Labs</a></h3>
+            <h3 class="org"><a href="http://xtremelabs.com">Xtreme Labs</a></h3>
             <div class="lhs">
               <ul class="description">
                 <li>Developed and maintained several BlackBerry applications for various clients</li>
@@ -219,7 +223,7 @@
       <div class="sectionContainer projectsContainer">
         <h2>Projects</h2>
         <div class="vcalendar projects section h2">
-          <div class="project experience vevent vcard clearfix">
+          <div id="projectGithub" class="project experience vevent vcard clearfix">
             <a class="include hide" href="#name"></a>
             <div class="header clearfix">
               <h3 class="title summary">
@@ -240,7 +244,7 @@
               </ul>
             </div>
           </div>
-          <div class="project experience vevent vcard clearfix">
+          <div id="projectUWFlow" class="project experience vevent vcard clearfix">
             <a class="include hide" href="#name"></a>
             <div class="header clearfix">
               <h3 class="title summary">
@@ -261,7 +265,7 @@
               </ul>
             </div>
           </div>
-          <div class="project experience vevent vcard clearfix">
+          <div id="projectNumbersAPI" class="project experience vevent vcard clearfix">
             <a class="include hide" href="#name"></a>
             <div class="header clearfix">
               <h3 class="title summary">
@@ -281,7 +285,7 @@
               </ul>
             </div>
           </div>
-          <div class="project experience vevent vcard clearfix">
+          <div id="projectJobMine" class="project experience vevent vcard clearfix">
             <a class="include hide" href="#name"></a>
             <div class="header clearfix">
               <h3 class="title summary">
@@ -293,6 +297,19 @@
             </div>
             <ul class="description">
               <li>Built a service to provide a more user-friendly interface of searching for jobs on University of Waterloo's job board</li>
+            </ul>
+          </div>
+          <div id="projectForum" class="project experience vevent vcard clearfix">
+            <a class="include hide" href="#name"></a>
+            <div class="header clearfix">
+              <h3 class="title summary">Discussion Forum</h3>
+              <span class="timeRange">
+                <abbr class="dtstart" title="2009-09-01">Sept 2009</abbr> &mdash;
+                <abbr class="dtend" title="2009-12-31">Dec 2009</abbr>
+              </span>
+            </div>
+            <ul class="description">
+              <li>Built discussion forum for University of Waterloo's IEEE branch</li>
             </ul>
           </div>
         </div>

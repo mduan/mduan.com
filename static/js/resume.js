@@ -30,4 +30,12 @@ $(window).scroll(function() {
   }
 });
 
+$('.work, .project')
+  .mouseenter(function() {
+    var $el = $(this);
+    $('.skillsSection').attr('data-hoverId', $el.attr('id'));
+  })
+  .mouseleave(function() {
+    $('.skillsSection').removeAttr('data-hoverId');
+  });
 });
