@@ -239,120 +239,15 @@ a:focus {
 }
 
 .work:hover,
-.project:hover {
-  background-color: #F6FFF6;
+.project:hover,
+.skill:hover {
+  background-color: #FFFBDD;
 }
 
-.skillsSection[data-hoverId="workMicrosoft"] .skill.windows,
-.skillsSection[data-hoverId="workMicrosoft"] .skill.visualstudio,
-.skillsSection[data-hoverId="workMicrosoft"] .skill.c,
-.skillsSection[data-hoverId="workMicrosoft"] .skill.cpp,
-.skillsSection[data-hoverId="workMicrosoft"] .skill.csharp,
-
-.skillsSection[data-hoverId="workMozilla"] .skill.mac,
-.skillsSection[data-hoverId="workMozilla"] .skill.html,
-.skillsSection[data-hoverId="workMozilla"] .skill.css,
-.skillsSection[data-hoverId="workMozilla"] .skill.javascript,
-.skillsSection[data-hoverId="workMozilla"] .skill.vim,
-.skillsSection[data-hoverId="workMozilla"] .skill.zsh,
-.skillsSection[data-hoverId="workMozilla"] .skill.git,
-
-.skillsSection[data-hoverId="workWish"] .skill.ubuntu,
-.skillsSection[data-hoverId="workWish"] .skill.html,
-.skillsSection[data-hoverId="workWish"] .skill.css,
-.skillsSection[data-hoverId="workWish"] .skill.javascript,
-.skillsSection[data-hoverId="workWish"] .skill.requirejs,
-.skillsSection[data-hoverId="workWish"] .skill.backbone,
-.skillsSection[data-hoverId="workWish"] .skill.jquery,
-.skillsSection[data-hoverId="workWish"] .skill.mongoengine,
-.skillsSection[data-hoverId="workWish"] .skill.mongodb,
-.skillsSection[data-hoverId="workWish"] .skill.sass,
-.skillsSection[data-hoverId="workWish"] .skill.redis,
-.skillsSection[data-hoverId="workWish"] .skill.vim,
-.skillsSection[data-hoverId="workWish"] .skill.zsh,
-.skillsSection[data-hoverId="workWish"] .skill.git
-
-.skillsSection[data-hoverId="workFacebookLocation"] .skill.mac,
-.skillsSection[data-hoverId="workFacebookLocation"] .skill.php,
-.skillsSection[data-hoverId="workFacebookLocation"] .skill.html,
-.skillsSection[data-hoverId="workFacebookLocation"] .skill.css,
-.skillsSection[data-hoverId="workFacebookLocation"] .skill.javascript,
-.skillsSection[data-hoverId="workFacebookLocation"] .skill.mysql,
-.skillsSection[data-hoverId="workFacebookLocation"] .skill.hadoop,
-.skillsSection[data-hoverId="workFacebookLocation"] .skill.svn
-
-.skillsSection[data-hoverId="workUwaterloo"] .skill.ubuntu,
-.skillsSection[data-hoverId="workUwaterloo"] .skill.python,
-.skillsSection[data-hoverId="workUwaterloo"] .skill.html,
-.skillsSection[data-hoverId="workUwaterloo"] .skill.css,
-.skillsSection[data-hoverId="workUwaterloo"] .skill.javascript,
-.skillsSection[data-hoverId="workUwaterloo"] .skill.vim,
-.skillsSection[data-hoverId="workUwaterloo"] .skill.zsh,
-.skillsSection[data-hoverId="workUwaterloo"] .skill.git,
-
-.skillsSection[data-hoverId="workFacebookRealtime"] .skill.mac,
-.skillsSection[data-hoverId="workFacebookRealtime"] .skill.php,
-.skillsSection[data-hoverId="workFacebookRealtime"] .skill.erlang,
-.skillsSection[data-hoverId="workFacebookRealtime"] .skill.svn
-
-.skillsSection[data-hoverId="workXtremeLabs"] .skill.windows,
-.skillsSection[data-hoverId="workXtremeLabs"] .skill.java,
-.skillsSection[data-hoverId="workXtremeLabs"] .skill.rails,
-.skillsSection[data-hoverId="workXtremeLabs"] .skill.eclipse,
-.skillsSection[data-hoverId="workXtremeLabs"] .skill.svn,
-
-.skillsSection[data-hoverId="projectGithub"] .skill.mac,
-.skillsSection[data-hoverId="projectGithub"] .skill.html,
-.skillsSection[data-hoverId="projectGithub"] .skill.css,
-.skillsSection[data-hoverId="projectGithub"] .skill.javascript,
-.skillsSection[data-hoverId="projectGithub"] .skill.reactjs,
-.skillsSection[data-hoverId="projectGithub"] .skill.backbone,
-.skillsSection[data-hoverId="projectGithub"] .skill.jquery,
-.skillsSection[data-hoverId="projectGithub"] .skill.vim,
-.skillsSection[data-hoverId="projectGithub"] .skill.zsh,
-.skillsSection[data-hoverId="projectGithub"] .skill.git,
-
-.skillsSection[data-hoverId="projectUWFlow"] .skill.mac,
-.skillsSection[data-hoverId="projectUWFlow"] .skill.html,
-.skillsSection[data-hoverId="projectUWFlow"] .skill.css,
-.skillsSection[data-hoverId="projectUWFlow"] .skill.javascript,
-.skillsSection[data-hoverId="projectUWFlow"] .skill.requirejs,
-.skillsSection[data-hoverId="projectUWFlow"] .skill.backbone,
-.skillsSection[data-hoverId="projectUWFlow"] .skill.python,
-.skillsSection[data-hoverId="projectUWFlow"] .skill.flask,
-.skillsSection[data-hoverId="projectUWFlow"] .skill.redis,
-.skillsSection[data-hoverId="projectUWFlow"] .skill.mongodb,
-.skillsSection[data-hoverId="projectUWFlow"] .skill.mongoengine,
-.skillsSection[data-hoverId="projectUWFlow"] .skill.phantomjs,
-.skillsSection[data-hoverId="projectUWFlow"] .skill.vima,
-.skillsSection[data-hoverId="projectUWFlow"] .skill.zsh,
-.skillsSection[data-hoverId="projectUWFlow"] .skill.git,
-
-.skillsSection[data-hoverId="projectNumbersAPI"] .skill.ubuntu,
-.skillsSection[data-hoverId="projectNumbersAPI"] .skill.html,
-.skillsSection[data-hoverId="projectNumbersAPI"] .skill.css,
-.skillsSection[data-hoverId="projectNumbersAPI"] .skill.javascript,
-.skillsSection[data-hoverId="projectNumbersAPI"] .skill.nodejs,
-.skillsSection[data-hoverId="projectNumbersAPI"] .skill.requirejs,
-.skillsSection[data-hoverId="projectNumbersAPI"] .skill.vim,
-.skillsSection[data-hoverId="projectNumbersAPI"] .skill.zsh,
-.skillsSection[data-hoverId="projectNumbersAPI"] .skill.git,
-
-.skillsSection[data-hoverId="projectJobMine"] .skill.ubuntu,
-.skillsSection[data-hoverId="projectJobMine"] .skill.html,
-.skillsSection[data-hoverId="projectJobMine"] .skill.css,
-.skillsSection[data-hoverId="projectJobMine"] .skill.javascript,
-.skillsSection[data-hoverId="projectJobMine"] .skill.rails,
-.skillsSection[data-hoverId="projectJobMine"] .skill.zsh,
-
-.skillsSection[data-hoverId="projectForum"] .skill.windows,
-.skillsSection[data-hoverId="projectForum"] .skill.visualstudio,
-.skillsSection[data-hoverId="projectForum"] .skill.html,
-.skillsSection[data-hoverId="projectForum"] .skill.css,
-.skillsSection[data-hoverId="projectForum"] .skill.javascript,
-.skillsSection[data-hoverId="projectForum"] .skill.csharp,
-.skillsSection[data-hoverId="projectForum"] .skill.asp {
-  background-color: #DDFFDD;
+.work.highlight,
+.project.highlight,
+.skill.highlight {
+  background-color: #FFFBCC;
 }
 
 .project.experience {
