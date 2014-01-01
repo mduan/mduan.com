@@ -15,7 +15,11 @@ h3 {
 }
 
 .options {
-  display: none;
+  display: none !important;
+}
+
+.contact {
+  padding-top: 0 !important;
 }
 
 .contact .contactOptions {
@@ -56,11 +60,11 @@ h3 {
 }
 
 .project.experience > .lhs {
-  width: 40% !important;
+  width: 35% !important;
 }
 
 .project.experience > .rhs {
-  width: 60% !important;
+  width: 65% !important;
 }
 
 .section.h2 {

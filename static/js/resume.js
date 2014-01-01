@@ -1,5 +1,33 @@
 $(function() {
 
+/**
+ * Helper functions
+ *
+ * TODO(mack): Consider moving them into separate file.
+ */
+
+function getParameterByName(name) {
+  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+      results = regex.exec(location.search);
+  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+/**
+ * Main logic
+ */
+
+if (getParameterByName('resolve_url')) {
+  var SERVER_ROOT = 'http://mduan.com';
+  $('a').each(function() {
+    var $el = $(this);
+    var href = $el.attr('href');
+    if (href && href[0] === '/') {
+      $el.attr('href', SERVER_ROOT + href);
+    }
+  });
+}
+
 $('a').each(function() {
   var $el = $(this);
   if ($el.hasClass('icon')) {
@@ -23,19 +51,6 @@ $('.option.highlighter').click(function() {
   HIGHLIGHT = $el.hasClass('active');
 });
 $('.option.highlighter').click();
-
-$('.fancybox').fancybox({
-  helpers: {
-    title : {
-      type : 'float'
-    }
-  },
-  beforeShow: function() {
-    var alt = this.element.find('.thumbnail').attr('alt');
-    this.inner.find('img').attr('alt', alt);
-    this.title = alt;
-  }
-});
 
 //$(window).scroll(function() {
 //  var offset = $('.contact').offset().top + $('.contact').outerHeight(true);
