@@ -208,9 +208,8 @@ a:focus {
 .work.experience > .rhs {
   display: inline-block;
   width: 25%;
-  position: absolute;
   text-align: right;
-  right: 0;
+  float: right;
 }
 .work.experience .title,
 .work.experience .title a {
