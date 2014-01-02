@@ -255,21 +255,34 @@ a:focus {
 }
 
 .work.experience {
-  margin-bottom: 13px;
+  margin-bottom: 17px;
   position: relative;
 }
 
 .work.experience .header .org {
   margin-top: 0;
   margin-bottom: 0;
+  position: relative;
 }
 
-.work.experience .header .row1,
+.work.experience .header .org,
 .work.experience .header .row2 {
   position: relative;
 }
+.work.experience .header .org a,
+.work.experience .header .title {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  /**
+   * TODO(mack): Find less hacky way to give absolutely-positioned element
+   * width w/o manually setting width.
+   */
+  width: 500px;
+}
+
 .work.experience .header .row1 {
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 .work.experience .header {
   margin-bottom: 5px;
@@ -293,12 +306,6 @@ a:focus {
 
 .work.experience .location {
   color: #AAA;
-}
-
-.work.experience .org,
-.work.experience .title {
-  position: absolute;
-  left: 25px;
 }
 
 .work.experience .org img {
