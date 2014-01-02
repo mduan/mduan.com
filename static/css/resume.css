@@ -13,6 +13,7 @@ h2 {
   font: 20px "Alegreya SC", Georgia, "Times New Roman", Times, serif;
   font-weight: normal;
   color: #09A5A5;
+  margin-bottom: 10px;
 }
 
 h2 .fa {
@@ -89,9 +90,8 @@ a:focus {
 
 .hresume {
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 0 auto 10px auto;
   border-bottom: 1px solid #EEE;
-  margin-bottom: 10px;
 }
 
 #header {
@@ -168,13 +168,12 @@ a:focus {
   position: fixed;
 }
 
-.hresume.collapsed > .lhs .skillsSection.expanded,
+.hresume.collapsed > .lhs .skillsSection,
 .hresume.collapsed > .lhs .toggle.collapse {
   display: none;
 }
 
 .hresume:not(.collapsed) > .lhs .skillsText,
-.hresume:not(.collapsed) > .lhs .toggle.expand,
 .hresume:not(.collapsed) > .lhs .toggle.expand {
   display: none;
 }
@@ -319,8 +318,11 @@ a:focus {
   background-color: #FFFBCC;
 }
 
+.project.experience:first-child {
+  margin-top: 0;
+}
 .project.experience {
-  margin-top: 25px;
+  margin-top: 17px;
 }
 
 .project.experience .header {

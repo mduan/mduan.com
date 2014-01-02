@@ -1,5 +1,5 @@
 h1 {
-  font-size: 30px !important;
+  font-size: 24px !important;
 }
 
 h2 {
@@ -32,20 +32,33 @@ h3 {
 
 .hresume {
   max-width: none !important;
+  margin-bottom: 0 !important;
+  border: 0 !important;
 }
 
 .hresume > .lhs {
   width: 100% !important;
+  height: auto !important;
   max-width: none !important;
-  float: left !important;
+  float: none !important;
   position: static !important;
+}
+.hresume > .lhs .sidebarContainer {
+  position: static !important;
+}
+.hresume > .lhs .skillsText,
+.hresume > .lhs .toggleContainer {
+  display: none !important;
+}
+.hresume > .lhs .skillsSection {
+  display: block !important;
 }
 
 .hresume > .rhs {
   width: 100% !important;
-  float: left !important;
-  clear: both !important;
+  float: none !important;
   border: 0 !important;
+  overflow: visible !important;
 }
 
 .skill {
@@ -71,7 +84,7 @@ h3 {
   padding-left: 15px !important;
 }
 
-.skills {
+.skillsSection .skills {
   padding-left: 20px !important;
 }
 
