@@ -90,6 +90,8 @@ a:focus {
 .hresume {
   max-width: 1280px;
   margin: 0 auto;
+  border-bottom: 1px solid #EEE;
+  margin-bottom: 10px;
 }
 
 #header {
@@ -375,10 +377,6 @@ a:focus {
   float: right;
 }
 
-.hresume {
-  padding-bottom: 50px;
-}
-
 a .fa-external-link {
   padding-left: 4px;
 }
@@ -407,6 +405,9 @@ img.thumbnail {
 }
 .sectionContainer:first-child {
   border-top: 0;
+}
+.sectionContainer:last-child {
+  padding-bottom: 20px;
 }
 
 abbr[title] {
