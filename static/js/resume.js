@@ -56,82 +56,47 @@ $('a').each(function() {
 //  }
 //});
 
-var EXPERIENCE_TO_SKILLS_MAPPING = {
-  'workMicrosoft': ['windows', 'visualstudio', 'c', 'cpp', 'csharp'],
-  'workMozilla': ['mac', 'html', 'css', 'javascript', 'vim', 'zsh', 'git'],
-  'workWish': ['ubuntu', 'html', 'css', 'javascript', 'requirejs', 'backbone',
-      'jquery', 'mongoengine', 'mongodb', 'sass', 'redis', 'vim', 'zsh', 'git'],
-  'workFacebookLocation': ['mac', 'php', 'html', 'css', 'javascript', 'mysql',
-      'hadoop', 'svn'],
-  'workUwaterloo': ['ubuntu', 'python', 'html', 'css', 'javascript', 'vim',
-      'zsh', 'git'],
-  'workFacebookRealtime': ['mac', 'php', 'erlang', 'svn'],
-  'workXtremeLabs': ['windows', 'java', 'rails', 'eclipse', 'svn'],
-  'projectGithub': ['mac', 'html', 'css', 'javascript', 'reactjs', 'backbone',
-      'jquery', 'vim', 'zsh', 'git', 'bootstrap'],
-  'projectUWFlow': ['mac', 'html', 'css', 'javascript', 'requirejs', 'backbone',
-      'python', 'flask', 'redis', 'mongodb', 'mongoengine', 'phantomjs', 'vim',
-      'zsh', 'git'],
-  'projectNumbersAPI': ['ubuntu', 'html', 'css', 'javascript', 'nodejs',
-      'requirejs', 'vim', 'zsh', 'git'],
-  'projectJobMine': ['ubuntu', 'html', 'css', 'javascript', 'rails', 'zsh'],
-  'projectForum': ['windows', 'visualstudio', 'html', 'css', 'javascript',
-      'csharp', 'asp']
-};
-
-var SKILL_TO_EXPERIENCES_MAPPING = {};
-$.each(EXPERIENCE_TO_SKILLS_MAPPING, function(experience, skills) {
-  $.each(skills, function(idx, skill) {
-    if (!(skill in SKILL_TO_EXPERIENCES_MAPPING)) {
-      SKILL_TO_EXPERIENCES_MAPPING[skill] = [];
+$('.experience')
+  .mouseenter(function() {
+    var collapse = !!JSON.parse(localStorage.getItem('collapseSidebar'));
+    if (collapse) {
+      return;
     }
-    SKILL_TO_EXPERIENCES_MAPPING[skill].push(experience);
+    $(this).find('.skills .skill').each(function() {
+      var skill = $(this).attr('data-skill');
+      $('.skillsSection .skill[data-skill="' + skill + '"]').addClass('highlight');
+    });
+  })
+  .mouseleave(function() {
+    $(this).find('.skills .skill').each(function() {
+      var skill = $(this).attr('data-skill');
+      $('.skillsSection .skill[data-skill="' + skill + '"]').removeClass('highlight');
+    });
   });
-});
 
-$.each(EXPERIENCE_TO_SKILLS_MAPPING, function(experience, skills) {
-  $('#' + experience)
-    .mouseenter(function() {
-      var collapse = !!JSON.parse(localStorage.getItem('collapseSidebar'));
-      if (collapse) {
-        return;
+$('.skillsSection .skill')
+  .mouseenter(function() {
+    var collapse = !!JSON.parse(localStorage.getItem('collapseSidebar'));
+    if (collapse) {
+      return;
+    }
+    var skill = $(this).attr('data-skill');
+    $('.experience').each(function() {
+      var $el = $(this);
+      if ($el.find('[data-skill="' + skill + '"]').length) {
+        $el.addClass('highlight');
       }
-      $.each(skills, function(idx, skill) {
-        $('.skill.' + skill).addClass('highlight');
-      });
-    })
-    .mouseleave(function() {
-      var collapse = !!JSON.parse(localStorage.getItem('collapseSidebar'));
-      if (collapse) {
-        return;
-      }
-      $.each(skills, function(idx, skill) {
-        $('.skill.' + skill).removeClass('highlight');
-      });
     });
-});
-
-$.each(SKILL_TO_EXPERIENCES_MAPPING, function(skill, experiences) {
-  $('.skill.' + skill)
-    .mouseenter(function() {
-      var collapse = !!JSON.parse(localStorage.getItem('collapseSidebar'));
-      if (collapse) {
-        return;
+  })
+  .mouseleave(function() {
+    var skill = $(this).attr('data-skill');
+    $('.experience').each(function() {
+      var $el = $(this);
+      if ($el.find('[data-skill="' + skill + '"]').length) {
+        $el.removeClass('highlight');
       }
-      $.each(experiences, function(idx, experience) {
-        $('#' + experience).addClass('highlight');
-      });
-    })
-    .mouseleave(function() {
-      var collapse = !!JSON.parse(localStorage.getItem('collapseSidebar'));
-      if (collapse) {
-        return;
-      }
-      $.each(experiences, function(idx, experience) {
-        $('#' + experience).removeClass('highlight');
-      });
     });
-});
+  });
 
 (function() {
   // TODO(mack): Fix timezone bug (time from lastModified is UTC time).

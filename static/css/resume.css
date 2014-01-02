@@ -220,12 +220,12 @@ a:focus {
   padding-top: 2px;
 }
 
-.skills {
+.skillsSection .skills {
   list-style: none;
   padding-left: 5px;
 }
 
-.skill {
+.skillsSection .skill {
   font-weight: normal;
   display: inline-block;
   margin: .4em .2em;
@@ -235,6 +235,18 @@ a:focus {
   color: #333;
   box-shadow: 0 0 2px #eee;
   cursor: default;
+}
+
+.experience .skills {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.experience .skills .skill:not(.hide) {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
 }
 
 .work.experience {
