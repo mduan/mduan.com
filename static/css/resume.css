@@ -128,16 +128,16 @@ a:focus {
 }
 
 .hresume > .lhs {
+  float: left;
   -moz-transition: width 0.15s;
   -webkit-transition: width 0.15s;
   transition: width 0.15s;
 }
-
-.hresume > .lhs {
-  float: left;
-}
 .hresume > .rhs {
   border-left: 1px solid #EEE;
+  -moz-box-shadow: inset 6px 0px 10px -10px #999;
+  -webkit-box-shadow: inset 6px 0px 10px -10px #999;
+  box-shadow: inset 6px 0px 10px -10px #999;
 }
 
 .hresume:not(.collapsed) > .lhs {
