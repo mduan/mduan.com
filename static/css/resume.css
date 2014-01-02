@@ -265,6 +265,10 @@ a:focus {
   margin-bottom: 0;
 }
 
+.work.experience .header .row1,
+.work.experience .header .row2 {
+  position: relative;
+}
 .work.experience .header .row1 {
   margin-bottom: 2px;
 }
@@ -294,44 +298,13 @@ a:focus {
 
 .work.experience .org,
 .work.experience .title {
-  margin-left: -2px;
-  padding-left: 25px;
+  position: absolute;
+  left: 25px;
 }
 
-.work.experience .org {
-  background-repeat: no-repeat;
-  background-position-y: 40%;
-}
-
-.work.microsoft .org {
-  background-image: url('/static/img/logo_microsoft.png');
-  background-size: 16px;
-  background-position-x: 4px;
-}
-.work.mozilla .org {
-  background-image: url('/static/img/logo_mozilla.png');
-  background-size: 17px;
-  background-position-x: 3px;
-}
-.work.wish .org {
-  background-image: url('/static/img/logo_wish.png');
-  background-size: 16px;
-  background-position-x: 4px;
-}
-.work.facebook .org {
-  background-image: url('/static/img/logo_facebook.png');
-  background-size: 16px;
-  background-position-x: 4px;
-}
-.work.uwaterloo .org {
-  background-image: url('/static/img/logo_uwaterloo.png');
-  background-size: 15px;
-  background-position-x: 7px;
-}
-.work.xtremelabs .org {
-  background-image: url('/static/img/logo_xtremelabs.png');
-  background-size: 16px;
-  background-position-x: 4px;
+.work.experience .org img {
+  margin-top: -4px;
+  width: 15px;
 }
 
 .hresume:not(.collapsed) .work:hover,
