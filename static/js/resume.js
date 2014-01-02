@@ -134,4 +134,11 @@ $.each(SKILL_TO_EXPERIENCES_MAPPING, function(skill, experiences) {
     });
 });
 
+(function() {
+  // TODO(mack): Fix timezone bug (time from lastModified is UTC time).
+  var dateStr = moment(
+    document.lastModified, 'MM/DD/YYYY hh:mm:ss').format('MMMM Do, YYYY');
+  $('.updatedDate').text(dateStr);
+})();
+
 });
