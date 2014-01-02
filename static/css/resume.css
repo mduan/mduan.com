@@ -128,6 +128,12 @@ a:focus {
 }
 
 .hresume > .lhs {
+  -moz-transition: width 0.15s;
+  -webkit-transition: width 0.15s;
+  transition: width 0.15s;
+}
+
+.hresume > .lhs {
   float: left;
 }
 .hresume > .rhs {
