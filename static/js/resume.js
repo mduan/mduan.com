@@ -13,6 +13,15 @@ function getParameterByName(name) {
   return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
+(function() {
+  // Set up interface for localStorage if it does not exist.
+  var localStorage = window.localStorage = window.localStorage || {};
+  var funcNames = ['getItem', 'setItem', 'removeItem'];
+  for (var i = 0; i < funcNames.length; ++i) {
+    localStorage[funcNames[i]] = localStorage[funcNames[i]] || function() {};
+  }
+})();
+
 /**
  * Main logic
  */
@@ -37,20 +46,6 @@ $('a').each(function() {
     $el.attr('target', '_blank');
   }
 });
-
-var HIGHLIGHT = false;
-$('.option.highlighter').click(function() {
-  var $el = $(this);
-  if ($el.hasClass('active')) {
-    $el.removeClass('active');
-    $('.highlight').removeClass('highlight');
-  } else {
-    $el.addClass('active');
-    $('.hresume').addClass('highlight');
-  }
-  HIGHLIGHT = $el.hasClass('active');
-});
-$('.option.highlighter').click();
 
 //$(window).scroll(function() {
 //  var offset = $('.contact').offset().top + $('.contact').outerHeight(true);
@@ -97,7 +92,8 @@ $.each(EXPERIENCE_TO_SKILLS_MAPPING, function(experience, skills) {
 $.each(EXPERIENCE_TO_SKILLS_MAPPING, function(experience, skills) {
   $('#' + experience)
     .mouseenter(function() {
-      if (!HIGHLIGHT) {
+      var collapse = !!JSON.parse(localStorage.getItem('collapseSidebar'));
+      if (collapse) {
         return;
       }
       $.each(skills, function(idx, skill) {
@@ -105,7 +101,8 @@ $.each(EXPERIENCE_TO_SKILLS_MAPPING, function(experience, skills) {
       });
     })
     .mouseleave(function() {
-      if (!HIGHLIGHT) {
+      var collapse = !!JSON.parse(localStorage.getItem('collapseSidebar'));
+      if (collapse) {
         return;
       }
       $.each(skills, function(idx, skill) {
@@ -117,7 +114,8 @@ $.each(EXPERIENCE_TO_SKILLS_MAPPING, function(experience, skills) {
 $.each(SKILL_TO_EXPERIENCES_MAPPING, function(skill, experiences) {
   $('.skill.' + skill)
     .mouseenter(function() {
-      if (!HIGHLIGHT) {
+      var collapse = !!JSON.parse(localStorage.getItem('collapseSidebar'));
+      if (collapse) {
         return;
       }
       $.each(experiences, function(idx, experience) {
@@ -125,7 +123,8 @@ $.each(SKILL_TO_EXPERIENCES_MAPPING, function(skill, experiences) {
       });
     })
     .mouseleave(function() {
-      if (!HIGHLIGHT) {
+      var collapse = !!JSON.parse(localStorage.getItem('collapseSidebar'));
+      if (collapse) {
         return;
       }
       $.each(experiences, function(idx, experience) {
@@ -140,5 +139,22 @@ $.each(SKILL_TO_EXPERIENCES_MAPPING, function(skill, experiences) {
     document.lastModified, 'MM/DD/YYYY hh:mm:ss').format('MMMM Do, YYYY');
   $('.updatedDate').text(dateStr);
 })();
+
+function updateSidebar() {
+  var collapse = !!JSON.parse(localStorage.getItem('collapseSidebar'));
+  if (collapse) {
+    $('.hresume').addClass('collapsed');
+  } else {
+    $('.hresume').removeClass('collapsed');
+  }
+}
+
+updateSidebar();
+
+$('.hresume > .lhs .toggle').click(function() {
+  var collapse = !JSON.parse(localStorage.getItem('collapseSidebar'));
+  localStorage.setItem('collapseSidebar', collapse);
+  updateSidebar();
+});
 
 });
