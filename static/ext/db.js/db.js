@@ -251,6 +251,16 @@
             }
             var transaction = db.transaction( table ),
                 store = transaction.objectStore( table );
+
+            var req = key ? store.index(key).count() : store.count();
+            return new Promise(function(resolve, reject){
+              req.onsuccess = function ( e ) {
+                  resolve( e.target.result );
+              };
+              transaction.onerror = function ( e ) {
+                  reject( e );
+              };
+            });
         }
 
         for ( var i = 0 , il = db.objectStoreNames.length ; i < il ; i++ ) {
