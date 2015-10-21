@@ -1,7 +1,7 @@
 $(function() {
 
   var USER_ID = '100039461888031923639';
-  var IMAGE_SIZE = 1600;
+  var IMAGE_SIZE = 400;
 
   function requestJsonP(url, data) {
     return $.ajax({
@@ -44,22 +44,67 @@ $(function() {
     });
   }
 
-  function addPhotos(photos) {
-    photos.forEach(function(photo) {
-      //console.log(photo.title.$t, photo.content.src);
-    });
+  function PhotoMap() {
+
+    function getPhotosWithPosition(photos) {
+      return photos.filter(function(photo) {
+        return !!photo.georss$where;
+      }).map(function(photo) {
+        var pos = photo.georss$where.gml$Point.gml$pos.$t.split(' ');
+        var mediaGroup = photo.media$group;
+        var mediaContent = mediaGroup.media$content;
+        return {
+          lat: pos[0],
+          lng: pos[1],
+          url: mediaContent[0].url,
+          caption: mediaGroup.media$description.$t,
+          thumbnail: mediaGroup.media$thumbnail[0].url,
+          video: mediaContent[1] ? mediaContent[1].url : null
+        };
+      });
+    }
+
+    this.addPhotos = function(photos) {
+      var photosWithPosition = getPhotosWithPosition(photos);
+      if (!photosWithPosition.length) {
+        return;
+      }
+
+      L.mapbox.accessToken = 'pk.eyJ1IjoibWR1YW4iLCJhIjoiY2lnMTdhaTl6MG9rN3VybTNzZjFwYTM3OCJ9._GTMIAxNtoh5p63xBiPykQ';
+      var photoMap = L.mapbox.map('photo-map', 'mapbox.streets', {
+        maxZoom: 18
+      });
+
+      var photoLayer = L.photo.cluster().on('click', function (evt) {
+        var photo = evt.layer.photo,
+          template = '<img src="{url}"/></a><p>{caption}</p>';
+        if (photo.video && ($('video').canPlayType('video/mp4; codecs=avc1.42E01E,mp4a.40.2'))) {
+          template = '<video autoplay controls poster="{url}"><source src="{video}" type="video/mp4"/></video>';
+        };
+        evt.layer.bindPopup(L.Util.template(template, photo), {
+          className: 'leaflet-popup-photo',
+          minWidth: 400
+        }).openPopup();
+      });
+
+      photoLayer.add(photosWithPosition).addTo(photoMap);
+      photoMap.fitBounds(photoLayer.getBounds());
+    };
   }
 
-  var startTime = (new Date()).getTime();
+  photoMap = new PhotoMap();
   getAlbum(USER_ID).then(function(albums) {
-    albums.map(function(album) {
-      getPhotosInAlbum(album, IMAGE_SIZE)
+    var filteredPhotosPromises = albums.map(function(album) {
+      return getPhotosInAlbum(album, IMAGE_SIZE)
         .then(function(photos) {
           var currTimestamp = (new Date()).getTime();
           var weekAgoTimestamp = currTimestamp - 7 * 24 * 60 * 60 * 1000;
           return filterPhotosInTimeRange(photos, weekAgoTimestamp, currTimestamp);
         })
-        .then(addPhotos);
+    });
+    $.when.apply($, filteredPhotosPromises).then(function() {
+      var photos = Array.prototype.concat.apply([], arguments);
+      photoMap.addPhotos(photos);
     });
   });
 });
