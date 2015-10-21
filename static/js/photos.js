@@ -1,4 +1,10 @@
 $(function() {
+  function getParameterByName(name) {
+    name = name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results == null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  }
 
   var USER_ID = '100039461888031923639';
   var IMAGE_SIZE = 400;
@@ -36,8 +42,6 @@ $(function() {
   }
 
   function filterPhotosInTimeRange(photos, startTime, endTime) {
-    startTime = startTime || 0;
-    endTime = endTime || Math.MAX_VALUE;
     return photos.filter(function(photo) {
       var timestamp = parseInt(photo.gphoto$timestamp.$t);
       return timestamp >= startTime && timestamp <= endTime;
@@ -92,19 +96,22 @@ $(function() {
     };
   }
 
-  photoMap = new PhotoMap();
+  var startTime = parseInt(getParameterByName('startTime')) || 0;
+  var endTime = parseInt(getParameterByName('endTime')) || Number.MAX_VALUE;
   getAlbum(USER_ID).then(function(albums) {
     var filteredPhotosPromises = albums.map(function(album) {
       return getPhotosInAlbum(album, IMAGE_SIZE)
         .then(function(photos) {
-          var currTimestamp = (new Date()).getTime();
-          var weekAgoTimestamp = currTimestamp - 7 * 24 * 60 * 60 * 1000;
-          return filterPhotosInTimeRange(photos, weekAgoTimestamp, currTimestamp);
+          //var currTimestamp = (new Date()).getTime();
+          //var weekAgoTimestamp = currTimestamp - 180 * 24 * 60 * 60 * 1000;
+          //return filterPhotosInTimeRange(photos, weekAgoTimestamp, currTimestamp);
+          return filterPhotosInTimeRange(photos, startTime, endTime);
         })
     });
     $.when.apply($, filteredPhotosPromises).then(function() {
       var photos = Array.prototype.concat.apply([], arguments);
-      photoMap.addPhotos(photos);
+      debugger;
+      (new PhotoMap()).addPhotos(photos);
     });
   });
 });
