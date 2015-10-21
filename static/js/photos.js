@@ -110,7 +110,6 @@ $(function() {
     });
     $.when.apply($, filteredPhotosPromises).then(function() {
       var photos = Array.prototype.concat.apply([], arguments);
-      debugger;
       (new PhotoMap()).addPhotos(photos);
     });
   });
