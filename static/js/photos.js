@@ -151,10 +151,15 @@ $(function() {
     }).then(function() {
       var startTime = parseInt(getParameterByName('startTime')) || 0;
       var endTime = parseInt(getParameterByName('endTime')) || Number.MAX_SAFE_INTEGER;
-      return idb.photos
+      var albumId = getParameterByName('albumId');
+
+      var query = idb.photos
         .query('timestamp')
-        .bound(startTime, endTime)
-        .execute();
+        .bound(startTime, endTime);
+      if (albumId) {
+        query.filter('albumId', albumId);
+      }
+      return query.execute();
     }).then(function(photos) {
       (new PhotoMap()).addPhotos(photos);
     });
