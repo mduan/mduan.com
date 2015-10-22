@@ -1,4 +1,13 @@
 $(function() {
+
+  function required(val, message) {
+    if (val == null) { // null or undefined
+      throw message || 'Required val is missing';
+    } else {
+      return val;
+    }
+  }
+
   function getParameterByName(name) {
     name = name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]');
     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -6,102 +15,105 @@ $(function() {
     return results == null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   }
 
-  function requestJsonP(url, data) {
-    return new Promise(function(resolve, reject) {
-      return $.ajax({
-        url: url,
-        method: 'GET',
-        data: $.extend({
-          'alt': 'json-in-script'
-        }, data),
-        dataType: 'jsonp',
-        jsonp: 'callback'
-      }).then(resolve, reject);
-    });
-  }
+  var PicasaFetcher = (function() {
 
-  function getAlbum(userId) {
-    var IGNORE_ALBUM_IDS = {
-      // Profile Photos
-      '5623841669936491985': true
-    };
-    var albumsUrl = 'https://picasaweb.google.com/data/feed/api/user/' + userId;
-    return requestJsonP(albumsUrl).then(function(response) {
-      return response.feed.entry.filter(function(entry) {
-        return !(entry.gphoto$id.$t in IGNORE_ALBUM_IDS);
+    PicasaFetcher.prototype.requestJsonP = function(url, data) {
+      return new Promise(function(resolve, reject) {
+        return $.ajax({
+          url: url,
+          method: 'GET',
+          data: $.extend({
+            'alt': 'json-in-script'
+          }, data),
+          dataType: 'jsonp',
+          jsonp: 'callback'
+        }).then(resolve, reject);
       });
-    });
-  }
-
-  function getPhotosInAlbum(album, imageSize) {
-    var albumUrl = album.link[0].href;
-    return requestJsonP(albumUrl, { 'imgmax': imageSize }).then(function(response) {
-      return response.feed.entry;
-    });
-  }
-
-  function addAlbumsToIdb(idb, albums) {
-    albums.forEach(function(album) {
-      idb.albums.update({
-        id: album.gphoto$id.$t,
-        timestamp: parseInt(album.gphoto$timestamp.$t),
-        feedUrl: album.link[0].href,
-        webUrl: album.link[1].href,
-        entryUrl: album.link[2].href
-      });
-    });
-  }
-
-  function addPhotosToIdb(idb, photos) {
-    photos.forEach(function(photo) {
-      var pos = photo.georss$where ? photo.georss$where.gml$Point.gml$pos.$t.split(' ') : [];
-      var mediaGroup = photo.media$group;
-      var mediaContent = mediaGroup.media$content;
-      idb.photos.update({
-        id: photo.gphoto$id.$t,
-        albumId: photo.gphoto$albumid.$t,
-        timestamp: parseInt(photo.gphoto$timestamp.$t),
-        latitude: pos[0],
-        longitude: pos[1],
-        imageUrl: mediaContent[0].url,
-        caption: mediaGroup.media$description.$t,
-        thumbnailUrl: mediaGroup.media$thumbnail[0].url,
-        videoUrl: mediaContent[1] ? mediaContent[1].url : null
-      });
-    });
-  }
-
-  function fetchAndSavePicasaData(idb) {
-    var USER_ID = '100039461888031923639';
-    var IMAGE_SIZE = 400;
-    return getAlbum(USER_ID).then(function(albums) {
-      addAlbumsToIdb(idb, albums);
-      return Promise.all(albums.map(function(album) {
-        return getPhotosInAlbum(album, IMAGE_SIZE)
-          .then(addPhotosToIdb.bind(null, idb));
-      }));
-    });
-  }
-
-  function PhotoMap(idb, options) {
-    this.setStartTime = function(timestamp) {
-      this.startTime = !isNaN(timestamp) ? timestamp : 0;
     };
 
-    this.setEndTime = function(timestamp) {
-      this.endTime = !isNaN(timestamp) ? timestamp : Number.MAX_SAFE_INTEGER;
+    PicasaFetcher.prototype.getAlbum = function() {
+      var albumsUrl = 'https://picasaweb.google.com/data/feed/api/user/' + this.options.userId;
+      var self = this;
+      return this.requestJsonP(albumsUrl).then(function(response) {
+        var albumsToIgnoreSet = {};
+        self.options.albumsToIgnore.forEach(function(albumId) {
+          albumsToIgnoreSet[albumId] = true;
+        });
+        return response.feed.entry.filter(function(entry) {
+          return !(entry.gphoto$id.$t in albumsToIgnoreSet);
+        });
+      });
     };
 
-    options = options || {};
-    this.idb = idb;
-    this.albumId = options.albumId;
+    PicasaFetcher.prototype.getPhotosInAlbum = function(album) {
+      var albumUrl = album.link[0].href;
+      return this.requestJsonP(
+        albumUrl,
+        { 'imgmax': this.options.imageSize }
+      ).then(function(response) {
+        return response.feed.entry;
+      });
+    };
 
-    var currDate = new Date();
-    var weekAgoDate = new Date(currDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-    this.setStartTime(!isNaN(options.startTime) ? options.startTime : weekAgoDate.getTime());
-    this.setEndTime(!isNaN(options.endTime) ? options.endTime : currDate.getTime());
+    PicasaFetcher.prototype.addAlbumsToIdb = function(albums) {
+      var self = this;
+      albums.forEach(function(album) {
+        self.options.idb.albums.update({
+          id: album.gphoto$id.$t,
+          timestamp: parseInt(album.gphoto$timestamp.$t),
+          feedUrl: album.link[0].href,
+          webUrl: album.link[1].href,
+          entryUrl: album.link[2].href
+        });
+      });
+    }
 
-    this.filterPhotosWithLocation = function(photos) {
+    PicasaFetcher.prototype.addPhotosToIdb = function(photos) {
+      var self = this;
+      photos.forEach(function(photo) {
+        var pos = photo.georss$where ? photo.georss$where.gml$Point.gml$pos.$t.split(' ') : [];
+        var mediaGroup = photo.media$group;
+        var mediaContent = mediaGroup.media$content;
+        self.options.idb.photos.update({
+          id: photo.gphoto$id.$t,
+          albumId: photo.gphoto$albumid.$t,
+          timestamp: parseInt(photo.gphoto$timestamp.$t),
+          latitude: pos[0],
+          longitude: pos[1],
+          imageUrl: mediaContent[0].url,
+          caption: mediaGroup.media$description.$t,
+          thumbnailUrl: mediaGroup.media$thumbnail[0].url,
+          videoUrl: mediaContent[1] ? mediaContent[1].url : null
+        });
+      });
+    }
+
+    PicasaFetcher.prototype.fetchAndSave = function() {
+      var self = this;
+      return this.getAlbum().then(function(albums) {
+        self.addAlbumsToIdb(albums);
+        return Promise.all(albums.map(function(album) {
+          return self.getPhotosInAlbum(album).then(self.addPhotosToIdb.bind(self));
+        }));
+      });
+    }
+
+    function PicasaFetcher(options) {
+      required(options.userId);
+      required(options.idb);
+
+      this.options = $.extend({}, {
+        imageSize: 1600,
+        albumsToIgnore: []
+      }, options);
+    }
+
+    return PicasaFetcher;
+  })();
+
+
+  var PhotoMap = (function() {
+    PhotoMap.prototype.filterPhotosWithLocation = function(photos) {
       return photos.filter(function(photo) {
         return !isNaN(photo.latitude) && !isNaN(photo.longitude);
       }).map(function(photo) {
@@ -116,24 +128,20 @@ $(function() {
       });
     };
 
-    this.queryPhotos = function() {
-      var query = this.idb.photos
+    PhotoMap.prototype.queryPhotos = function() {
+      var query = this.options.idb.photos
         .query('timestamp')
-        .bound(this.startTime, this.endTime);
-      if (this.albumId) {
-        query.filter('albumId', this.albumId);
+        .bound(this.options.startTime, this.options.endTime);
+      if (this.options.albumId) {
+        query.filter('albumId', this.options.albumId);
       }
       return query.execute().then(function(photos) {
         this.photos = this.filterPhotosWithLocation(photos);
       }.bind(this));
     };
 
-    this.initMap = function() {
-      if (this.map) {
-        return;
-      }
-
-      L.mapbox.accessToken = 'pk.eyJ1IjoibWR1YW4iLCJhIjoiY2lnMTdhaTl6MG9rN3VybTNzZjFwYTM3OCJ9._GTMIAxNtoh5p63xBiPykQ';
+    PhotoMap.prototype.initMap = function() {
+      L.mapbox.accessToken = this.options.mapboxAccessToken;
 
       this.map = L.mapbox.map('map', 'mapbox.streets', {
         maxZoom: 18
@@ -152,40 +160,41 @@ $(function() {
       });
 
       this.photoLayer.addTo(this.map);
+      this.resetMap();
     };
 
-    this.renderPhotos = function() {
-      if (!this.map) {
-        this.initMap();
-      }
-
+    PhotoMap.prototype.resetMap = function() {
       this.photoLayer.clear();
+      this.map.fitWorld();
+    };
+
+    PhotoMap.prototype.renderPhotos = function() {
       if (this.photos.length) {
         this.photoLayer.add(this.photos);
         this.map.fitBounds(this.photoLayer.getBounds());
-      } else {
-        this.map.fitWorld();
       }
     };
 
-    this.renderControls = function() {
-      this.hasRenderedControls = true;
-
-      var dateFormat = '%m/%d/%Y %h:%i %A';
+    PhotoMap.prototype.renderDatepickers = function() {
+      var self = this;
       var configs = [{
         container: 'startDate',
         labelWidth: 128,
         inputWidth: 200,
         label: 'Show photos from',
-        value: new Date(this.startTime),
-        saveChange: this.setStartTime.bind(this)
+        value: new Date(this.options.startTime),
+        saveChange: function(timestamp) {
+          self.options.startTime = !isNaN(timestamp) ? timestamp : 0;
+        }
       }, {
         container: 'endDate',
         labelWidth: 28,
         inputWidth: 200,
         label: 'to',
-        value: new Date(this.endTime),
-        saveChange: this.setEndTime.bind(this)
+        value: new Date(this.options.endTime),
+        saveChange: function(timestamp) {
+          self.options.endTime = !isNaN(timestamp) ? timestamp : Number.MAX_SAFE_INTEGER;
+        }
       }];
 
       var self = this;
@@ -197,7 +206,7 @@ $(function() {
           value: config.value,
           labelWidth: config.labelWidth,
           width: config.labelWidth + config.inputWidth,
-          format: dateFormat,
+          format: '%m/%d/%Y %h:%i %A',
           timepicker: true
         });
 
@@ -208,16 +217,88 @@ $(function() {
       });
     };
 
-    this.render = function() {
-      this.queryPhotos().then(function() {
-        this.renderPhotos();
-
-        if (!this.hasRenderedControls) {
-          this.renderControls();
-        }
-      }.bind(this));
+    PhotoMap.prototype.resetIdb = function() {
+      return Promise.all([
+        this.options.idb.photos.clear(),
+        this.options.idb.albums.clear()
+      ]);
     };
-  }
+
+    PhotoMap.prototype.renderReloadButton = function() {
+      var reloadButton = webix.ui({
+        view: 'button',
+        container: 'reloadButton',
+        type: 'iconButton',
+        label: 'Reload',
+        icon: 'refresh',
+        width: 90
+      });
+
+      var self = this;
+      reloadButton.attachEvent('onItemClick', function() {
+        reloadButton.disable();
+        self.photos = [];
+        self.resetIdb()
+          .then(self.resetMap.bind(self))
+          .then(self.fetchAndSavePhotosIfNecessary.bind(self))
+          .then(self.render.bind(self))
+          .then(function() {
+            reloadButton.enable();
+          });
+      });
+    };
+
+    PhotoMap.prototype.fetchAndSavePhotosIfNecessary = function() {
+      this.isFetchingPhotos = true;
+      var self = this;
+      return self.options.idb.photos.count().then(function(count) {
+        if (count) {
+          self.isFetchingPhotos = false;
+          return Promise.resolve();
+        } else {
+          return self.options.photosFetcher.fetchAndSave().then(function() {
+            self.isFetchingPhotos = false;
+          });
+        }
+      });
+    };
+
+    PhotoMap.prototype.renderControls = function() {
+      this.hasRenderedControls = true;
+      this.renderDatepickers();
+      this.renderReloadButton();
+    };
+
+    PhotoMap.prototype.render = function() {
+      var self = this;
+      if (!this.hasRenderedControls) {
+        this.renderControls();
+      }
+      return this.fetchAndSavePhotosIfNecessary()
+        .then(self.queryPhotos.bind(self))
+        .then(self.renderPhotos.bind(self));
+    };
+
+    function PhotoMap(options) {
+      required(options.idb);
+      required(options.photosFetcher);
+      required(options.mapboxAccessToken);
+
+      this.options = $.extend({}, options);
+
+      var currDate = new Date();
+      var weekAgoDate = new Date(currDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+      this.options.startTime = !isNaN(this.options.startTime) ?
+        this.options.startTime : weekAgoDate.getTime();
+      this.options.endTime = !isNaN(this.options.endTime) ?
+        this.options.endTime : currDate.getTime();
+
+      this.initMap();
+      this.render();
+    }
+
+    return PhotoMap;
+  })();
 
   db.open({
     server: 'photoMap',
@@ -236,14 +317,21 @@ $(function() {
       }
     }
   }).then(function(idb) {
-    idb.photos.count().then(function(count) {
-      return count ? Promise.resolve() : fetchAndSavePicasaData(idb);
-    }).then(function() {
-      (new PhotoMap(idb, {
-        startTime: parseInt(getParameterByName('startTime')),
-        endTime: parseInt(getParameterByName('endTime')),
-        albumId: getParameterByName('albumId')
-      })).render();
+    var photosFetcher = new PicasaFetcher({
+      idb: idb,
+      userId: '100039461888031923639',
+      imageSize: 400,
+      albumsToIgnore: [
+        '5623841669936491985' // Profile Photos
+      ]
     });
+    (new PhotoMap({
+      idb: idb,
+      photosFetcher: photosFetcher,
+      mapboxAccessToken: 'pk.eyJ1IjoibWR1YW4iLCJhIjoiY2lnMTdhaTl6MG9rN3VybTNzZjFwYTM3OCJ9._GTMIAxNtoh5p63xBiPykQ',
+      startTime: parseInt(getParameterByName('startTime')),
+      endTime: parseInt(getParameterByName('endTime')),
+      albumId: getParameterByName('albumId')
+    }));
   });
 });
