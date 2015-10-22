@@ -74,8 +74,6 @@ $(function() {
   function fetchAndSavePicasaData(idb) {
     var USER_ID = '100039461888031923639';
     var IMAGE_SIZE = 400;
-    var startTime = parseInt(getParameterByName('startTime')) || 0;
-    var endTime = parseInt(getParameterByName('endTime')) || Number.MAX_VALUE;
     return getAlbum(USER_ID).then(function(albums) {
       addAlbumsToIdb(idb, albums);
       return Promise.all(albums.map(function(album) {
@@ -87,18 +85,21 @@ $(function() {
 
   function PhotoMap(idb, options) {
     this.setStartTime = function(timestamp) {
-      this.startTime = timestamp || 0;
+      this.startTime = !isNaN(timestamp) ? timestamp : 0;
     };
 
     this.setEndTime = function(timestamp) {
-      this.endTime = timestamp || Number.MAX_SAFE_INTEGER;
+      this.endTime = !isNaN(timestamp) ? timestamp : Number.MAX_SAFE_INTEGER;
     };
 
     options = options || {};
     this.idb = idb;
-    this.setStartTime(options.startTime);
-    this.setEndTime(options.endTime);
     this.albumId = options.albumId;
+
+    var currDate = new Date();
+    var weekAgoDate = new Date(currDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+    this.setStartTime(!isNaN(options.startTime) ? options.startTime : weekAgoDate.getTime());
+    this.setEndTime(!isNaN(options.endTime) ? options.endTime : currDate.getTime());
 
     this.filterPhotosWithLocation = function(photos) {
       return photos.filter(function(photo) {
@@ -135,7 +136,7 @@ $(function() {
       L.mapbox.accessToken = 'pk.eyJ1IjoibWR1YW4iLCJhIjoiY2lnMTdhaTl6MG9rN3VybTNzZjFwYTM3OCJ9._GTMIAxNtoh5p63xBiPykQ';
 
       this.map = L.mapbox.map('map', 'mapbox.streets', {
-        maxZoom: 14
+        maxZoom: 18
       });
 
       this.photoLayer = L.photo.cluster().on('click', function (e) {
@@ -149,38 +150,41 @@ $(function() {
           minWidth: 400
         }).openPopup();
       });
+
+      this.photoLayer.addTo(this.map);
     };
 
     this.renderPhotos = function() {
       if (!this.map) {
         this.initMap();
       }
-      this.photoLayer.clear()
-        .add(this.photos)
-        .addTo(this.map);
-      this.map.fitBounds(this.photoLayer.getBounds());
+
+      this.photoLayer.clear();
+      if (this.photos.length) {
+        this.photoLayer.add(this.photos);
+        this.map.fitBounds(this.photoLayer.getBounds());
+      } else {
+        this.map.fitWorld();
+      }
     };
 
     this.renderControls = function() {
       this.hasRenderedControls = true;
 
       var dateFormat = '%m/%d/%Y %h:%i %A';
-      var currDate = new Date();
-      var weekAgoDate = new Date(currDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-
       var configs = [{
         container: 'startDate',
         labelWidth: 128,
         inputWidth: 200,
         label: 'Show photos from',
-        value: weekAgoDate,
+        value: new Date(this.startTime),
         saveChange: this.setStartTime.bind(this)
       }, {
         container: 'endDate',
         labelWidth: 28,
         inputWidth: 200,
         label: 'to',
-        value: currDate,
+        value: new Date(this.endTime),
         saveChange: this.setEndTime.bind(this)
       }];
 
@@ -206,10 +210,6 @@ $(function() {
 
     this.render = function() {
       this.queryPhotos().then(function() {
-        if (!this.photos.length) {
-          return;
-        }
-
         this.renderPhotos();
 
         if (!this.hasRenderedControls) {
@@ -240,8 +240,8 @@ $(function() {
       return count ? Promise.resolve() : fetchAndSavePicasaData(idb);
     }).then(function() {
       (new PhotoMap(idb, {
-        startTime: parseInt(getParameterByName('startTime')) || 0,
-        endTime: parseInt(getParameterByName('endTime')) || Number.MAX_SAFE_INTEGER,
+        startTime: parseInt(getParameterByName('startTime')),
+        endTime: parseInt(getParameterByName('endTime')),
         albumId: getParameterByName('albumId')
       })).render();
     });
