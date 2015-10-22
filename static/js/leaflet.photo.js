@@ -27,7 +27,7 @@ L.Photo = L.FeatureGroup.extend({
     var marker = L.marker(photo, {
       icon: L.divIcon(L.extend({
         html: '<div style="background-image: url(' + photo.thumbnail + ');"></div>​',
-        className: 'leaflet-marker-photo'
+        className: 'leafletMarkerPhoto'
       }, photo, this.options.icon)),
       title: photo.caption || ''
     });
@@ -49,7 +49,7 @@ if (L.MarkerClusterGroup) {
       showCoverageOnHover: false,
       iconCreateFunction: function(cluster) {
         return new L.DivIcon(L.extend({
-          className: 'leaflet-marker-photo',
+          className: 'leafletMarkerPhoto',
           html: '<div style="background-image: url(' + cluster.getAllChildMarkers()[0].photo.thumbnail + ');"></div>​<b>' + cluster.getChildCount() + '</b>'
         }, this.icon));
         },
@@ -72,6 +72,7 @@ if (L.MarkerClusterGroup) {
     clear: function () {
       this._photos.clearLayers();
       this.clearLayers();
+      return this;
     }
 
   });

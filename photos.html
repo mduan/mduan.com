@@ -5,62 +5,35 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <link rel="stylesheet" href="/static/css/normalize.css" />
   <link rel="stylesheet" href="/static/ext/font-awesome/css/font-awesome.min.css" />
-  <link rel="stylesheet" href="/static/css/styles.css" />
-  <link rel="stylesheet" href="/static/css/index.css" />
+  <link rel="stylesheet" href="/static/css/base.css" />
+  <link rel="stylesheet" href="/static/css/photos.css" />
   <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Alegreya+SC:700' />
-  <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />-->
-  <link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.css" />
   <script src="/static/ext/jquery/jquery-2.0.3.min.js"></script>
   <script src="/static/ext/db.js/db.js"></script>
-  <!--<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>--->
+
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css" />
   <script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
+  <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />-->
+  <!--<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>--->
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js"></script>
+
+  <link rel="stylesheet" href="http://cdn.webix.com/edge/webix.css" type="text/css">
+  <script src="http://cdn.webix.com/edge/webix.js" type="text/javascript"></script>
+
   <script src="/static/js/leaflet.photo.js"></script>
   <script src="/static/js/photos.js"></script>
-  <style>
-    #photo-map {
-      height: 600px;
-    }
-
-    .leaflet-marker-photo {
-      border: 2px solid #fff;
-      box-shadow: 3px 3px 10px #888;
-    }
-
-    .leaflet-marker-photo div {
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-    }
-
-    .leaflet-marker-photo b {
-      position: absolute;
-      top: -7px;
-      right: -11px;
-      color: #555;
-      background-color: #fff;
-      border-radius: 8px;
-      height: 12px;
-      min-width: 12px;
-      line-height: 12px;
-      text-align: center;
-      padding: 3px;
-      box-shadow: 0 3px 14px rgba(0,0,0,0.4);
-    }
-  </style>
 </head>
 <body>
-  <div class="header">
-  </div>
-  <div class="container-wrapper">
-    <div class="container">
-      <div class="body">
-        <h1 class="logo">Photo Map</h1>
-        <div id="photo-map">Loading...</div>
+  <div class="container">
+    <div class="body">
+      <h1 class="title">Photo Map</h1>
+      <div class="dateRange">
+        <div id="startDate"></div>
+        <div id="endDate"></div>
       </div>
+      <div id="map"></div>
     </div>
   </div>
 </body>

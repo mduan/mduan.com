@@ -85,8 +85,22 @@ $(function() {
     });
   }
 
-  function PhotoMap() {
-    function getPhotosWithPosition(photos) {
+  function PhotoMap(idb, options) {
+    this.setStartTime = function(timestamp) {
+      this.startTime = timestamp || 0;
+    };
+
+    this.setEndTime = function(timestamp) {
+      this.endTime = timestamp || Number.MAX_SAFE_INTEGER;
+    };
+
+    options = options || {};
+    this.idb = idb;
+    this.setStartTime(options.startTime);
+    this.setEndTime(options.endTime);
+    this.albumId = options.albumId;
+
+    this.filterPhotosWithLocation = function(photos) {
       return photos.filter(function(photo) {
         return !isNaN(photo.latitude) && !isNaN(photo.longitude);
       }).map(function(photo) {
@@ -99,33 +113,109 @@ $(function() {
           video: photo.videoUrl
         };
       });
-    }
+    };
 
-    this.addPhotos = function(photos) {
-      var photosWithPosition = getPhotosWithPosition(photos);
-      if (!photosWithPosition.length) {
+    this.queryPhotos = function() {
+      var query = this.idb.photos
+        .query('timestamp')
+        .bound(this.startTime, this.endTime);
+      if (this.albumId) {
+        query.filter('albumId', this.albumId);
+      }
+      return query.execute().then(function(photos) {
+        this.photos = this.filterPhotosWithLocation(photos);
+      }.bind(this));
+    };
+
+    this.initMap = function() {
+      if (this.map) {
         return;
       }
 
       L.mapbox.accessToken = 'pk.eyJ1IjoibWR1YW4iLCJhIjoiY2lnMTdhaTl6MG9rN3VybTNzZjFwYTM3OCJ9._GTMIAxNtoh5p63xBiPykQ';
-      var photoMap = L.mapbox.map('photo-map', 'mapbox.streets', {
-        maxZoom: 18
+
+      this.map = L.mapbox.map('map', 'mapbox.streets', {
+        maxZoom: 14
       });
 
-      var photoLayer = L.photo.cluster().on('click', function (evt) {
-        var photo = evt.layer.photo,
+      this.photoLayer = L.photo.cluster().on('click', function (e) {
+        var photo = e.layer.photo,
           template = '<img src="{url}"/></a><p>{caption}</p>';
         if (photo.video && ($('video').canPlayType('video/mp4; codecs=avc1.42E01E,mp4a.40.2'))) {
           template = '<video autoplay controls poster="{url}"><source src="{video}" type="video/mp4"/></video>';
         };
-        evt.layer.bindPopup(L.Util.template(template, photo), {
+        e.layer.bindPopup(L.Util.template(template, photo), {
           className: 'leaflet-popup-photo',
           minWidth: 400
         }).openPopup();
       });
+    };
 
-      photoLayer.add(photosWithPosition).addTo(photoMap);
-      photoMap.fitBounds(photoLayer.getBounds());
+    this.renderPhotos = function() {
+      if (!this.map) {
+        this.initMap();
+      }
+      this.photoLayer.clear()
+        .add(this.photos)
+        .addTo(this.map);
+      this.map.fitBounds(this.photoLayer.getBounds());
+    };
+
+    this.renderControls = function() {
+      this.hasRenderedControls = true;
+
+      var dateFormat = '%m/%d/%Y %h:%i %A';
+      var currDate = new Date();
+      var weekAgoDate = new Date(currDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+      var configs = [{
+        container: 'startDate',
+        labelWidth: 128,
+        inputWidth: 200,
+        label: 'Show photos from',
+        value: weekAgoDate,
+        saveChange: this.setStartTime.bind(this)
+      }, {
+        container: 'endDate',
+        labelWidth: 28,
+        inputWidth: 200,
+        label: 'to',
+        value: currDate,
+        saveChange: this.setEndTime.bind(this)
+      }];
+
+      var self = this;
+      configs.forEach(function(config) {
+        var datepicker = webix.ui({
+          view: 'datepicker',
+          container: config.container,
+          label: config.label,
+          value: config.value,
+          labelWidth: config.labelWidth,
+          width: config.labelWidth + config.inputWidth,
+          format: dateFormat,
+          timepicker: true
+        });
+
+        datepicker.attachEvent('onChange', function(newDate, _) {
+          config.saveChange(newDate ? newDate.getTime() : null);
+          self.render();
+        });
+      });
+    };
+
+    this.render = function() {
+      this.queryPhotos().then(function() {
+        if (!this.photos.length) {
+          return;
+        }
+
+        this.renderPhotos();
+
+        if (!this.hasRenderedControls) {
+          this.renderControls();
+        }
+      }.bind(this));
     };
   }
 
@@ -149,19 +239,11 @@ $(function() {
     idb.photos.count().then(function(count) {
       return count ? Promise.resolve() : fetchAndSavePicasaData(idb);
     }).then(function() {
-      var startTime = parseInt(getParameterByName('startTime')) || 0;
-      var endTime = parseInt(getParameterByName('endTime')) || Number.MAX_SAFE_INTEGER;
-      var albumId = getParameterByName('albumId');
-
-      var query = idb.photos
-        .query('timestamp')
-        .bound(startTime, endTime);
-      if (albumId) {
-        query.filter('albumId', albumId);
-      }
-      return query.execute();
-    }).then(function(photos) {
-      (new PhotoMap()).addPhotos(photos);
+      (new PhotoMap(idb, {
+        startTime: parseInt(getParameterByName('startTime')) || 0,
+        endTime: parseInt(getParameterByName('endTime')) || Number.MAX_SAFE_INTEGER,
+        albumId: getParameterByName('albumId')
+      })).render();
     });
   });
 });
