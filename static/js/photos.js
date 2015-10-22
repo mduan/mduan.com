@@ -6,18 +6,17 @@ $(function() {
     return results == null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   }
 
-  var USER_ID = '100039461888031923639';
-  var IMAGE_SIZE = 400;
-
   function requestJsonP(url, data) {
-    return $.ajax({
-      url: url,
-      method: 'GET',
-      data: $.extend({
-        'alt': 'json-in-script'
-      }, data),
-      dataType: 'jsonp',
-      jsonp: 'callback'
+    return new Promise(function(resolve, reject) {
+      return $.ajax({
+        url: url,
+        method: 'GET',
+        data: $.extend({
+          'alt': 'json-in-script'
+        }, data),
+        dataType: 'jsonp',
+        jsonp: 'callback'
+      }).then(resolve, reject);
     });
   }
 
@@ -41,29 +40,63 @@ $(function() {
     });
   }
 
-  function filterPhotosInTimeRange(photos, startTime, endTime) {
-    return photos.filter(function(photo) {
-      var timestamp = parseInt(photo.gphoto$timestamp.$t);
-      return timestamp >= startTime && timestamp <= endTime;
+  function addAlbumsToIdb(idb, albums) {
+    albums.forEach(function(album) {
+      idb.albums.update({
+        id: album.gphoto$id.$t,
+        timestamp: parseInt(album.gphoto$timestamp.$t),
+        feedUrl: album.link[0].href,
+        webUrl: album.link[1].href,
+        entryUrl: album.link[2].href
+      });
+    });
+  }
+
+  function addPhotosToIdb(idb, photos) {
+    photos.forEach(function(photo) {
+      var pos = photo.georss$where ? photo.georss$where.gml$Point.gml$pos.$t.split(' ') : [];
+      var mediaGroup = photo.media$group;
+      var mediaContent = mediaGroup.media$content;
+      idb.photos.update({
+        id: photo.gphoto$id.$t,
+        albumId: photo.gphoto$albumid.$t,
+        timestamp: parseInt(photo.gphoto$timestamp.$t),
+        latitude: pos[0],
+        longitude: pos[1],
+        imageUrl: mediaContent[0].url,
+        caption: mediaGroup.media$description.$t,
+        thumbnailUrl: mediaGroup.media$thumbnail[0].url,
+        videoUrl: mediaContent[1] ? mediaContent[1].url : null
+      });
+    });
+  }
+
+  function fetchAndSavePicasaData(idb) {
+    var USER_ID = '100039461888031923639';
+    var IMAGE_SIZE = 400;
+    var startTime = parseInt(getParameterByName('startTime')) || 0;
+    var endTime = parseInt(getParameterByName('endTime')) || Number.MAX_VALUE;
+    return getAlbum(USER_ID).then(function(albums) {
+      addAlbumsToIdb(idb, albums);
+      return Promise.all(albums.map(function(album) {
+        return getPhotosInAlbum(album, IMAGE_SIZE)
+          .then(addPhotosToIdb.bind(null, idb));
+      }));
     });
   }
 
   function PhotoMap() {
-
     function getPhotosWithPosition(photos) {
       return photos.filter(function(photo) {
-        return !!photo.georss$where;
+        return !isNaN(photo.latitude) && !isNaN(photo.longitude);
       }).map(function(photo) {
-        var pos = photo.georss$where.gml$Point.gml$pos.$t.split(' ');
-        var mediaGroup = photo.media$group;
-        var mediaContent = mediaGroup.media$content;
         return {
-          lat: pos[0],
-          lng: pos[1],
-          url: mediaContent[0].url,
-          caption: mediaGroup.media$description.$t,
-          thumbnail: mediaGroup.media$thumbnail[0].url,
-          video: mediaContent[1] ? mediaContent[1].url : null
+          lat: photo.latitude,
+          lng: photo.longitude,
+          url: photo.imageUrl,
+          caption: photo.caption,
+          thumbnail: photo.thumbnailUrl,
+          video: photo.videoUrl
         };
       });
     }
@@ -96,20 +129,33 @@ $(function() {
     };
   }
 
-  var startTime = parseInt(getParameterByName('startTime')) || 0;
-  var endTime = parseInt(getParameterByName('endTime')) || Number.MAX_VALUE;
-  getAlbum(USER_ID).then(function(albums) {
-    var filteredPhotosPromises = albums.map(function(album) {
-      return getPhotosInAlbum(album, IMAGE_SIZE)
-        .then(function(photos) {
-          //var currTimestamp = (new Date()).getTime();
-          //var weekAgoTimestamp = currTimestamp - 180 * 24 * 60 * 60 * 1000;
-          //return filterPhotosInTimeRange(photos, weekAgoTimestamp, currTimestamp);
-          return filterPhotosInTimeRange(photos, startTime, endTime);
-        })
-    });
-    $.when.apply($, filteredPhotosPromises).then(function() {
-      var photos = Array.prototype.concat.apply([], arguments);
+  db.open({
+    server: 'photoMap',
+    version: 2,
+    schema: {
+      albums: {
+        key: { keyPath: 'id' }
+      },
+      photos: {
+        key: { keyPath: 'id' },
+        indexes: {
+          // TODO(mduan): create index on geo
+          albumId: {},
+          timestamp: {}
+        }
+      }
+    }
+  }).then(function(idb) {
+    idb.photos.count().then(function(count) {
+      return count ? Promise.resolve() : fetchAndSavePicasaData(idb);
+    }).then(function() {
+      var startTime = parseInt(getParameterByName('startTime')) || 0;
+      var endTime = parseInt(getParameterByName('endTime')) || Number.MAX_SAFE_INTEGER;
+      return idb.photos
+        .query('timestamp')
+        .bound(startTime, endTime)
+        .execute();
+    }).then(function(photos) {
       (new PhotoMap()).addPhotos(photos);
     });
   });
