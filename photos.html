@@ -11,6 +11,8 @@
   <script src="/static/ext/jquery/jquery-2.0.3.min.js"></script>
   <script src="/static/ext/db.js/db.js"></script>
 
+  <link rel="stylesheet" href="/static/ext/load-awesome/load-awesome.min.css" />
+
   <link rel="stylesheet" href="https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css" />
   <script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
   <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />-->
@@ -37,7 +39,10 @@
         <div class="flexSpacer"></div>
         <div id="reloadButton"></div>
       </div>
-      <div id="map"></div>
+      <div id="map">
+        <div id="overlay"></div>
+        <div id="loaderContainer"></div>
+      </div>
     </div>
   </div>
 </body>

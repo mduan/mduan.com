@@ -25,12 +25,16 @@
   height: 600px;
 }
 
-.leafletMarkerPhoto {
+#map.disabled {
+  cursor: auto;
+}
+
+#map .leafletMarkerPhoto {
   border: 2px solid #fff;
   box-shadow: 3px 3px 10px #888;
 }
 
-.leafletMarkerPhoto div {
+#map .leafletMarkerPhoto div {
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -38,7 +42,7 @@
   width: 100%;
 }
 
-.leafletMarkerPhoto b {
+#map .leafletMarkerPhoto b {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 3px 14px rgba(0,0,0,0.4);
@@ -51,4 +55,47 @@
   right: -11px;
   text-align: center;
   top: -7px;
+}
+
+#map #overlay {
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.66);
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left:  0;
+  right: 0;
+  top: 0;
+}
+
+#map #loaderContainer {
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+#map #loaderContainer .loaderBox {
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+  border: 1px solid #6bc6ed;
+  padding: 20px;
+}
+
+.loaderBox .message {
+  z-index: 1;
+  color: #6bc6ed;
+  font-size: 20px;
+  font-weight: 400;
+  padding-right: 10px;
+}
+
+.loaderBox .loader {
+  z-index: 1;
+  color: #6bc6ed;
 }
