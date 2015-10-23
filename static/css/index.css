@@ -4,17 +4,16 @@
 }
 
 .links {
-  list-style-type: none;
+  display: flex;
+  justify-container: space-around;
+  font-size: 22px;
   padding: 0;
-  display: table;
-  table-layout: fixed;
   margin: 50px auto 20px auto;
-  text-align: center;
 }
 
-.links li {
-  display: table-cell;
-  width: 2%;
+.links > .link {
+  flex: 1 1 auto;
+  text-align: center;
 }
 
 .intro {
@@ -25,8 +24,8 @@
   display: block;
   border: 0;
   height: 1px;
-  background: #CCC;
-  background: -moz-gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#CCC), to(#FFF));
-  background: -webkit-gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#CCC), to(#FFF));
-  background: gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#CCC), to(#FFF));
+  background: #ccc;
+  background: -moz-gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#ccc), to(#fff));
+  background: -webkit-gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#ccc), to(#fff));
+  background: gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#ccc), to(#fff));
 }

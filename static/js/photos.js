@@ -43,7 +43,7 @@ $(function() {
       });
     };
 
-    PicasaFetcher.prototype.getAlbumsList = function() {
+    PicasaFetcher.prototype.fetchAlbumsList = function() {
       var albumsUrl = 'https://picasaweb.google.com/data/feed/api/user/'
         + this.options.userId + '?thumbsize=' + this.options.albumThumbnailSize;
       var self = this;
@@ -55,21 +55,19 @@ $(function() {
       });
     };
 
-    PicasaFetcher.prototype.getPhotosInAlbum = function(album) {
-      var albumUrl = album.link[0].href;
+    PicasaFetcher.prototype.fetchPhotosInAlbum = function(album) {
       return this.requestJsonP(
-        albumUrl,
+        album.feedUrl,
         { 'imgmax': this.options.imageSize }
       ).then(function(response) {
         return response.feed.entry;
       });
     };
 
-    PicasaFetcher.prototype.addAlbumsToIdb = function(albums) {
-      var self = this;
-      albums.forEach(function(album) {
+    PicasaFetcher.prototype.extractAlbums = function(albums) {
+      return albums.map(function(album) {
         var mediaGroup = album.media$group;
-        self.options.idb.albums.update({
+        return {
           id: album.gphoto$id.$t,
           title: album.title.$t,
           numPhotos: album.gphoto$numphotos.$t,
@@ -79,17 +77,24 @@ $(function() {
           feedUrl: album.link[0].href,
           webUrl: album.link[1].href,
           entryUrl: album.link[2].href
-        });
+        };
       });
-    }
+    };
 
-    PicasaFetcher.prototype.addPhotosToIdb = function(photos) {
+    PicasaFetcher.prototype.saveAlbumsToIdb = function(albums) {
       var self = this;
-      photos.forEach(function(photo) {
+      var promises = albums.map(function(album) {
+        return self.options.idb.albums.update(album);
+      });
+      return Promise.all(promises);
+    };
+
+    PicasaFetcher.prototype.extractPhotos = function(photos) {
+      return photos.map(function(photo) {
         var pos = photo.georss$where ? photo.georss$where.gml$Point.gml$pos.$t.split(' ') : [];
         var mediaGroup = photo.media$group;
         var mediaContent = mediaGroup.media$content;
-        self.options.idb.photos.update({
+        return {
           id: photo.gphoto$id.$t,
           albumId: photo.gphoto$albumid.$t,
           timestamp: parseInt(photo.gphoto$timestamp.$t),
@@ -99,29 +104,79 @@ $(function() {
           caption: mediaGroup.media$description.$t,
           thumbnailUrl: mediaGroup.media$thumbnail[0].url,
           videoUrl: mediaContent[1] ? mediaContent[1].url : null
-        });
+        };
       });
-    }
+    };
+
+    PicasaFetcher.prototype.savePhotosToIdb = function(photos) {
+      var self = this;
+      var promises = photos.map(function(photo) {
+        return self.options.idb.photos.update(photo);
+      });
+      return Promise.all(promises);
+    };
+
+    //PhotoMap.prototype.queryTimeRangeItemForAlbum = function(album, isDesc) {
+    //  var query = this.options.idb.photos
+    //    .query('timestamp')
+    //    .filter('albumId', album.id);
+
+    //  if (isDesc) {
+    //    query = query.desc();
+    //  }
+
+    //  return query.limit(1).execute().then(function(photos) {
+    //    if (photos.length) {
+    //      return photos[0].timestamp;
+    //    }
+    //  });
+    //};
+
+    //PhotoMap.prototype.queryTimeRangeForAlbums = function(albums) {
+    //  var self = this;
+    //  var timeRangePromises = albums.map(function(album) {
+    //    return Promise.all([
+    //      self.queryTimeRangeItemForAlbum(album, /*isDesc=*/ false),
+    //      self.queryTimeRangeItemForAlbum(album, /*isDesc=*/ true)
+    //    ]).then(function(timeRange) {
+    //      return $.extend({}, album, {
+    //        minTimestamp: timeRange[0],
+    //        maxTimestamp: timeRange[1]
+    //      });
+    //    });
+    //  });
+    //  return Promise.all(timeRangePromises);
+    //};
 
     PicasaFetcher.prototype.fetchAndSave = function() {
       var self = this;
       this.options.cssLoader.updateMessage('Fetching from Picasa');
-      return this.getAlbumsList().then(function(albums) {
-        self.addAlbumsToIdb(albums);
-
+      return this.fetchAlbumsList().then(function(albums) {
+        albums = self.extractAlbums(albums);
         self.options.cssLoader.updateMessage('Fetching albums');
         var numAlbumsFetched = 0;
-        return Promise.all(albums.map(function(album) {
-          return self.getPhotosInAlbum(album).then(function(photos) {
+        var promises = albums.map(function(album) {
+          return self.fetchPhotosInAlbum(album).then(function(photos) {
+            photos = self.extractPhotos(photos);
+            if (photos.length) {
+              var minPhoto = _.min(photos, function(photo) { return photo.timestamp; });
+              var maxPhoto = _.max(photos, function(photo) { return photo.timestamp; });
+              $.extend(album, {
+                minTimestamp: _.isNumber(minPhoto) && !isFinite(minPhoto) ? null : minPhoto.timestamp,
+                maxTimestamp: _.isNumber(maxPhoto) && !isFinite(maxPhoto) ? null : maxPhoto.timestamp
+              });
+            }
+
             ++numAlbumsFetched;
             self.options.cssLoader.updateMessage(
-              'Fetched ' + numAlbumsFetched + ' of ' + albums.length + ' albums'
+              'Saving ' + numAlbumsFetched + ' of ' + albums.length + ' albums'
             );
-            self.addPhotosToIdb(photos)
+            return self.savePhotosToIdb(photos)
           });
-        }));
+        });
+        return Promise.all(promises).then(self.saveAlbumsToIdb.bind(self, albums));
       });
-    }
+    };
 
     function PicasaFetcher(options) {
       required(options.userId);
@@ -197,38 +252,6 @@ $(function() {
       }.bind(this));
     };
 
-    PhotoMap.prototype.queryTimeRangeItemForAlbum = function(album, isDesc) {
-      var query = this.options.idb.photos
-        .query('timestamp')
-        .filter('albumId', album.id);
-
-      if (isDesc) {
-        query = query.desc();
-      }
-
-      return query.limit(1).execute().then(function(photos) {
-        if (photos.length) {
-          return photos[0].timestamp;
-        }
-      });
-    };
-
-    PhotoMap.prototype.queryTimeRangeForAlbums = function(albums) {
-      var self = this;
-      var timeRangePromises = albums.map(function(album) {
-        return Promise.all([
-          self.queryTimeRangeItemForAlbum(album, /*isDesc=*/ false),
-          self.queryTimeRangeItemForAlbum(album, /*isDesc=*/ true)
-        ]).then(function(timeRange) {
-          return $.extend({}, album, {
-            minTimestamp: timeRange[0],
-            maxTimestamp: timeRange[1]
-          });
-        });
-      });
-      return Promise.all(timeRangePromises);
-    };
-
     PhotoMap.prototype.initMap = function() {
       L.mapbox.accessToken = this.options.mapboxAccessToken;
 
@@ -267,7 +290,8 @@ $(function() {
         label: 'Show photos from',
         value: new Date(this.options.startTime),
         saveChange: function(timestamp) {
-          self.options.startTime = !isNaN(timestamp) ? timestamp : 0;
+          // Handle in case of clearing time
+          self.options.startTime = timestamp || 0;
         }
       }, {
         container: 'endDate',
@@ -275,7 +299,8 @@ $(function() {
         label: 'to',
         value: new Date(this.options.endTime),
         saveChange: function(timestamp) {
-          self.options.endTime = !isNaN(timestamp) ? timestamp : Number.MAX_SAFE_INTEGER;
+          // Handle in case of clearing time
+          self.options.endTime = _.isNumber(timestamp) ? timestamp : Infinity;
         }
       }];
 
@@ -311,7 +336,7 @@ $(function() {
         view: 'button',
         container: 'reloadButton',
         type: 'iconButton',
-        label: 'Refetch Photos',
+        label: 'Refetch photos',
         icon: 'refresh',
         width: 150
       });
@@ -319,20 +344,7 @@ $(function() {
       var self = this;
       this.$$reloadButton.attachEvent('onItemClick', function() {
         self.photos = [];
-        self.$$reloadButton.blur();
         self.resetIdb().then(self.render.bind(self));
-      });
-    };
-
-    PhotoMap.prototype.fetchAndSavePhotosIfNecessary = function() {
-      var self = this;
-      return self.options.idb.photos.count().then(function(count) {
-        self.beforeLoad();
-        if (count) {
-          return Promise.resolve();
-        } else {
-          return self.options.photosFetcher.fetchAndSave();
-        }
       });
     };
 
@@ -344,13 +356,12 @@ $(function() {
 
       var self = this;
       this.options.idb.albums.query().all().execute()
-        .then(self.queryTimeRangeForAlbums.bind(self))
         .then(function(albums) {
           albums.sort(function(albumA, albumB) {
             var aMinTimestamp = albumA.minTimestamp || 0;
-            var aMaxTimestamp = !isNaN(albumA.maxTimestamp) ? albumA.maxTimestamp : Number.MAX_SAFE_INTEGER;
+            var aMaxTimestamp = !isNaN(albumA.maxTimestamp) ? albumA.maxTimestamp : Infinity;
             var bMinTimestamp = albumB.minTimestamp || 0;
-            var bMaxTimestamp = !isNaN(albumB.maxTimestamp) ? albumB.maxTimestamp : Number.MAX_SAFE_INTEGER;
+            var bMaxTimestamp = !isNaN(albumB.maxTimestamp) ? albumB.maxTimestamp : Infinity;
             if (aMaxTimestamp === bMaxTimestamp) {
               return bMinTimestamp - aMinTimestamp;
             } else {
@@ -385,9 +396,13 @@ $(function() {
             },
             scroll: true,
             width: 860,
-            height: 350
+            height: 350,
           });
 
+          if (Array.isArray(self.options.albumIds)) {
+            // Select the elements before we bind the onSelectChange listener
+            self.$$albumsList.select(self.options.albumIds);
+          }
           self.$$albumsList.attachEvent('onSelectChange', function() {
             var albumIds = self.$$albumsList.getSelectedId();
             if (!albumIds) {
@@ -402,7 +417,7 @@ $(function() {
     };
 
     PhotoMap.prototype.renderChooseAlbumsButton = function() {
-      var chooseAlbumsButton = webix.ui({
+      this.$$chooseAlbumsButton = webix.ui({
         view: 'toggle',
         container: 'chooseAlbumsButton',
         type: 'iconButton',
@@ -415,30 +430,13 @@ $(function() {
       });
 
       var self = this;
-      chooseAlbumsButton.attachEvent('onItemClick', function() {
-        if (chooseAlbumsButton.getValue() === 0) {
+      this.$$chooseAlbumsButton.attachEvent('onItemClick', function() {
+        if (self.$$chooseAlbumsButton.getValue() === 0) {
           if (self.$$albumsList) {
             self.$$albumsList.hide();
           }
         } else {
           self.renderAlbums();
-        }
-      });
-
-      chooseAlbumsButton.callEvent('onItemClick');
-    };
-
-    PhotoMap.prototype.fetchAndSavePhotosIfNecessary = function() {
-      var self = this;
-      return self.options.idb.photos.count().then(function(count) {
-        self.beforeLoad();
-        if (count) {
-          return Promise.resolve();
-        } else {
-          if (self.$$reloadButton) {
-            self.$$reloadButton.disable();
-          }
-          return self.options.photosFetcher.fetchAndSave();
         }
       });
     };
@@ -475,15 +473,43 @@ $(function() {
       if (this.$$reloadButton) {
         this.$$reloadButton.enable();
       }
+      if (this.$$chooseAlbumsButton) {
+        this.$$chooseAlbumsButton.enable();
+      }
       // TODO(mduan): Find cleaner way to do this
       $(this.map._container).removeClass('disabled');
       this.options.cssLoader.stopLoading();
     };
 
+    PhotoMap.prototype.fetchAndSavePhotosIfNecessary = function() {
+      var self = this;
+      return self.options.idb.photos.count().then(function(count) {
+        self.beforeLoad();
+        if (count) {
+          return Promise.resolve();
+        } else {
+          // TODO(mduan): Move this into its own function
+          if (self.$$reloadButton) {
+            self.$$reloadButton.blur();
+            self.$$reloadButton.disable();
+          }
+          if (self.$$chooseAlbumsButton) {
+            if (self.$$chooseAlbumsButton.getValue() == 1) {
+              self.$$chooseAlbumsButton.setValue(0);
+              if (self.$$albumsList) {
+                self.$$albumsList.destructor();
+                self.$$albumsList = null;
+              }
+            }
+            self.$$chooseAlbumsButton.disable();
+          }
+          return self.options.photosFetcher.fetchAndSave();
+        }
+      });
+    };
+
     function compileTemplate($template) {
-      //return _.template($elem.html(), { variable: 'data' });
-      debugger;
-      return _.template($template.html());
+      return _.template($template.html(), { variable: 'data' });
     }
 
     function PhotoMap(options) {

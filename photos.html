@@ -52,15 +52,21 @@
       </div>
     </div>
   </div>
-  <template id="albumTemplate">
+  <script id="albumTemplate" type="text/template">
     <div class="album">
-      <div class="albumThumbnail" style="background: url(<%= imageUrl %>); background-size: cover; background-position: center; background-repeat: no-repeat;">
+      <div class="albumThumbnail" style="background: url(<%= data.imageUrl %>); background-size: cover; background-position: center; background-repeat: no-repeat;">
         <div class="albumInfo">
-          <div class="albumTitle"><%= title %></div>
-          <div class="albumNumPhotos"><%= numPhotos %> items</div>
+          <div class="albumTitle"><%= data.title %></div>
+          <div class="albumDetails">
+            <% if (data.minDate && data.maxDate) { %>
+              <span class="albumDateRange"><%= data.minDate %>&ndash;<%= data.maxDate %></span>
+              &middot;
+            <% } %>
+            <span class="albumNumPhotos"><%= data.numPhotos %> items</span>
+          </div>
         </div>
       </div>
     </div>
-  </template>
+  </script>
 </body>
 </html>

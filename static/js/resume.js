@@ -98,12 +98,12 @@ $('.skillsSection .skill')
     });
   });
 
-(function() {
-  // TODO(mack): Fix timezone bug (time from lastModified is UTC time).
-  var dateStr = moment(
-    document.lastModified, 'MM/DD/YYYY hh:mm:ss').format('MMMM Do, YYYY');
-  $('.updatedDate').text(dateStr);
-})();
+//(function() {
+//  // TODO(mack): Fix timezone bug (time from lastModified is UTC time).
+//  var dateStr = moment(
+//    document.lastModified, 'MM/DD/YYYY hh:mm:ss').format('MMMM Do, YYYY');
+//  $('.updatedDate').text(dateStr);
+//})();
 
 function updateSidebar() {
   var collapse = !!JSON.parse(localStorage.getItem('collapseSidebar'));
