@@ -1,15 +1,18 @@
 #mapOptions {
-  display: flex;
+  margin-bottom: 10px;
 }
 
-#dateRange,
-#reloadButton {
-  flex: 0 1 auto;
+#mapOptions .row {
+  display: flex;
   margin-bottom: 5px;
 }
 
 .flexSpacer {
   flex: 1 1 auto;
+}
+
+#dateRange {
+  line-height: 0;
 }
 
 #dateRange #startDate,
@@ -98,4 +101,9 @@
 .loaderBox .loader {
   z-index: 1;
   color: #6bc6ed;
+}
+
+#albumsList .webix_dataview_item {
+  border: 0;
+  padding: 10px;
 }

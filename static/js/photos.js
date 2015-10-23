@@ -35,7 +35,7 @@ $(function() {
       });
     };
 
-    PicasaFetcher.prototype.getAlbum = function() {
+    PicasaFetcher.prototype.getAlbumsList = function() {
       var albumsUrl = 'https://picasaweb.google.com/data/feed/api/user/' + this.options.userId;
       var self = this;
       return this.requestJsonP(albumsUrl).then(function(response) {
@@ -62,8 +62,14 @@ $(function() {
     PicasaFetcher.prototype.addAlbumsToIdb = function(albums) {
       var self = this;
       albums.forEach(function(album) {
+        debugger;
+        var mediaGroup = album.media$group;
         self.options.idb.albums.update({
           id: album.gphoto$id.$t,
+          title: album.title.$t,
+          numPhotos: album.gphoto$numphotos.$t,
+          imageUrl: mediaGroup.media$content[0].url,
+          thumbnailUrl: mediaGroup.media$thumbnail[0].url,
           timestamp: parseInt(album.gphoto$timestamp.$t),
           feedUrl: album.link[0].href,
           webUrl: album.link[1].href,
@@ -95,7 +101,7 @@ $(function() {
     PicasaFetcher.prototype.fetchAndSave = function() {
       var self = this;
       this.options.cssLoader.updateMessage('Fetching from Picasa');
-      return this.getAlbum().then(function(albums) {
+      return this.getAlbumsList().then(function(albums) {
         self.addAlbumsToIdb(albums);
 
         self.options.cssLoader.updateMessage('Fetching albums');
@@ -123,11 +129,33 @@ $(function() {
       }, options);
     }
 
+    PicasaFetcher.openIdb = function() {
+      return db.open({
+        server: 'photoMap',
+        version: 2,
+        schema: {
+          albums: {
+            key: { keyPath: 'id' }
+          },
+          photos: {
+            key: { keyPath: 'id' },
+            indexes: {
+              // TODO(mduan): create index on geo
+              albumId: {},
+              timestamp: {}
+            }
+          }
+        }
+      });
+    };
+
     return PicasaFetcher;
   })();
 
 
   var PhotoMap = (function() {
+    // TODO(mduan): Move data querying logic into PicasaFetcher or another class
+    //
     PhotoMap.prototype.filterPhotosWithLocation = function(photos) {
       return photos.filter(function(photo) {
         return !isNaN(photo.latitude) && !isNaN(photo.longitude);
@@ -168,8 +196,8 @@ $(function() {
       });
 
       this.photoLayer = L.photo.cluster().on('click', function (e) {
-        var photo = e.layer.photo,
-          template = '<img src="{url}"/></a><p>{caption}</p>';
+        var photo = e.layer.photo;
+        var template = '<img src="{url}"/></a><p>{caption}</p>';
         if (photo.video && ($('video').canPlayType('video/mp4; codecs=avc1.42E01E,mp4a.40.2'))) {
           template = '<video autoplay controls poster="{url}"><source src="{video}" type="video/mp4"/></video>';
         };
@@ -269,10 +297,59 @@ $(function() {
       });
     };
 
+    PhotoMap.prototype.renderChooseAlbumsButton = function() {
+      var chooseAlbumsButton = webix.ui({
+        view: 'button',
+        container: 'chooseAlbumsButton',
+        type: 'iconButton',
+        label: 'Choose albums',
+        icon: 'photo',
+        width: 150
+      });
+
+      var self = this;
+      chooseAlbumsButton.attachEvent('onItemClick', function() {
+        self.options.idb.albums.query().all().execute().then(function(albums) {
+          var $modal = $('[data-remodal-id=chooseAlbumsModal]').remodal();
+          $modal.open();
+
+          webix.ui({
+            view: 'dataview',
+            select: 'multiselect',
+            multiselect: 'touch',
+            template: 'html->albumTemplate',
+            css: 'album',
+            data: albums,
+            datatype: 'json',
+            container: 'albumsList',
+            borderless: true,
+            type: {
+              width: 200,
+              height: 200
+            },
+            scroll: true
+          });
+        });
+      });
+    };
+
+    PhotoMap.prototype.fetchAndSavePhotosIfNecessary = function() {
+      var self = this;
+      return self.options.idb.photos.count().then(function(count) {
+        self.beforeLoad();
+        if (count) {
+          return Promise.resolve();
+        } else {
+          return self.options.photosFetcher.fetchAndSave();
+        }
+      });
+    };
+
     PhotoMap.prototype.renderControls = function() {
       this.hasRenderedControls = true;
       this.renderDatepickers();
       this.renderReloadButton();
+      this.renderChooseAlbumsButton();
     };
 
     PhotoMap.prototype.render = function() {
@@ -388,8 +465,6 @@ $(function() {
 
     CssLoader.prototype.stopLoading = function() {
       var elapsedTime = Math.max(Date.now() - this.startTime, 0);
-      console.log('el', elapsedTime);
-      console.log('min', this.options.minDuration);
       if (elapsedTime < this.options.minDuration) {
         setTimeout(this.reset.bind(this), this.options.minDuration - elapsedTime);
       } else {
@@ -410,23 +485,7 @@ $(function() {
     return CssLoader;
   })();
 
-  db.open({
-    server: 'photoMap',
-    version: 2,
-    schema: {
-      albums: {
-        key: { keyPath: 'id' }
-      },
-      photos: {
-        key: { keyPath: 'id' },
-        indexes: {
-          // TODO(mduan): create index on geo
-          albumId: {},
-          timestamp: {}
-        }
-      }
-    }
-  }).then(function(idb) {
+  PicasaFetcher.openIdb().then(function(idb) {
     var cssLoader = new CssLoader({
       $loaderContainer: $('#loaderContainer'),
       $overlay: $('#overlay')
