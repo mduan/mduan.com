@@ -336,9 +336,9 @@ $(function() {
         view: 'button',
         container: 'reloadButton',
         type: 'iconButton',
-        label: 'Refetch photos',
+        label: 'Refetch data',
         icon: 'refresh',
-        width: 150
+        width: 127
       });
 
       var self = this;
@@ -426,7 +426,7 @@ $(function() {
         offLabel: 'Choose albums',
         onLabel: 'Hide albums',
         icon: 'photo',
-        width: 150,
+        width: 143,
       });
 
       var self = this;
