@@ -5,6 +5,7 @@
 #mapOptions .row {
   display: flex;
   margin-bottom: 5px;
+  width: 100%;
 }
 
 .flexSpacer {
@@ -22,6 +23,10 @@
 
 #dateRange #endDate {
   margin-left: 0;
+}
+
+#mapOptionsButtons {
+  display: flex;
 }
 
 #map {
@@ -48,7 +53,7 @@
 #map .leafletMarkerPhoto b {
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
   color: #555;
   height: 12px;
   line-height: 12px;
@@ -103,7 +108,45 @@
   color: #6bc6ed;
 }
 
+#albumsList .webix_dataview {
+  -moz-box-shadow: inset 0 0 3px #999;
+  -webkit-box-shadow: inset 0 0 3px #999;
+  box-shadow: inset 0 0 3px #999;
+  background: #fdfdfd;
+  padding: 1px;
+}
+
+
 #albumsList .webix_dataview_item {
   border: 0;
-  padding: 10px;
+  padding: 4px;
+}
+
+#albumsList .webix_dataview_item.webix_selected {
+  border: 0;
+  padding: 4px;
+}
+
+#albumsList .albumThumbnail {
+  width: 278px;
+  height: 209px;
+  position: relative;
+}
+
+#albumsList .albumInfo {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: #fff;
+  text-shadow: 1px 1px 5px #000;
+}
+
+#albumsList .albumInfo .albumTitle {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#albumsList .albumInfo .albumNumPhotos {
+  font-size: 12px;
+  line-height: 12px;
 }

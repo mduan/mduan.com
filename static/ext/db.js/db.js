@@ -428,6 +428,7 @@
                     filter: filter,
                     distinct: distinct,
                     modify: modify,
+                    limit: limit,
                     map: map
                 };
             };
