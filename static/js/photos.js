@@ -606,6 +606,7 @@ $(function() {
       if (!this.hasRenderedControls) {
         this.renderControls();
       }
+      this.beforeRender();
       return this.fetchAndSavePhotosIfNecessary()
         .then(self.queryPhotos.bind(self))
         .then(function() {
@@ -618,10 +619,10 @@ $(function() {
           }
         })
         .then(self.renderPhotos.bind(self))
-        .then(self.afterLoad.bind(self));
+        .then(self.afterRender.bind(self));
     };
 
-    PhotoMap.prototype.beforeLoad = function() {
+    PhotoMap.prototype.beforeRender = function() {
       this.photoLayer.clear();
       this.photos = [];
 
@@ -631,9 +632,28 @@ $(function() {
       $(this.map._container).addClass('disabled');
     };
 
-    PhotoMap.prototype.afterLoad = function() {
+    PhotoMap.prototype.beforeFetch = function() {
+      if (this.$$reloadButton) {
+        this.$$reloadButton.disable();
+        // Hack to fix the button remaining blue if you don't move the mouse.
+        $(this.$$reloadButton.$view).find('button').css('background-color', '#e9e9e9');
+      }
+      if (this.$$chooseAlbumsButton) {
+        if (this.$$chooseAlbumsButton.getValue() == 1) {
+          this.$$chooseAlbumsButton.setValue(0);
+          if (this.$$albumsList) {
+            this.$$albumsList.destructor();
+            this.$$albumsList = null;
+          }
+        }
+        this.$$chooseAlbumsButton.disable();
+      }
+    };
+
+    PhotoMap.prototype.afterRender = function() {
       if (this.$$reloadButton) {
         this.$$reloadButton.enable();
+        $(this.$$reloadButton.$view).find('button').css('background-color', '');
       }
       if (this.$$chooseAlbumsButton) {
         this.$$chooseAlbumsButton.enable();
@@ -646,25 +666,10 @@ $(function() {
     PhotoMap.prototype.fetchAndSavePhotosIfNecessary = function() {
       var self = this;
       return self.options.idb.photos.count().then(function(count) {
-        self.beforeLoad();
         if (count) {
           return Promise.resolve();
         } else {
-          // TODO(mduan): Move this into its own function
-          if (self.$$reloadButton) {
-            self.$$reloadButton.blur();
-            self.$$reloadButton.disable();
-          }
-          if (self.$$chooseAlbumsButton) {
-            if (self.$$chooseAlbumsButton.getValue() == 1) {
-              self.$$chooseAlbumsButton.setValue(0);
-              if (self.$$albumsList) {
-                self.$$albumsList.destructor();
-                self.$$albumsList = null;
-              }
-            }
-            self.$$chooseAlbumsButton.disable();
-          }
+          self.beforeFetch();
           return self.options.photosFetcher.fetchAndSave();
         }
       });
