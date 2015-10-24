@@ -82,11 +82,7 @@ $(function() {
     };
 
     PicasaFetcher.prototype.saveAlbumsToIdb = function(albums) {
-      var self = this;
-      var promises = albums.map(function(album) {
-        return self.options.idb.albums.update(album);
-      });
-      return Promise.all(promises);
+      return this.options.idb.albums.add(albums);
     };
 
     PicasaFetcher.prototype.extractPhotos = function(photos) {
@@ -110,11 +106,7 @@ $(function() {
     };
 
     PicasaFetcher.prototype.savePhotosToIdb = function(photos) {
-      var self = this;
-      var promises = photos.map(function(photo) {
-        return self.options.idb.photos.update(photo);
-      });
-      return Promise.all(promises);
+      return this.options.idb.photos.add(photos);
     };
 
     //PhotoMap.prototype.queryTimeRangeItemForAlbum = function(album, isDesc) {
@@ -174,7 +166,6 @@ $(function() {
               self.options.cssLoader.updateMessage(
                 'Saved ' + numAlbumsSaved + ' of ' + albums.length + ' albums'
               );
-              return photos;
             });
           });
         });
