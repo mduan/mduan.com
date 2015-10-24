@@ -284,15 +284,23 @@ $(function() {
           position: 'topleft'
         },
 
+        lock: function() {
+          this._$link
+            .addClass('fa-lock')
+            .removeClass('fa-unlock-alt');
+        },
+
+        unlock: function() {
+          this._$link
+            .addClass('fa-unlock-alt')
+            .removeClass('fa-lock');
+        },
+
         toggleLock: function() {
           if (this._$link.hasClass('fa-unlock-alt')) {
-            this._$link
-              .addClass('fa-lock')
-              .removeClass('fa-unlock-alt');
+            this.lock();
           } else {
-            this._$link
-              .addClass('fa-unlock-alt')
-              .removeClass('fa-lock');
+            this.unlock();
           }
           return this._$link.hasClass('fa-lock');
         },
@@ -308,7 +316,7 @@ $(function() {
           this._$link = $container.find('.fa-unlock-alt');
 
           if (this.options.isLocked) {
-            this.toggleLock();
+            this.lock();
           }
 
           var self = this;
@@ -322,7 +330,7 @@ $(function() {
 
           if (this._map) {
             this._map.on('dragend', function() {
-              $lockButton.click();
+              self.lock();
             });
           }
           return $container[0];
