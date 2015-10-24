@@ -87,6 +87,13 @@
   top: -7px;
 }
 
+/**
+ * TODO(mduan): remove hack
+ */
+#map .leaflet-popup-content {
+  width: auto !important;
+}
+
 #map #overlay {
   z-index: 1;
   background: rgba(255, 255, 255, 0.66);

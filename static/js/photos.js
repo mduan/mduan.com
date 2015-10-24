@@ -213,9 +213,69 @@ $(function() {
     return PicasaFetcher;
   })();
 
+  var LeafletLockControl = L.Control.extend({
+    options: {
+      position: 'topleft'
+    },
+
+    lock: function() {
+      this._$link
+        .addClass('fa-lock')
+        .removeClass('fa-unlock-alt');
+    },
+
+    unlock: function() {
+      this._$link
+        .addClass('fa-unlock-alt')
+        .removeClass('fa-lock');
+    },
+
+    toggleLock: function() {
+      if (this._$link.hasClass('fa-unlock-alt')) {
+        this.lock();
+      } else {
+        this.unlock();
+      }
+      return this._$link.hasClass('fa-lock');
+    },
+
+    onAdd: function(map) {
+      // leaflet-control-locate leaflet-bar leaflet-control active
+      // create the control container with a particular class name
+      var $container = $('<div/>')
+        .addClass('leaflet-control-lock')
+        .addClass('leaflet-bar')
+        .addClass('leaflet-control');
+      $container.html('<a class="leaflet-bar-part leaflet-bar-part-single" href="#" title="Limit seach to visible region"><span class="fa fa-unlock-alt"></span></a>');
+      this._$link = $container.find('.fa-unlock-alt');
+
+      if (this.options.isLocked) {
+        this.lock();
+      }
+
+      var self = this;
+      var $lockButton = $container.find('.leaflet-bar-part');
+      $lockButton.click(function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var locked = self.toggleLock();
+        self.options.onStateChange && self.options.onStateChange(locked);
+      });
+
+      if (this._map) {
+        this._map.on('dragend', function() {
+          if (self._$link.hasClass('fa-unlock-alt')) {
+            $lockButton.click();
+          }
+        });
+      }
+      return $container[0];
+    }
+  });
+
+
   var PhotoMap = (function() {
     // TODO(mduan): Move data querying logic into PicasaFetcher or another class
-    //
     PhotoMap.prototype.filterPhotosWithLocation = function(photos) {
       return photos.filter(function(photo) {
         return !isNaN(photo.latitude) && !isNaN(photo.longitude);
@@ -257,7 +317,8 @@ $(function() {
       L.mapbox.accessToken = this.options.mapboxAccessToken;
 
       this.map = L.mapbox.map('map', 'mapbox.streets', {
-        maxZoom: 18
+        maxZoom: 18,
+        zoomControl: false
       });
 
       this.photoLayer = L.photo.cluster().on('click', function (e) {
@@ -272,75 +333,21 @@ $(function() {
         }).openPopup();
       }).addTo(this.map);
 
+      (new L.Control.Zoom({
+        position: this.options.controlPosition
+      })).addTo(this.map);
+
       L.control.locate({
+        position: this.options.controlPosition,
         locateOptions: {
           enableHighAccuracy: true,
           maxZoom: 16
         }
       }).addTo(this.map);
 
-      var LeafletLockControl = L.Control.extend({
-        options: {
-          position: 'topleft'
-        },
-
-        lock: function() {
-          this._$link
-            .addClass('fa-lock')
-            .removeClass('fa-unlock-alt');
-        },
-
-        unlock: function() {
-          this._$link
-            .addClass('fa-unlock-alt')
-            .removeClass('fa-lock');
-        },
-
-        toggleLock: function() {
-          if (this._$link.hasClass('fa-unlock-alt')) {
-            this.lock();
-          } else {
-            this.unlock();
-          }
-          return this._$link.hasClass('fa-lock');
-        },
-
-        onAdd: function(map) {
-          // leaflet-control-locate leaflet-bar leaflet-control active
-          // create the control container with a particular class name
-          var $container = $('<div/>')
-            .addClass('leaflet-control-lock')
-            .addClass('leaflet-bar')
-            .addClass('leaflet-control');
-          $container.html('<a class="leaflet-bar-part leaflet-bar-part-single" href="#" title="Limit seach to current map view"><span class="fa fa-unlock-alt"></span></a>');
-          this._$link = $container.find('.fa-unlock-alt');
-
-          if (this.options.isLocked) {
-            this.lock();
-          }
-
-          var self = this;
-          var $lockButton = $container.find('.leaflet-bar-part');
-          $lockButton.click(function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            var locked = self.toggleLock();
-            self.options.onStateChange && self.options.onStateChange(locked);
-          });
-
-          if (this._map) {
-            this._map.on('dragend', function() {
-              if (self._$link.hasClass('fa-unlock-alt')) {
-                $lockButton.click();
-              }
-            });
-          }
-          return $container[0];
-        }
-      });
-
       var self = this;
       this.mapLockControl = new LeafletLockControl({
+        position: this.options.controlPosition,
         isLocked: this.options.isMapLocked,
         onStateChange: function(locked) {
           self.options.isMapLocked = locked;
@@ -650,7 +657,9 @@ $(function() {
       required(options.mapboxAccessToken);
       required(options.cssLoader);
 
-      this.options = $.extend({}, options);
+      this.options = $.extend({
+        controlPosition: 'topright',
+      }, options);
 
       this.options.startTime = this.options.startTime || 0;
       this.options.endTime = !isNaN(this.options.endTime) ?  this.options.endTime : moment().endOf('day').unix() * 1000;
@@ -663,6 +672,7 @@ $(function() {
     return PhotoMap;
   })();
 
+  // TODO(mduan): Convert to leaflet layer
   var CssLoader = (function() {
 
     CssLoader.prototype.loaders = [
