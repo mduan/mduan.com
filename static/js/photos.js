@@ -330,7 +330,9 @@ $(function() {
 
           if (this._map) {
             this._map.on('dragend', function() {
-              self.lock();
+              if (self._$link.hasClass('fa-unlock-alt')) {
+                $lockButton.click();
+              }
             });
           }
           return $container[0];
