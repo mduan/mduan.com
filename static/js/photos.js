@@ -213,16 +213,18 @@ $(function() {
       position: 'topleft'
     },
 
-    lock: function() {
+    lock: function(disableCallback) {
       this._$link
         .addClass('fa-lock')
         .removeClass('fa-unlock-alt');
+      !disableCallback && this.options.onStateChange && this.options.onStateChange(true);
     },
 
-    unlock: function() {
+    unlock: function(disableCallback) {
       this._$link
         .addClass('fa-unlock-alt')
         .removeClass('fa-lock');
+      !disableCallback && this.options.onStateChange && this.options.onStateChange(false);
     },
 
     toggleLock: function() {
@@ -245,7 +247,7 @@ $(function() {
       this._$link = $container.find('.fa-unlock-alt');
 
       if (this.options.isLocked) {
-        this.lock();
+        this.lock(false);
       }
 
       var self = this;
@@ -253,21 +255,12 @@ $(function() {
       $lockButton.click(function(e) {
         e.stopPropagation();
         e.preventDefault();
-        var locked = self.toggleLock();
-        self.options.onStateChange && self.options.onStateChange(locked);
+        self.toggleLock();
       });
 
-      if (this._map) {
-        this._map.on('dragend', function() {
-          if (self._$link.hasClass('fa-unlock-alt')) {
-            $lockButton.click();
-          }
-        });
-      }
       return $container[0];
     }
   });
-
 
   var PhotoMap = (function() {
     // TODO(mduan): Move data querying logic into PicasaFetcher or another class
@@ -358,11 +351,11 @@ $(function() {
       }).addTo(this.map);
 
       (new L.Control.Zoom({
-        position: this.options.controlPosition
+        position: 'topright'
       })).addTo(this.map);
 
       L.control.locate({
-        position: this.options.controlPosition,
+        position: 'topright',
         locateOptions: {
           enableHighAccuracy: true,
           maxZoom: 16
@@ -371,19 +364,30 @@ $(function() {
 
       var self = this;
       this.mapLockControl = new LeafletLockControl({
-        position: this.options.controlPosition,
+        position: 'topright',
         isLocked: this.options.isMapLocked,
         onStateChange: function(locked) {
           self.options.isMapLocked = locked;
-          self.fitPhotoBounds();
+          self.updateBoundsIfNeccessary();
         }
       });
       this.mapLockControl.addTo(this.map);
+      this.map.on('dragend', function() {
+        self.mapLockControl.lock();
+      });
+
+      L.mapbox.geocoderControl('mapbox.places', {
+        position: 'topleft',
+        autocomplete: true
+      }).on('select autoselect', function(args) {
+        self.mapLockControl.lock();
+      }).addTo(this.map);
+
 
       this.map.fitWorld();
     };
 
-    PhotoMap.prototype.fitPhotoBounds = function() {
+    PhotoMap.prototype.updateBoundsIfNeccessary = function() {
       if (!this.options.isMapLocked) {
         if (this.photos.length) {
           this.map.fitBounds(this.photoLayer.getBounds());
@@ -395,7 +399,7 @@ $(function() {
 
     PhotoMap.prototype.renderPhotos = function() {
       this.photoLayer.add(this.photos);
-      this.fitPhotoBounds();
+      this.updateBoundsIfNeccessary();
     };
 
     PhotoMap.prototype.lockDateRange = function() {
@@ -685,9 +689,7 @@ $(function() {
       required(options.mapboxAccessToken);
       required(options.cssLoader);
 
-      this.options = $.extend({
-        controlPosition: 'topright',
-      }, options);
+      this.options = $.extend({}, options);
 
       this.options.startTime = this.options.startTime || 0;
       this.options.endTime = !isNaN(this.options.endTime) ?  this.options.endTime : moment().endOf('day').unix() * 1000;

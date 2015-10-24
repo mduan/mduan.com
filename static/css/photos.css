@@ -45,6 +45,15 @@
   cursor: auto;
 }
 
+#map a {
+  text-decoration: none;
+}
+
+#map .leaflet-control-mapbox-geocoder-wrap,
+#map .leaflet-control-mapbox-geocoder-results {
+  width: 360px;
+}
+
 #map .leaflet-control-lock a {
   padding: 3px 0 0 8px;
 }
@@ -53,7 +62,7 @@
   color: #444;
 }
 #map .leaflet-control-lock .fa-lock {
-  color: #2074B6;
+  color: #2074b6;
 }
 
 #map .leafletMarkerPhoto {
