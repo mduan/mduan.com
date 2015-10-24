@@ -100,10 +100,11 @@ $(function() {
           timestamp: parseInt(photo.gphoto$timestamp.$t),
           latitude: pos[0],
           longitude: pos[1],
-          imageUrl: mediaContent[0].url,
           caption: mediaGroup.media$description.$t,
+          imageUrl: mediaContent[0].url,
           thumbnailUrl: mediaGroup.media$thumbnail[0].url,
-          videoUrl: mediaContent[1] ? mediaContent[1].url : null
+          videoUrl: mediaContent[1] ? mediaContent[1].url : null,
+          webUrl: photo.link[2].href
         };
       });
     };
@@ -154,7 +155,8 @@ $(function() {
       return this.fetchAlbumsList().then(function(albums) {
         albums = self.extractAlbums(albums);
         self.options.cssLoader.updateMessage('Fetching albums');
-        var numAlbumsFetched = 0;
+
+        var numAlbumsSaved = 0;
         var promises = albums.map(function(album) {
           return self.fetchPhotosInAlbum(album).then(function(photos) {
             photos = self.extractPhotos(photos);
@@ -167,11 +169,13 @@ $(function() {
               });
             }
 
-            ++numAlbumsFetched;
-            self.options.cssLoader.updateMessage(
-              'Saving ' + numAlbumsFetched + ' of ' + albums.length + ' albums'
-            );
-            return self.savePhotosToIdb(photos)
+            return self.savePhotosToIdb(photos).then(function(photos) {
+              ++numAlbumsSaved;
+              self.options.cssLoader.updateMessage(
+                'Saved ' + numAlbumsSaved + ' of ' + albums.length + ' albums'
+              );
+              return photos;
+            });
           });
         });
         return Promise.all(promises).then(self.saveAlbumsToIdb.bind(self, albums));
@@ -242,7 +246,7 @@ $(function() {
     onAdd: function(map) {
       // leaflet-control-locate leaflet-bar leaflet-control active
       // create the control container with a particular class name
-      var $container = $('<div/>')
+      var $container = $('<div>')
         .addClass('leaflet-control-lock')
         .addClass('leaflet-bar')
         .addClass('leaflet-control');
@@ -321,16 +325,45 @@ $(function() {
         zoomControl: false
       });
 
+      var self = this;
       this.photoLayer = L.photo.cluster().on('click', function (e) {
         var photo = e.layer.photo;
-        var template = '<img src="{url}"/></a><p>{caption}</p>';
-        if (photo.video && ($('video').canPlayType('video/mp4; codecs=avc1.42E01E,mp4a.40.2'))) {
-          template = '<video autoplay controls poster="{url}"><source src="{video}" type="video/mp4"/></video>';
-        };
-        e.layer.bindPopup(L.Util.template(template, photo), {
-          className: 'leaflet-popup-photo',
-          minWidth: 400
-        }).openPopup();
+        var photoMoment = moment(photo.timestamp);
+        var data = $.extend({
+          isVideoSupported: $('<video>')[0].canPlayType('video/mp4; codecs=avc1.42E01E,mp4a.40.2'),
+          // TODO(mduan): Consider timezone
+          dateStr: photoMoment.format('MMMM Do YYYY'),
+          timeStr: photoMoment.format('h:mma')
+        }, e.layer.photo);
+        var templateHtml = self.photoPopupTemplate(data);
+        e.layer.setPopupContent(templateHtml).openPopup();
+
+        var popup = e.layer._popup;
+        var $content = $(popup._contentNode);
+
+        // TODO(mduan): Look for way to do this without binding to map
+        $(self.map._container).on('click', '.mediaDate', function() {
+          var $el = $(this);
+          var timestamp = parseInt($el.attr('data-timestamp'));
+          self.options.startTime = moment(timestamp).startOf('day').unix() * 1000;
+          self.options.endTime = moment(timestamp).endOf('day').unix() * 1000;
+          self.lockDateRange();
+          self.render();
+        });
+
+        var $videoMedia = $content.find('video.popupMedia');
+        var $image = $();
+        if ($videoMedia.length) {
+          var posterUrl = $videoMedia.attr('poster');
+          if (posterUrl) {
+            $image = $('<img>').attr('src', posterUrl);
+          }
+        } else {
+          $image = $content.find('img.popupMedia');
+        }
+        $image.bind('load', function() {
+          popup.update();
+        });
       }).addTo(this.map);
 
       (new L.Control.Zoom({
@@ -370,26 +403,22 @@ $(function() {
     };
 
     PhotoMap.prototype.renderPhotos = function() {
-      this.photoLayer.add(this.photos.map(function(photo) {
-        return {
-          lat: photo.latitude,
-          lng: photo.longitude,
-          url: photo.imageUrl,
-          caption: photo.caption,
-          thumbnail: photo.thumbnailUrl,
-          video: photo.videoUrl
-        };
-      }));
+      this.photoLayer.add(this.photos);
       this.fitPhotoBounds();
     };
 
+    PhotoMap.prototype.lockDateRange = function() {
+      this.options.isDateRangeLocked = true;
+      if (this.$lockDateRangeButton.find('.fa-unlock-alt').length) {
+        this.$lockDateRangeButton.click();
+      }
+    }
+
     PhotoMap.prototype.renderDateRangePicker = function() {
       if (this.$dateRangePicker) {
-        if (!this.options.isDateRangeLocked) {
-          var dateRangePicker = this.$dateRangePicker.data('daterangepicker');
-          dateRangePicker.setStartDate(new Date(this.options.startTime));
-          dateRangePicker.setEndDate(new Date(this.options.endTime));
-        }
+        var dateRangePicker = this.$dateRangePicker.data('daterangepicker');
+        dateRangePicker.setStartDate(new Date(this.options.startTime));
+        dateRangePicker.setEndDate(new Date(this.options.endTime));
         return;
       }
 
@@ -401,7 +430,8 @@ $(function() {
         endDate: new Date(this.options.endTime),
         autoApply: true,
         ranges: {
-           'Today': [moment().startOf('day'), endOfDayMoment],
+            //'Today': [moment().startOf('day'), endOfDayMoment],
+           'Last 24 hours': [moment().subtract(24, 'hours'), endOfDayMoment],
            'Last 7 days': [moment().subtract(6, 'days'), endOfDayMoment],
            'Last 30 days': [moment().subtract(29, 'days'), endOfDayMoment],
            'This month': [moment().startOf('month'), moment().endOf('month')],
@@ -416,21 +446,19 @@ $(function() {
         self.$dateRangePicker.focus();
       });
 
-      var $lockDateRangeButton = $('#lockDateRangeButton');
+      this.$lockDateRangeButton = $('#lockDateRangeButton');
 
+      var self = this;
       this.$dateRangePicker.on('apply.daterangepicker', function(e, picker) {
         self.options.startTime = picker.startDate.unix() * 1000;
         self.options.endTime = picker.endDate.unix() * 1000;
-        self.options.isDateRangeLocked = true;
         // TODO(mduan): Clean this up
-        if ($lockDateRangeButton.find('.fa-unlock-alt').length) {
-          $lockDateRangeButton.click();
-        }
+        self.lockDateRange();
         self.render();
       });
 
       var self = this;
-      $lockDateRangeButton.click(function() {
+      this.$lockDateRangeButton.click(function() {
         var $el = $(this);
         $el.blur();
         if ($el.find('.fa-unlock-alt').length) {
@@ -589,8 +617,10 @@ $(function() {
         .then(self.queryPhotos.bind(self))
         .then(function() {
           if (self.photos.length) {
-            self.options.startTime = _.min(self.photos, function(photo) { return photo.timestamp }).timestamp;
-            self.options.endTime = _.max(self.photos, function(photo) { return photo.timestamp }).timestamp;
+            if (!self.isDateRangeLocked) {
+              self.options.startTime = _.min(self.photos, function(photo) { return photo.timestamp }).timestamp;
+              self.options.endTime = _.max(self.photos, function(photo) { return photo.timestamp }).timestamp;
+            }
             self.renderDateRangePicker();
           }
         })
@@ -665,6 +695,7 @@ $(function() {
       this.options.endTime = !isNaN(this.options.endTime) ?  this.options.endTime : moment().endOf('day').unix() * 1000;
 
       this.albumTemplate = compileTemplate($('#albumTemplate'));
+      this.photoPopupTemplate = compileTemplate($('#photoPopupTemplate'));
       this.initMap();
       this.render();
     }
@@ -697,15 +728,15 @@ $(function() {
       }
       var loader = this.loaders[this.index];
 
-      var $loaderBox = $('<div/>').addClass('loaderBox');
-      var $loader = $('<div/>')
+      var $loaderBox = $('<div>').addClass('loaderBox');
+      var $loader = $('<div>')
         .addClass(loader.className)
         .addClass('loader')
         .addClass('la-1x');
       for (var i = 0; i < loader.numDivs; ++i) {
-        $loader.append($('<div/>'));
+        $loader.append($('<div>'));
       }
-      this.$message = $('<div/>').addClass('message');
+      this.$message = $('<div>').addClass('message');
       $loaderBox
         .append(this.$message)
         .append($loader);

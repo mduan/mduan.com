@@ -9,12 +9,9 @@
 
 #mapOptions .mapOptionsRow {
   display: flex;
+  justify-content: space-between;
   margin-bottom: 5px;
   width: 100%;
-}
-
-.flexSpacer {
-  flex: 1 1 auto;
 }
 
 #dateRange .input-group {
@@ -64,7 +61,7 @@
   box-shadow: 3px 3px 10px #888;
 }
 
-#map .leafletMarkerPhoto div {
+#map .leafletMarkerPhoto .markerThumbnail {
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -72,26 +69,39 @@
   width: 100%;
 }
 
-#map .leafletMarkerPhoto b {
+#map .leafletMarkerPhoto .markerCount {
+  display: block;
+  position: absolute;
+  right: -12px;
+  top: -11px;
+  padding: 4px;
   background-color: #fff;
-  border-radius: 8px;
+  border-radius: 15px;
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
   color: #555;
-  height: 12px;
-  line-height: 12px;
-  min-width: 12px;
-  padding: 3px;
-  position: absolute;
-  right: -11px;
+  min-width: 20px;
+  line-height: 10px;
   text-align: center;
-  top: -7px;
+  font-weight: bold;
 }
 
-/**
- * TODO(mduan): remove hack
- */
-#map .leaflet-popup-content {
-  width: auto !important;
+#map .leaflet-popup-photo .popupMedia {
+  margin-top: 10px;
+  width: 100%;
+}
+
+#map .leaflet-popup-photo .mediaDetails {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 2px;
+  padding-right: 2px;
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+#map .leaflet-popup-photo .mediaWebUrl .fa {
+  position: relative;
+  padding-left: 5px;
 }
 
 #map #overlay {

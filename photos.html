@@ -45,7 +45,7 @@
       <h1 class="title">Photo Map</h1>
       <div id="mapOptions">
         <div class="mapOptionsRow">
-          <div class="form-inline">
+          <div id="dateRangeContainer" class="form-inline">
             <div id="dateRange" class="form-group webix_el_box">
               <label for="dateRangePicker">Showing photos from</label>
               <div class="input-group">
@@ -57,7 +57,6 @@
               </div>
             </div>
           </div>
-          <div class="flexSpacer"></div>
           <div id="mapOptionsButtons">
             <div id="chooseAlbumsButton"></div>
             <div id="reloadButton"></div>
@@ -78,13 +77,24 @@
           <div class="albumTitle"><%= data.title %></div>
           <div class="albumDetails">
             <% if (data.minDate && data.maxDate) { %>
-              <span class="albumDateRange"><%= data.minDate %>&ndash;<%= data.maxDate %></span>
+              <span class="albumDateRange"><%- data.minDate %>&ndash;<%- data.maxDate %></span>
               &middot;
             <% } %>
-            <span class="albumNumPhotos"><%= data.numPhotos %> items</span>
+            <span class="albumNumPhotos"><%- data.numPhotos %> items</span>
           </div>
         </div>
       </div>
+    </div>
+  </script>
+  <script id="photoPopupTemplate" type="text/template">
+    <% if (data.isVideoSupported && data.videoUrl) { %>
+      <video class="popupMedia" autoplay controls poster="<%= data.imageUrl %>"><source src="<%= data.videoUrl %>" type="video/mp4"/></video>
+    <% } else { %>
+      <img class="popupMedia" src="<%= data.imageUrl %>">
+    <% } %>
+    <div class="mediaDetails">
+      <span class="mediaDatetime">Taken on <a class="mediaDate" href="#" data-timestamp="<%- data.timestamp %>"><%- data.dateStr %></a> at <%- data.timeStr %></span>
+      <a class="mediaWebUrl" href="<%= data.webUrl%>" target="_blank">View original<sup><i class="fa fa-external-link"></i></sup></a>
     </div>
   </script>
 </body>

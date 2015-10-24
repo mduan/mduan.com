@@ -5,38 +5,48 @@ L.Photo = L.FeatureGroup.extend({
     }
   },
 
-  initialize: function (photos, options) {
+  initialize: function(photos, options) {
     L.setOptions(this, options);
     L.FeatureGroup.prototype.initialize.call(this, photos);
   },
 
-  addLayers: function (photos) {
+  addLayers: function(photos) {
     if (photos) {
-      for (var i = 0, len = photos.length; i < len; i++) {
-        this.addLayer(photos[i]);
-      }
+      photos.forEach(function(photo) {
+        this.addLayer(photo);
+      }, this);
     }
     return this;
   },
 
-  addLayer: function (photo) {
+  addLayer: function(photo) {
     L.FeatureGroup.prototype.addLayer.call(this, this.createMarker(photo));
   },
 
-  createMarker: function (photo) {
-    var marker = L.marker(photo, {
+  createMarker: function(photo) {
+    var self = this;
+    var latLng = {
+      lat: photo.latitude,
+      lng: photo.longitude
+    };
+    var marker = L.marker(latLng, {
       icon: L.divIcon(L.extend({
-        html: '<div style="background-image: url(' + photo.thumbnail + ');"></div>​',
+        html: '<div class="markerThumbnail" style="background-image: url(' + photo.thumbnailUrl + ');"></div>',
         className: 'leafletMarkerPhoto'
       }, photo, this.options.icon)),
-      title: photo.caption || ''
+      title: photo.caption || 'Caption??'
+    }).bindPopup('', {
+      className: 'leaflet-popup-photo',
+      minWidth: 550,
+      maxWidth: 550,
+      maxHeight: 550
     });
     marker.photo = photo;
     return marker;
   }
 });
 
-L.photo = function (photos, options) {
+L.photo = function(photos, options) {
   return new L.Photo(photos, options);
 };
 
@@ -50,26 +60,26 @@ if (L.MarkerClusterGroup) {
       iconCreateFunction: function(cluster) {
         return new L.DivIcon(L.extend({
           className: 'leafletMarkerPhoto',
-          html: '<div style="background-image: url(' + cluster.getAllChildMarkers()[0].photo.thumbnail + ');"></div>​<b>' + cluster.getChildCount() + '</b>'
+          html: '<div class="markerThumbnail" style="background-image: url(' + cluster.getAllChildMarkers()[0].photo.thumbnailUrl + ');"></div><div class="markerCount">' + cluster.getChildCount() + '</div>'
         }, this.icon));
-        },
+      },
       icon: {
         iconSize: [40, 40]
       }
     },
 
-    initialize: function (options) {
+    initialize: function(options) {
       options = L.Util.setOptions(this, options);
       L.MarkerClusterGroup.prototype.initialize.call(this);
       this._photos = options.featureGroup(null, options);
     },
 
-    add: function (photos) {
+    add: function(photos) {
       this.addLayer(this._photos.addLayers(photos));
       return this;
     },
 
-    clear: function () {
+    clear: function() {
       this._photos.clearLayers();
       this.clearLayers();
       return this;
@@ -77,7 +87,7 @@ if (L.MarkerClusterGroup) {
 
   });
 
-  L.photo.cluster = function (options) {
+  L.photo.cluster = function(options) {
     return new L.Photo.Cluster(options);
   };
 }
