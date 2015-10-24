@@ -1,8 +1,13 @@
+#mapOptions label {
+  font-family: 'PT Sans', Tahoma;
+  font-weight: normal;
+}
+
 #mapOptions {
   margin-bottom: 10px;
 }
 
-#mapOptions .row {
+#mapOptions .mapOptionsRow {
   display: flex;
   margin-bottom: 5px;
   width: 100%;
@@ -12,17 +17,22 @@
   flex: 1 1 auto;
 }
 
-#dateRange {
-  line-height: 0;
+#dateRange .input-group {
+  position: relative;
 }
 
-#dateRange #startDate,
-#dateRange #endDate {
+#dateRange #dateRangePicker {
   display: inline-block;
+  width: 200px;
+  padding-left: 30px;
 }
 
-#dateRange #endDate {
-  margin-left: 0;
+#dateRange .fa-calendar {
+  position: absolute;
+  cursor: pointer;
+  bottom: 10px;
+  left: 10px;
+  z-index: 3;
 }
 
 #mapOptionsButtons {
@@ -36,6 +46,17 @@
 
 #map.disabled {
   cursor: auto;
+}
+
+#map .leaflet-control-lock a {
+  padding: 3px 0 0 8px;
+}
+#map .leaflet-control-lock a {
+  font-size: 1.2em;
+  color: #444;
+}
+#map .leaflet-control-lock .fa-lock {
+  color: #2074B6;
 }
 
 #map .leafletMarkerPhoto {

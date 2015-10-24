@@ -5,8 +5,6 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <link rel="stylesheet" href="/static/css/normalize.css" />
   <link rel="stylesheet" href="/static/ext/font-awesome/css/font-awesome.min.css" />
-  <link rel="stylesheet" href="/static/css/base.css" />
-  <link rel="stylesheet" href="/static/css/photos.css" />
   <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Alegreya+SC:700' />
   <script src="/static/ext/jquery/jquery-2.0.3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
@@ -19,24 +17,45 @@
   <!--<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />-->
   <!--<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>--->
 
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.mapbox.css">
+  <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js'></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js"></script>
 
   <link rel="stylesheet" href="http://cdn.webix.com/2.5/webix.css" type="text/css">
   <script src="http://cdn.webix.com/2.5/webix.js" type="text/javascript"></script>
 
+  <!-- Include Required Prerequisites -->
+  <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css">-->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css">
+
+  <!-- Include Date Range Picker -->
+  <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+  <link rel="stylesheet" href="/static/css/base.css" />
+  <link rel="stylesheet" href="/static/css/photos.css" />
   <script src="/static/js/leaflet.photo.js"></script>
   <script src="/static/js/photos.js"></script>
 </head>
 <body>
-  <div class="container">
+  <div class="wrapper">
     <div class="body">
       <h1 class="title">Photo Map</h1>
       <div id="mapOptions">
-        <div class="row">
-          <div id="dateRange">
-            <div id="startDate"></div>
-            <div id="endDate"></div>
+        <div class="mapOptionsRow">
+          <div class="form-inline">
+            <div id="dateRange" class="form-group webix_el_box">
+              <label for="dateRangePicker">Showing photos from</label>
+              <div class="input-group">
+                <input id="dateRangePicker" class="form-control">
+                <i class="fa fa-calendar"></i>
+                <span class="input-group-btn">
+                  <button id="lockDateRangeButton" class="btn btn-default" type="button"><i class="fa fa-unlock-alt"></i></button>
+                </span>
+              </div>
+            </div>
           </div>
           <div class="flexSpacer"></div>
           <div id="mapOptionsButtons">
@@ -44,7 +63,7 @@
             <div id="reloadButton"></div>
           </div>
         </div>
-        <div class="row" id="albumsList"></div>
+        <div class="mapOptionsRow" id="albumsList"></div>
       </div>
       <div id="map">
         <div id="overlay"></div>

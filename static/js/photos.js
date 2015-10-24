@@ -213,22 +213,12 @@ $(function() {
     return PicasaFetcher;
   })();
 
-
   var PhotoMap = (function() {
     // TODO(mduan): Move data querying logic into PicasaFetcher or another class
     //
     PhotoMap.prototype.filterPhotosWithLocation = function(photos) {
       return photos.filter(function(photo) {
         return !isNaN(photo.latitude) && !isNaN(photo.longitude);
-      }).map(function(photo) {
-        return {
-          lat: photo.latitude,
-          lng: photo.longitude,
-          url: photo.imageUrl,
-          caption: photo.caption,
-          thumbnail: photo.thumbnailUrl,
-          video: photo.videoUrl
-        };
       });
     };
 
@@ -238,18 +228,29 @@ $(function() {
       }
 
       this.options.cssLoader.updateMessage('Querying photos');
-      var query = this.options.idb.photos
-        .query('timestamp')
-        .bound(this.options.startTime, this.options.endTime);
+
+      if (this.options.isDateRangeLocked) {
+        var query = this.options.idb.photos
+          .query('timestamp')
+          .bound(this.options.startTime, this.options.endTime);
+      } else {
+        var query = this.options.idb.photos
+          .query()
+          .all();
+      }
+
       if (this.options.albumIds) {
         var albumIdsSet = arrayToSet(this.options.albumIds);
-        query.filter(function(photo) {
+        query = query.filter(function(photo) {
           return photo.albumId in albumIdsSet;
         });
       }
+
+      var self = this;
       return query.execute().then(function(photos) {
-        this.photos = this.filterPhotosWithLocation(photos);
-      }.bind(this));
+        self.photos = self.filterPhotosWithLocation(photos);
+        return self.photos;
+      });
     };
 
     PhotoMap.prototype.initMap = function() {
@@ -269,58 +270,170 @@ $(function() {
           className: 'leaflet-popup-photo',
           minWidth: 400
         }).openPopup();
+      }).addTo(this.map);
+
+      L.control.locate({
+        locateOptions: {
+          enableHighAccuracy: true,
+          maxZoom: 16
+        }
+      }).addTo(this.map);
+
+      var LeafletLockControl = L.Control.extend({
+        options: {
+          position: 'topleft'
+        },
+
+        toggleLock: function() {
+          if (this._$link.hasClass('fa-unlock-alt')) {
+            this._$link
+              .addClass('fa-lock')
+              .removeClass('fa-unlock-alt');
+          } else {
+            this._$link
+              .addClass('fa-unlock-alt')
+              .removeClass('fa-lock');
+          }
+          return this._$link.hasClass('fa-lock');
+        },
+
+        onAdd: function(map) {
+          // leaflet-control-locate leaflet-bar leaflet-control active
+          // create the control container with a particular class name
+          var $container = $('<div/>')
+            .addClass('leaflet-control-lock')
+            .addClass('leaflet-bar')
+            .addClass('leaflet-control');
+          $container.html('<a class="leaflet-bar-part leaflet-bar-part-single" href="#" title="Limit seach to current map view"><span class="fa fa-unlock-alt"></span></a>');
+          this._$link = $container.find('.fa-unlock-alt');
+
+          if (this.options.isLocked) {
+            this.toggleLock();
+          }
+
+          var self = this;
+          var $lockButton = $container.find('.leaflet-bar-part');
+          $lockButton.click(function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var locked = self.toggleLock();
+            self.options.onStateChange && self.options.onStateChange(locked);
+          });
+
+          if (this._map) {
+            this._map.on('dragend', function() {
+              $lockButton.click();
+            });
+          }
+          return $container[0];
+        }
       });
 
-      this.photoLayer.addTo(this.map);
+      var self = this;
+      this.mapLockControl = new LeafletLockControl({
+        isLocked: this.options.isMapLocked,
+        onStateChange: function(locked) {
+          self.options.isMapLocked = locked;
+          self.fitPhotoBounds();
+        }
+      });
+      this.mapLockControl.addTo(this.map);
+
       this.map.fitWorld();
     };
 
-    PhotoMap.prototype.renderPhotos = function() {
-      if (this.photos.length) {
-        this.photoLayer.add(this.photos);
-        this.map.fitBounds(this.photoLayer.getBounds());
+    PhotoMap.prototype.fitPhotoBounds = function() {
+      if (!this.options.isMapLocked) {
+        if (this.photos.length) {
+          this.map.fitBounds(this.photoLayer.getBounds());
+        } else {
+          this.map.fitWorld();
+        }
       }
     };
 
-    PhotoMap.prototype.renderDatepickers = function() {
-      var self = this;
-      var configs = [{
-        container: 'startDate',
-        labelWidth: 128,
-        label: 'Show photos from',
-        value: new Date(this.options.startTime),
-        saveChange: function(timestamp) {
-          // Handle in case of clearing time
-          self.options.startTime = timestamp || 0;
+    PhotoMap.prototype.renderPhotos = function() {
+      this.photoLayer.add(this.photos.map(function(photo) {
+        return {
+          lat: photo.latitude,
+          lng: photo.longitude,
+          url: photo.imageUrl,
+          caption: photo.caption,
+          thumbnail: photo.thumbnailUrl,
+          video: photo.videoUrl
+        };
+      }));
+      this.fitPhotoBounds();
+    };
+
+    PhotoMap.prototype.renderDateRangePicker = function() {
+      if (this.$dateRangePicker) {
+        if (!this.options.isDateRangeLocked) {
+          var dateRangePicker = this.$dateRangePicker.data('daterangepicker');
+          dateRangePicker.setStartDate(new Date(this.options.startTime));
+          dateRangePicker.setEndDate(new Date(this.options.endTime));
         }
-      }, {
-        container: 'endDate',
-        labelWidth: 28,
-        label: 'to',
-        value: new Date(this.options.endTime),
-        saveChange: function(timestamp) {
-          // Handle in case of clearing time
-          self.options.endTime = _.isNumber(timestamp) ? timestamp : Infinity;
-        }
-      }];
+        return;
+      }
 
       var self = this;
-      configs.forEach(function(config) {
-        var datepicker = webix.ui({
-          view: 'datepicker',
-          container: config.container,
-          label: config.label,
-          value: config.value,
-          labelWidth: config.labelWidth,
-          width: config.labelWidth + 130,
-          format: '%m/%d/%Y',
-          timepicker: false
-        });
+      var endOfDayMoment = moment().endOf('day');
+      this.$dateRangePicker = $('#dateRangePicker').daterangepicker({
+        autoUpdateInput: true,
+        startDate: new Date(this.options.startTime),
+        endDate: new Date(this.options.endTime),
+        autoApply: true,
+        ranges: {
+           'Today': [moment().startOf('day'), endOfDayMoment],
+           'Last 7 days': [moment().subtract(6, 'days'), endOfDayMoment],
+           'Last 30 days': [moment().subtract(29, 'days'), endOfDayMoment],
+           'This month': [moment().startOf('month'), moment().endOf('month')],
+           'Last month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+           'This year': [moment().startOf('year'), moment().endOf('year')],
+           'All time': [moment(0), endOfDayMoment]
+        }
+      });
 
-        datepicker.attachEvent('onChange', function(newDate, _) {
-          config.saveChange(newDate ? newDate.getTime() : null);
+      $('#dateRange .fa-calendar').click(function(e) {
+        // TODO(mduan): Handle when dateRangePicker is already showing
+        self.$dateRangePicker.focus();
+      });
+
+      var $lockDateRangeButton = $('#lockDateRangeButton');
+
+      this.$dateRangePicker.on('apply.daterangepicker', function(e, picker) {
+        self.options.startTime = picker.startDate.unix() * 1000;
+        self.options.endTime = picker.endDate.unix() * 1000;
+        self.options.isDateRangeLocked = true;
+        // TODO(mduan): Clean this up
+        if ($lockDateRangeButton.find('.fa-unlock-alt').length) {
+          $lockDateRangeButton.click();
+        }
+        self.render();
+      });
+
+      var self = this;
+      $lockDateRangeButton.click(function() {
+        var $el = $(this);
+        $el.blur();
+        if ($el.find('.fa-unlock-alt').length) {
+          $el.addClass('btn-primary')
+            .removeClass('btn-default')
+            .find('.fa-unlock-alt')
+              .addClass('fa-lock')
+              .removeClass('fa-unlock-alt')
+              .addClass('active');
+          self.options.isDateRangeLocked = true;
+        } else {
+          $el.addClass('btn-default')
+            .removeClass('btn-primary')
+            .find('.fa-lock')
+              .addClass('fa-unlock-alt')
+              .removeClass('fa-lock')
+              .removeClass('active');
+          self.options.isDateRangeLocked = false;
           self.render();
-        });
+        }
       });
     };
 
@@ -338,7 +451,8 @@ $(function() {
         type: 'iconButton',
         label: 'Refetch data',
         icon: 'refresh',
-        width: 127
+        width: 127,
+        height: 40
       });
 
       var self = this;
@@ -427,6 +541,7 @@ $(function() {
         onLabel: 'Hide albums',
         icon: 'photo',
         width: 143,
+        height: 40
       });
 
       var self = this;
@@ -443,7 +558,7 @@ $(function() {
 
     PhotoMap.prototype.renderControls = function() {
       this.hasRenderedControls = true;
-      this.renderDatepickers();
+      this.renderDateRangePicker();
       this.renderReloadButton();
       this.renderChooseAlbumsButton();
     };
@@ -455,6 +570,13 @@ $(function() {
       }
       return this.fetchAndSavePhotosIfNecessary()
         .then(self.queryPhotos.bind(self))
+        .then(function() {
+          if (self.photos.length) {
+            self.options.startTime = _.min(self.photos, function(photo) { return photo.timestamp }).timestamp;
+            self.options.endTime = _.max(self.photos, function(photo) { return photo.timestamp }).timestamp;
+            self.renderDateRangePicker();
+          }
+        })
         .then(self.renderPhotos.bind(self))
         .then(self.afterLoad.bind(self));
     };
@@ -520,15 +642,8 @@ $(function() {
 
       this.options = $.extend({}, options);
 
-      var currDate = new Date();
-      if (this.options.startTime || this.options.endTime) {
-        this.options.startTime = this.options.startTime || 0;
-        this.options.endTime = !isNaN(this.options.endTime) ?  this.options.endTime : currDate.getTime();
-      } else {
-        var weekAgoDate = new Date(currDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-        this.options.startTime = weekAgoDate.getTime();
-        this.options.endTime = currDate.getTime();
-      }
+      this.options.startTime = this.options.startTime || 0;
+      this.options.endTime = !isNaN(this.options.endTime) ?  this.options.endTime : moment().endOf('day').unix() * 1000;
 
       this.albumTemplate = compileTemplate($('#albumTemplate'));
       this.initMap();
@@ -635,7 +750,9 @@ $(function() {
       startTime: parseInt(getParameterByName('startTime')),
       endTime: parseInt(getParameterByName('endTime')),
       // TODO(mduan): Convert to array
-      albumIds: getParameterByName('albumIds')
+      albumIds: getParameterByName('albumIds'),
+      isMapLocked: !!getParameterByName('isMapLocked'),
+      isDateRangeLocked: !!getParameterByName('isDateRangeLocked')
     }));
   });
 });
