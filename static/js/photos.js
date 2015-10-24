@@ -429,8 +429,10 @@ $(function() {
         startDate: new Date(this.options.startTime),
         endDate: new Date(this.options.endTime),
         autoApply: true,
+        opens: 'left',
         ranges: {
-            //'Today': [moment().startOf('day'), endOfDayMoment],
+           //'Today': [moment().startOf('day'), endOfDayMoment],
+           //'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
            'Last 24 hours': [moment().subtract(24, 'hours'), endOfDayMoment],
            'Last 7 days': [moment().subtract(6, 'days'), endOfDayMoment],
            'Last 30 days': [moment().subtract(29, 'days'), endOfDayMoment],
@@ -617,7 +619,7 @@ $(function() {
         .then(self.queryPhotos.bind(self))
         .then(function() {
           if (self.photos.length) {
-            if (!self.isDateRangeLocked) {
+            if (!self.options.isDateRangeLocked) {
               self.options.startTime = _.min(self.photos, function(photo) { return photo.timestamp }).timestamp;
               self.options.endTime = _.max(self.photos, function(photo) { return photo.timestamp }).timestamp;
             }

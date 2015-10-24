@@ -45,6 +45,10 @@
       <h1 class="title">Photo Map</h1>
       <div id="mapOptions">
         <div class="mapOptionsRow">
+          <div id="mapOptionsButtons">
+            <div id="chooseAlbumsButton"></div>
+            <div id="reloadButton"></div>
+          </div>
           <div id="dateRangeContainer" class="form-inline">
             <div id="dateRange" class="form-group webix_el_box">
               <label for="dateRangePicker">Showing photos from</label>
@@ -56,10 +60,6 @@
                 </span>
               </div>
             </div>
-          </div>
-          <div id="mapOptionsButtons">
-            <div id="chooseAlbumsButton"></div>
-            <div id="reloadButton"></div>
           </div>
         </div>
         <div class="mapOptionsRow" id="albumsList"></div>
@@ -93,7 +93,7 @@
       <img class="popupMedia" src="<%= data.imageUrl %>">
     <% } %>
     <div class="mediaDetails">
-      <span class="mediaDatetime">Taken on <a class="mediaDate" href="#" data-timestamp="<%- data.timestamp %>"><%- data.dateStr %></a> at <%- data.timeStr %></span>
+      <span class="mediaDatetime">From <a class="mediaDate" href="#" data-timestamp="<%- data.timestamp %>"><%- data.dateStr %></a> at <%- data.timeStr %></span>
       <a class="mediaWebUrl" href="<%= data.webUrl%>" target="_blank">View original<sup><i class="fa fa-external-link"></i></sup></a>
     </div>
   </script>

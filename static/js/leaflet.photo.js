@@ -37,8 +37,8 @@ L.Photo = L.FeatureGroup.extend({
       title: photo.caption || 'Caption??'
     }).bindPopup('', {
       className: 'leaflet-popup-photo',
-      minWidth: 550,
-      maxWidth: 550,
+      minWidth: 450,
+      maxWidth: 450,
       maxHeight: 550
     });
     marker.photo = photo;

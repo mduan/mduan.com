@@ -20,7 +20,7 @@
 
 #dateRange #dateRangePicker {
   display: inline-block;
-  width: 200px;
+  width: 202px;
   padding-left: 30px;
 }
 
@@ -85,8 +85,16 @@
   font-weight: bold;
 }
 
+#map .leaflet-popup-photo .leaflet-popup-content {
+  padding-top: 18px;
+  padding-bottom: 10px;
+}
+
+#map .leaflet-popup-photo .leaflet-popup-close-button:hover {
+  background-color: transparent;
+}
+
 #map .leaflet-popup-photo .popupMedia {
-  margin-top: 10px;
   width: 100%;
 }
 
