@@ -97,11 +97,13 @@
     </div>
   </script>
   <script id="photoPopupTemplate" type="text/template">
-    <% if (data.isVideoSupported && data.videoUrl) { %>
-      <video class="popupMedia" autoplay controls poster="<%= data.imageUrl %>"><source src="<%= data.videoUrl %>" type="video/mp4"/></video>
-    <% } else { %>
-      <img class="popupMedia" src="<%= data.imageUrl %>">
-    <% } %>
+    <div class="popupMediaContainer">
+      <% if (data.isVideoSupported && data.videoUrl) { %>
+        <video class="popupMedia" autoplay controls poster="<%= data.imageUrl %>"><source src="<%= data.videoUrl %>" type="video/mp4"/></video>
+      <% } else { %>
+        <img class="popupMedia" src="<%= data.imageUrl %>">
+      <% } %>
+    </div>
     <div class="mediaDetails">
       <span class="mediaDatetime">From <a class="mediaDate" href="#" data-timestamp="<%- data.timestamp %>"><%- data.dateStr %></a> at <%- data.timeStr %></span>
       <a class="mediaWebUrl" href="<%= data.webUrl%>" target="_blank">View original<sup><i class="fa fa-external-link"></i></sup></a>

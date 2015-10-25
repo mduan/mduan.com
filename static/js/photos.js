@@ -868,7 +868,7 @@ $(function() {
       idb: idb,
       userId: '100039461888031923639',
       cssLoader: cssLoader,
-      imageSize: 400,
+      imageSize: 512,
       albumsToIgnore: [
         '5623841669936491985' // Profile Photos
       ]

@@ -34,12 +34,10 @@ L.Photo = L.FeatureGroup.extend({
         html: '<div class="markerThumbnail" style="background-image: url(' + photo.thumbnailUrl + ');"></div>',
         className: 'leafletMarkerPhoto'
       }, photo, this.options.icon)),
-      title: photo.caption || 'Caption??'
+      title: photo.caption
     }).bindPopup('', {
       className: 'leaflet-popup-photo',
-      minWidth: 450,
-      maxWidth: 450,
-      maxHeight: 550
+      maxWidth: 750
     });
     marker.photo = photo;
     return marker;

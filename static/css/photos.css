@@ -112,8 +112,13 @@
   background-color: transparent;
 }
 
+#map .leaflet-popup-photo .popupMediaContainer {
+  max-height: 450px;
+  overflow-y: scroll;
+}
+
 #map .leaflet-popup-photo .popupMedia {
-  width: 100%;
+  max-width: 512px;
 }
 
 #map .leaflet-popup-photo .mediaDetails {
