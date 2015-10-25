@@ -355,7 +355,7 @@ $(function() {
           self.options.startTime = moment(timestamp).startOf('day').unix() * 1000;
           self.options.endTime = moment(timestamp).endOf('day').unix() * 1000;
           self.lockDateRange();
-          self.render();
+          self.onlyRender();
         });
 
         var $videoMedia = $content.find('video.popupMedia');
@@ -444,13 +444,6 @@ $(function() {
     }
 
     PhotoMap.prototype.initDateRangePicker = function() {
-      if (this.$dateRangePicker) {
-        var dateRangePicker = this.$dateRangePicker.data('daterangepicker');
-        dateRangePicker.setStartDate(new Date(this.options.startTime));
-        dateRangePicker.setEndDate(new Date(this.options.endTime));
-        return;
-      }
-
       var self = this;
       var endOfDayMoment = moment().endOf('day');
       this.$dateRangePicker = $('#dateRangePicker').daterangepicker({
@@ -485,7 +478,7 @@ $(function() {
         self.options.endTime = picker.endDate.unix() * 1000;
         // TODO(mduan): Clean this up
         self.lockDateRange();
-        self.render();
+        self.onlyRender();
       });
 
       var self = this;
@@ -506,9 +499,26 @@ $(function() {
               .removeClass('fa-lock')
               .removeClass('active');
           self.options.isDateRangeLocked = false;
-          self.render();
+          self.onlyRender();
         }
       });
+    };
+
+    PhotoMap.prototype.updateDateRangePicker = function() {
+      if (!this.photos.length) {
+        return;
+      }
+      if (!this.options.isDateRangeLocked) {
+        this.options.startTime = _.min(this.photos, function(photo) {
+          return photo.timestamp
+        }).timestamp;
+        this.options.endTime = _.max(this.photos, function(photo) {
+          return photo.timestamp
+        }).timestamp;
+      }
+      var dateRangePicker = this.$dateRangePicker.data('daterangepicker');
+      dateRangePicker.setStartDate(new Date(this.options.startTime));
+      dateRangePicker.setEndDate(new Date(this.options.endTime));
     };
 
     PhotoMap.prototype.resetIdb = function() {
@@ -527,7 +537,7 @@ $(function() {
           return;
         }
         self.photos = [];
-        self.resetIdb().then(self.render.bind(self));
+        self.resetAndRender();
       });
     };
 
@@ -592,7 +602,7 @@ $(function() {
             albumIds = [albumIds];
           }
           self.options.albumIds = albumIds;
-          self.render();
+          self.onlyRender();
         });
 
         /*****************************************************
@@ -682,6 +692,40 @@ $(function() {
       });
     };
 
+    PhotoMap.prototype.fetchAndSavePhotos = function() {
+      var self = this;
+      return this.options.photosFetcher.fetchAndSave().then(function(stats) {
+        self.fetchAndSaveStats = stats;
+      });
+    };
+
+    PhotoMap.prototype.resetAndRender = function() {
+      this.beforeRender();
+      this.beforeFetch();
+      return this.resetIdb()
+        .then(this.fetchAndSavePhotos.bind(this))
+        .then(this.render.bind(this))
+        .then(this.afterRender.bind(this));
+    };
+
+    PhotoMap.prototype.fetchIfNecessaryAndRender = function() {
+      this.beforeRender();
+      var self = this;
+      return this.options.idb.photos.count().then(function(count) {
+        if (count) {
+          return Promise.resolve();
+        } else {
+          return self.fetchAndSavePhotos();
+        }
+      }).then(self.render.bind(self))
+        .then(self.afterRender.bind(self));
+    };
+
+    PhotoMap.prototype.onlyRender = function() {
+      this.beforeRender();
+      return this.render().then(this.afterRender.bind(this));
+    };
+
     PhotoMap.prototype.render = function() {
       if (this.isRendering) {
         this.hasQueuedRender = true;
@@ -691,21 +735,9 @@ $(function() {
       this.hasQueuedRender = false;
       this.isRendering = true;
 
-      var self = this;
-      this.beforeRender();
-      return this.fetchAndSavePhotosIfNecessary()
-        .then(self.queryPhotos.bind(self))
-        .then(function() {
-          if (self.photos.length) {
-            if (!self.options.isDateRangeLocked) {
-              self.options.startTime = _.min(self.photos, function(photo) { return photo.timestamp }).timestamp;
-              self.options.endTime = _.max(self.photos, function(photo) { return photo.timestamp }).timestamp;
-            }
-            self.initDateRangePicker();
-          }
-        })
-        .then(self.renderPhotos.bind(self))
-        .then(self.afterRender.bind(self));
+      return this.queryPhotos()
+        .then(this.updateDateRangePicker.bind(this))
+        .then(this.renderPhotos.bind(this));
     };
 
     PhotoMap.prototype.beforeRender = function() {
@@ -716,11 +748,11 @@ $(function() {
 
       // TODO(mduan): Find cleaner way to do this
       $(this.map._container).addClass('disabled');
+
+      this.$reloadButton.attr('disabled', 'disabled');
     };
 
     PhotoMap.prototype.beforeFetch = function() {
-      this.$reloadButton.attr('disabled', 'disabled');
-
       if (this.$chooseAlbumsButton.hasClass('active')) {
         this.$chooseAlbumsButton.removeClass('active');
         if (this.$$albumsList) {
@@ -733,6 +765,7 @@ $(function() {
 
     PhotoMap.prototype.afterRender = function() {
       this.isRendering = false;
+
       if (this.hasQueuedRender) {
         return this.render();
       } else {
@@ -756,20 +789,6 @@ $(function() {
       }
     };
 
-    PhotoMap.prototype.fetchAndSavePhotosIfNecessary = function() {
-      var self = this;
-      return self.options.idb.photos.count().then(function(count) {
-        if (count) {
-          return Promise.resolve();
-        } else {
-          self.beforeFetch();
-          return self.options.photosFetcher.fetchAndSave().then(function(stats) {
-            self.fetchAndSaveStats = stats;
-          });
-        }
-      });
-    };
-
     function compileTemplate($template) {
       return _.template($template.html(), { variable: 'data' });
     }
@@ -789,7 +808,7 @@ $(function() {
       this.photoPopupTemplate = compileTemplate($('#photoPopupTemplate'));
       this.initMap();
       this.initControls();
-      this.render();
+      this.fetchIfNecessaryAndRender();
     }
 
     return PhotoMap;
