@@ -246,7 +246,8 @@
   padding: 10px;
 }
 
-#albumsList .album:hover .albumDetailsBar {
+#albumsList .album:hover .albumDetailsBar,
+#albumsList .webix_dataview_item.webix_selected .albumDetailsBar {
   background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.0) 100%); /* IE10+ */
   background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.0) 100%); /* Mozilla Firefox */
   background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.0) 100%); /* Opera */
@@ -257,15 +258,15 @@
 
 #albumsList .albumDetailsBar .fa-check-circle {
   display: none;
+  font-size: 24px;
+  position: relative;
+  top: -1px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 #albumsList .album:hover .albumDetailsBar .fa-check-circle {
   display: inline;
-  position: relative;
-  top: -3px;
   color: #eee;
-  font-size: 24px;
-  z-index: 1;
 }
 
 #albumsList .album:hover .albumDetailsBar .fa-check-circle:hover,
@@ -274,8 +275,9 @@
 }
 
 #albumsList .webix_dataview_item.webix_selected .albumDetailsBar .fa-check-circle,
-#albumsList .webix_dataview_item.webix_selected .albumDetailsBar .fa-check-circle:hover,
-#albumsList .webix_dataview_item.webix_selected .albumDetailsBar .fa-check-circle:focus {
+#albumsList .webix_dataview_item.webix_selected .album:hover .albumDetailsBar .fa-check-circle,
+#albumsList .webix_dataview_item.webix_selected .album:hover .albumDetailsBar .fa-check-circle {
+  display: inline;
   color: #96d7eb;
 }
 
@@ -285,6 +287,7 @@
   line-height: 1;
   font-size: 13px;
   color: #eee;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 #albumsList .albumDetailsBar .albumWebUrl sup {
