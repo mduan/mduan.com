@@ -82,7 +82,7 @@ $(function() {
     };
 
     PicasaFetcher.prototype.saveAlbumsToIdb = function(albums) {
-      return this.options.idb.albums.add(albums);
+      return this.options.idb.albums.update(albums);
     };
 
     PicasaFetcher.prototype.extractPhotos = function(photos) {
@@ -106,7 +106,7 @@ $(function() {
     };
 
     PicasaFetcher.prototype.savePhotosToIdb = function(photos) {
-      return this.options.idb.photos.add(photos);
+      return this.options.idb.photos.update(photos);
     };
 
     //PhotoMap.prototype.queryTimeRangeItemForAlbum = function(album, isDesc) {
@@ -141,7 +141,17 @@ $(function() {
     //  return Promise.all(timeRangePromises);
     //};
 
+    PicasaFetcher.prototype.onComplete = function() {
+      return {
+        numAlbumsErrored: this.numAlbumsErrored,
+        hasFetchingError: this.hasFetchingError
+      };
+    };
+
     PicasaFetcher.prototype.fetchAndSave = function() {
+      this.numAlbumsErrored = 0;
+      this.hasFetchingError = false;
+
       var self = this;
       this.options.cssLoader.updateMessage('Fetching from Picasa');
       return this.fetchAlbumsList().then(function(albums) {
@@ -167,9 +177,16 @@ $(function() {
                 'Saved ' + numAlbumsSaved + ' of ' + albums.length + ' albums'
               );
             });
+          }, function() {
+            ++self.numAlbumsErrored;
           });
         });
-        return Promise.all(promises).then(self.saveAlbumsToIdb.bind(self, albums));
+        return Promise.all(promises)
+          .then(self.saveAlbumsToIdb.bind(self, albums))
+          .then(self.onComplete.bind(self));
+      }, function() {
+        self.hasFetchingError = true;
+        return self.onComplete();
       });
     };
 
@@ -703,9 +720,6 @@ $(function() {
 
     PhotoMap.prototype.beforeFetch = function() {
       this.$reloadButton.attr('disabled', 'disabled');
-      //this.$reloadButton.disable();
-      // Hack to fix the button remaining blue if you don't move the mouse.
-      //this.$reloadButton.('button').css('background-color', '#e9e9e9');
 
       if (this.$chooseAlbumsButton.hasClass('active')) {
         this.$chooseAlbumsButton.removeClass('active');
@@ -725,7 +739,20 @@ $(function() {
         this.$reloadButton.removeAttr('disabled');
         this.$chooseAlbumsButton.removeAttr('disabled');
         $(this.map._container).removeClass('disabled');
-        this.options.cssLoader.stopLoading();
+
+        var message;
+        if (this.fetchAndSaveStats) {
+          if (this.fetchAndSaveStats.numAlbumsErrored || this.fetchAndSaveStats.hasFetchingError) {
+            message = 'Some photos could not be fetched. Try again later.';
+          }
+          this.fetchAndSaveStats = null;
+        }
+
+        if (message) {
+          this.options.cssLoader.updateMessage(message, { hideAfterDuration: 3000 });
+        } else {
+          this.options.cssLoader.stopLoading();
+        }
       }
     };
 
@@ -736,7 +763,9 @@ $(function() {
           return Promise.resolve();
         } else {
           self.beforeFetch();
-          return self.options.photosFetcher.fetchAndSave();
+          return self.options.photosFetcher.fetchAndSave().then(function(stats) {
+            self.fetchAndSaveStats = stats;
+          });
         }
       });
     };
@@ -807,9 +836,14 @@ $(function() {
       this.options.$overlay.show();
     };
 
-    CssLoader.prototype.updateMessage = function(message) {
+    CssLoader.prototype.updateMessage = function(message, options) {
+      options = options || {};
+
       if (this.$message) {
         this.$message.text(message);
+      }
+      if (_.isFinite(options.hideAfterDuration)) {
+        setTimeout(this.stopLoading.bind(this), options.hideAfterDuration);
       }
     };
 
