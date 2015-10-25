@@ -659,8 +659,7 @@ $(function() {
       this.beforeFetch();
       return this.resetIdb()
         .then(this.fetchPhotos.bind(this))
-        .then(this.render.bind(this))
-        .then(this.afterRender.bind(this));
+        .then(this.render.bind(this));
     };
 
     PhotoMap.prototype.fetchIfNecessaryAndRender = function() {
@@ -672,19 +671,18 @@ $(function() {
         } else {
           return self.fetchPhotos();
         }
-      }).then(this.render.bind(this))
-        .then(this.afterRender.bind(this));
+      }).then(this.render.bind(this));
     };
 
     PhotoMap.prototype.onlyRender = function() {
       this.beforeRender();
-      return this.render().then(this.afterRender.bind(this));
+      return this.render();
     };
 
     PhotoMap.prototype.render = function() {
       if (this.isRendering) {
         this.hasQueuedRender = true;
-        return Promise.resolve();
+        return Promise.resolve({ rendered: false });
       }
 
       this.hasQueuedRender = false;
@@ -692,12 +690,15 @@ $(function() {
 
       return this.queryPhotos()
         .then(this.updateDateRangePicker.bind(this))
-        .then(this.renderPhotos.bind(this));
+        .then(this.renderPhotos.bind(this))
+        .then(this.afterRender.bind(this))
+        .then(function() {
+          return { rendered: true };
+        });
     };
 
     PhotoMap.prototype.beforeRender = function() {
-      this.photoLayer.clear();
-      this.photos = [];
+      this.beforeMapRender();
 
       this.options.cssLoader.startLoading();
 
@@ -705,6 +706,11 @@ $(function() {
       $(this.map._container).addClass('disabled');
 
       this.$reloadButton.attr('disabled', 'disabled');
+    };
+
+    PhotoMap.prototype.beforeMapRender = function() {
+      this.photoLayer.clear();
+      this.photos = [];
     };
 
     PhotoMap.prototype.beforeFetch = function() {
@@ -722,6 +728,7 @@ $(function() {
       this.isRendering = false;
 
       if (this.hasQueuedRender) {
+        this.beforeMapRender();
         return this.render();
       } else {
         this.$reloadButton.removeAttr('disabled');
