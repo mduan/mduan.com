@@ -40,23 +40,29 @@
   <script src="/static/js/photos.js"></script>
 </head>
 <body>
-  <div class="wrapper">
-    <div class="body">
+  <div class="contentContainer">
+    <div class="content">
       <h1 class="title">Photo Map</h1>
       <div id="mapOptions">
         <div class="mapOptionsRow">
-          <div id="mapOptionsButtons">
-            <div id="chooseAlbumsButton"></div>
-            <div id="reloadButton"></div>
+          <div id="mapOptionsButtons" class="form-inline">
+            <button id="chooseAlbumsButton" class="btn btn-default" type="button">
+              <i class="fa fa-photo"></i> Choose albums
+            </button>
+            <button id="reloadButton" class="btn btn-default" type="button">
+              <i class="fa fa-refresh"></i> Refetch data
+            </button>
           </div>
           <div id="dateRangeContainer" class="form-inline">
-            <div id="dateRange" class="form-group webix_el_box">
+            <div id="dateRange" class="form-group">
               <label for="dateRangePicker">Showing photos from</label>
               <div class="input-group">
                 <input id="dateRangePicker" class="form-control">
                 <i class="fa fa-calendar"></i>
                 <span class="input-group-btn">
-                  <button id="lockDateRangeButton" class="btn btn-default" type="button"><i class="fa fa-unlock-alt"></i></button>
+                  <button id="lockDateRangeButton" class="btn btn-default" type="button">
+                    <i class="fa fa-unlock-alt"></i>
+                  </button>
                 </span>
               </div>
             </div>
@@ -82,6 +88,10 @@
             <% } %>
             <span class="albumNumPhotos"><%- data.numPhotos %> items</span>
           </div>
+        </div>
+        <div class="albumDetailsBar"">
+          <i class="fa fa-check-circle"></i>
+          <a class="albumWebUrl" href="<%= data.webUrl %>" target="_blank">View album<sup><i class="fa fa-external-link"></i></sup></a>
         </div>
       </div>
     </div>

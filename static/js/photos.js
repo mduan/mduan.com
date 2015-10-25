@@ -306,7 +306,13 @@ $(function() {
 
       this.map = L.mapbox.map('map', 'mapbox.streets', {
         maxZoom: 18,
-        zoomControl: false
+        minZoom: 1,
+        attributionControl: false,
+        zoomControl: false,
+        tileLayer: {
+          continuousWorld: false,
+          noWrap: false
+        }
       });
 
       var self = this;
@@ -350,9 +356,15 @@ $(function() {
         });
       }).addTo(this.map);
 
-      (new L.Control.Zoom({
+      var mapAttribution = L.control.attribution({
+        position: 'bottomright',
+        prefix: false
+      }).addTo(this.map);
+      mapAttribution.addAttribution('<a href="https://www.mapbox.com/about/maps/" target="_blank">© Mapbox © OpenStreetMap</a>');
+
+      L.control.zoom({
         position: 'topright'
-      })).addTo(this.map);
+      }).addTo(this.map);
 
       L.control.locate({
         position: 'topright',
@@ -383,7 +395,6 @@ $(function() {
         self.mapLockControl.lock();
       }).addTo(this.map);
 
-
       this.map.fitWorld();
     };
 
@@ -409,7 +420,7 @@ $(function() {
       }
     }
 
-    PhotoMap.prototype.renderDateRangePicker = function() {
+    PhotoMap.prototype.initDateRangePicker = function() {
       if (this.$dateRangePicker) {
         var dateRangePicker = this.$dateRangePicker.data('daterangepicker');
         dateRangePicker.setStartDate(new Date(this.options.startTime));
@@ -459,16 +470,14 @@ $(function() {
         var $el = $(this);
         $el.blur();
         if ($el.find('.fa-unlock-alt').length) {
-          $el.addClass('btn-primary')
-            .removeClass('btn-default')
+          $el.addClass('active')
             .find('.fa-unlock-alt')
               .addClass('fa-lock')
               .removeClass('fa-unlock-alt')
               .addClass('active');
           self.options.isDateRangeLocked = true;
         } else {
-          $el.addClass('btn-default')
-            .removeClass('btn-primary')
+          $el.removeClass('active')
             .find('.fa-lock')
               .addClass('fa-unlock-alt')
               .removeClass('fa-lock')
@@ -486,19 +495,14 @@ $(function() {
       ]);
     };
 
-    PhotoMap.prototype.renderReloadButton = function() {
-      this.$$reloadButton = webix.ui({
-        view: 'button',
-        container: 'reloadButton',
-        type: 'iconButton',
-        label: 'Refetch data',
-        icon: 'refresh',
-        width: 127,
-        height: 40
-      });
+    PhotoMap.prototype.initReloadButton = function() {
+      this.$reloadButton = $('#reloadButton');
 
       var self = this;
-      this.$$reloadButton.attachEvent('onItemClick', function() {
+      this.$reloadButton.click(function() {
+        if (self.$reloadButton.is('[disabled]')) {
+          return;
+        }
         self.photos = [];
         self.resetIdb().then(self.render.bind(self));
       });
@@ -511,104 +515,161 @@ $(function() {
       }
 
       var self = this;
-      this.options.idb.albums.query().all().execute()
-        .then(function(albums) {
-          albums.sort(function(albumA, albumB) {
-            var aMinTimestamp = albumA.minTimestamp || 0;
-            var aMaxTimestamp = !isNaN(albumA.maxTimestamp) ? albumA.maxTimestamp : Infinity;
-            var bMinTimestamp = albumB.minTimestamp || 0;
-            var bMaxTimestamp = !isNaN(albumB.maxTimestamp) ? albumB.maxTimestamp : Infinity;
-            if (aMaxTimestamp === bMaxTimestamp) {
-              return bMinTimestamp - aMinTimestamp;
-            } else {
-              return bMaxTimestamp - aMaxTimestamp;
-            }
-          });
-
-          var dateFormatter = webix.Date.dateToStr("%M %j, %Y");
-          albums.forEach(function(album) {
-            if (isNaN(album.minTimestamp) || isNaN(album.maxTimestamp)) {
-              return;
-            }
-            album.minDate = dateFormatter(new Date(album.minTimestamp));
-            album.maxDate = dateFormatter(new Date(album.maxTimestamp));
-          });
-
-          self.$$albumsList = webix.ui({
-            view: 'dataview',
-            select: 'multiselect',
-            multiselect: 'touch',
-            drag: false,
-            data: albums,
-            datatype: 'json',
-            container: 'albumsList',
-            borderless: true,
-            type: {
-              width: 286,
-              height: 217,
-              template: function(album) {
-                return self.albumTemplate(album);
-              }
-            },
-            scroll: true,
-            width: 860,
-            height: 350,
-          });
-
-          if (Array.isArray(self.options.albumIds)) {
-            // Select the elements before we bind the onSelectChange listener
-            self.$$albumsList.select(self.options.albumIds);
+      this.options.idb.albums.query().all().execute().then(function(albums) {
+        albums.sort(function(albumA, albumB) {
+          var aMinTimestamp = albumA.minTimestamp || 0;
+          var aMaxTimestamp = !isNaN(albumA.maxTimestamp) ? albumA.maxTimestamp : Infinity;
+          var bMinTimestamp = albumB.minTimestamp || 0;
+          var bMaxTimestamp = !isNaN(albumB.maxTimestamp) ? albumB.maxTimestamp : Infinity;
+          if (aMaxTimestamp === bMaxTimestamp) {
+            return bMinTimestamp - aMinTimestamp;
+          } else {
+            return bMaxTimestamp - aMaxTimestamp;
           }
-          self.$$albumsList.attachEvent('onSelectChange', function() {
-            var albumIds = self.$$albumsList.getSelectedId();
-            if (!albumIds) {
-              albumIds = null;
-            } else if (!Array.isArray(albumIds)) {
-              albumIds = [albumIds];
-            }
-            self.options.albumIds = albumIds;
-            self.render();
-          });
         });
+
+        albums.forEach(function(album) {
+          if (isNaN(album.minTimestamp) || isNaN(album.maxTimestamp)) {
+            return;
+          }
+          album.minDate = moment(new Date(album.minTimestamp)).format("MMM D, YYYY");
+          album.maxDate = moment(new Date(album.maxTimestamp)).format("MMM D, YYYY");
+        });
+
+        self.$$albumsList = webix.ui({
+          view: 'dataview',
+          select: 'multiselect',
+          multiselect: 'touch',
+          drag: false,
+          data: albums,
+          datatype: 'json',
+          container: 'albumsList',
+          borderless: true,
+          type: {
+            width: 286,
+            height: 217,
+            template: function(album) {
+              return self.albumTemplate(album);
+            }
+          },
+          scroll: true,
+          width: 860,
+          height: 350,
+        });
+
+        if (Array.isArray(self.options.albumIds)) {
+          // Select the elements before we bind the onSelectChange listener
+          self.$$albumsList.select(self.options.albumIds);
+        }
+        self.$$albumsList.attachEvent('onSelectChange', function() {
+          var albumIds = self.$$albumsList.getSelectedId();
+          if (!albumIds) {
+            albumIds = null;
+          } else if (!Array.isArray(albumIds)) {
+            albumIds = [albumIds];
+          }
+          self.options.albumIds = albumIds;
+          self.render();
+        });
+
+        /*****************************************************
+          * TODO(mduan):
+          * The following section contains some very hacky code to work around
+          * the fact that webix re-renders on selection. The hacks are needed
+          * to accomplish the following:
+          * 1. Need to use .on() to listen to clicks on links, but need to listen
+          *    to an element lower in DOM than what webix listens to prevent selection
+          *    if click on link.
+          * 2. To allow for css transition animation on selection change.
+          *****************************************************/
+
+        $(self.$$albumsList.$view)
+          .find('.webix_scroll_cont')
+          .on('click', '.albumWebUrl', function(e) {
+            e.stopPropagation();
+          });
+
+        var savedCssStyles = {};
+        var onBeforeSelectChange = function(item) {
+          var $el = $(self.$$albumsList.getItemNode(item));
+          savedCssStyles = {
+            'background': $el.css('background'),
+            'border': $el.css('border'),
+            'padding': $el.css('padding'),
+            'width': $el.find('.albumThumbnail').css('width'),
+            'height': $el.find('.albumThumbnail').css('height')
+          };
+        };
+        var onAfterSelection = function(item) {
+          var $el = $(self.$$albumsList.getItemNode(item));
+          $el.css({
+            'background': savedCssStyles['background'],
+            'border': savedCssStyles['border'],
+            'padding': savedCssStyles['padding']
+          }).find('.albumThumbnail')
+            .css({
+              'width': savedCssStyles['width'],
+              'height': savedCssStyles['height']
+            });
+          $el.addClass('animate');
+
+          setTimeout(function() {
+            $el.css({
+              'background': '',
+              'border': '',
+              'padding': ''
+            }).find('.albumThumbnail')
+              .css({
+                'width': '',
+                'height': ''
+              });
+          });
+        };
+
+        self.$$albumsList.attachEvent('onBeforeSelect', onBeforeSelectChange);
+        self.$$albumsList.attachEvent('onBeforeUnSelect', onBeforeSelectChange);
+
+        self.$$albumsList.attachEvent('onAfterSelect', onAfterSelection);
+        self.$$albumsList.attachEvent('onAfterUnSelect', onAfterSelection);
+
+
+        /***********************************
+          * End of hacky code.
+          **********************************/
+      });
     };
 
-    PhotoMap.prototype.renderChooseAlbumsButton = function() {
-      this.$$chooseAlbumsButton = webix.ui({
-        view: 'toggle',
-        container: 'chooseAlbumsButton',
-        type: 'iconButton',
-        offIcon: 'photo',
-        onIcon: 'photo',
-        offLabel: 'Choose albums',
-        onLabel: 'Hide albums',
-        icon: 'photo',
-        width: 143,
-        height: 40
-      });
+    PhotoMap.prototype.initChooseAlbumsButton = function() {
+      this.$chooseAlbumsButton = $('#chooseAlbumsButton');
 
       var self = this;
-      this.$$chooseAlbumsButton.attachEvent('onItemClick', function() {
-        if (self.$$chooseAlbumsButton.getValue() === 0) {
+      this.$chooseAlbumsButton.click(function() {
+        if (self.$chooseAlbumsButton.is('[disabled]')) {
+          return;
+        }
+
+        self.$chooseAlbumsButton.toggleClass('active');
+        if (self.$chooseAlbumsButton.hasClass('active')) {
+          self.renderAlbums();
+        } else {
           if (self.$$albumsList) {
             self.$$albumsList.hide();
           }
-        } else {
-          self.renderAlbums();
         }
       });
     };
 
-    PhotoMap.prototype.renderControls = function() {
-      this.hasRenderedControls = true;
-      this.renderDateRangePicker();
-      this.renderReloadButton();
-      this.renderChooseAlbumsButton();
+    PhotoMap.prototype.initControls = function() {
+      this.hasInitializedControls = true;
+      this.initDateRangePicker();
+      this.initReloadButton();
+      this.initChooseAlbumsButton();
     };
 
     PhotoMap.prototype.render = function() {
       var self = this;
-      if (!this.hasRenderedControls) {
-        this.renderControls();
+      if (!this.hasInitializedControls) {
+        this.initControls();
       }
       this.beforeRender();
       return this.fetchAndSavePhotosIfNecessary()
@@ -619,7 +680,7 @@ $(function() {
               self.options.startTime = _.min(self.photos, function(photo) { return photo.timestamp }).timestamp;
               self.options.endTime = _.max(self.photos, function(photo) { return photo.timestamp }).timestamp;
             }
-            self.renderDateRangePicker();
+            self.initDateRangePicker();
           }
         })
         .then(self.renderPhotos.bind(self))
@@ -637,31 +698,26 @@ $(function() {
     };
 
     PhotoMap.prototype.beforeFetch = function() {
-      if (this.$$reloadButton) {
-        this.$$reloadButton.disable();
-        // Hack to fix the button remaining blue if you don't move the mouse.
-        $(this.$$reloadButton.$view).find('button').css('background-color', '#e9e9e9');
-      }
-      if (this.$$chooseAlbumsButton) {
-        if (this.$$chooseAlbumsButton.getValue() == 1) {
-          this.$$chooseAlbumsButton.setValue(0);
-          if (this.$$albumsList) {
-            this.$$albumsList.destructor();
-            this.$$albumsList = null;
-          }
+      this.$reloadButton.attr('disabled', 'disabled');
+      //this.$reloadButton.disable();
+      // Hack to fix the button remaining blue if you don't move the mouse.
+      //this.$reloadButton.('button').css('background-color', '#e9e9e9');
+
+      if (this.$chooseAlbumsButton.hasClass('active')) {
+        this.$chooseAlbumsButton.removeClass('active');
+        if (this.$$albumsList) {
+          this.$$albumsList.destructor();
+          this.$$albumsList = null;
         }
-        this.$$chooseAlbumsButton.disable();
       }
+      this.$chooseAlbumsButton.attr('disabled', 'disabled');
     };
 
     PhotoMap.prototype.afterRender = function() {
-      if (this.$$reloadButton) {
-        this.$$reloadButton.enable();
-        $(this.$$reloadButton.$view).find('button').css('background-color', '');
-      }
-      if (this.$$chooseAlbumsButton) {
-        this.$$chooseAlbumsButton.enable();
-      }
+      this.$reloadButton.removeAttr('disabled');
+        //enable();
+        //$(this.$reloadButton.$view).find('button').css('background-color', '');
+      this.$chooseAlbumsButton.removeAttr('disabled');
       // TODO(mduan): Find cleaner way to do this
       $(this.map._container).removeClass('disabled');
       this.options.cssLoader.stopLoading();

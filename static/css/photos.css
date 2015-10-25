@@ -1,3 +1,12 @@
+.contentContainer {
+  color: #6e6e6e;
+  display: flex;
+  padding: 100px 50px;
+  margin: 0 auto;
+  min-width: 1010px;
+  justify-content: center;
+}
+
 #mapOptions label {
   font-family: 'PT Sans', Tahoma;
   font-weight: normal;
@@ -32,12 +41,9 @@
   z-index: 3;
 }
 
-#mapOptionsButtons {
-  display: flex;
-}
-
 #map {
-  height: 600px;
+  width: 860px;
+  height: 550px;
   margin-bottom: 50px;
 }
 
@@ -61,8 +67,11 @@
   font-size: 1.2em;
   color: #444;
 }
+
+#map .leaflet-control-locate.active,
 #map .leaflet-control-lock .fa-lock {
-  color: #2074b6;
+  /* color: #2074b6; */
+  color: #337ab7;
 }
 
 #map .leafletMarkerPhoto {
@@ -116,9 +125,10 @@
   font-size: 13px;
 }
 
-#map .leaflet-popup-photo .mediaWebUrl .fa {
+#map .leaflet-popup-photo .mediaWebUrl sup {
+  padding-left: 4px;
   position: relative;
-  padding-left: 5px;
+  top: -3px;
 }
 
 #map #overlay {
@@ -174,6 +184,12 @@
   margin-bottom: 10px;
 }
 
+#albumsList .webix_dataview_item.animate,
+#albumsList .webix_dataview_item.animate .albumThumbnail {
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
 
 #albumsList .webix_dataview_item {
   border: 0;
@@ -181,14 +197,20 @@
 }
 
 #albumsList .webix_dataview_item.webix_selected {
-  border: 0;
-  padding: 4px;
+  background: #eee;
+  padding: 16px;
+  border: 2px solid #fff;
 }
 
 #albumsList .albumThumbnail {
+  position: relative;
   width: 278px;
   height: 209px;
-  position: relative;
+}
+
+#albumsList .webix_dataview_item.webix_selected .albumThumbnail {
+  width: 250px;
+  height: 181px;
 }
 
 #albumsList .albumInfo {
@@ -211,4 +233,72 @@
 #albumsList .albumInfo .albumDateRange,
 #albumsList .albumInfo .albumNumPhotos {
   font-size: 12px;
+}
+
+#albumsList .albumDetailsBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+}
+
+#albumsList .album:hover .albumDetailsBar {
+  background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.0) 100%); /* IE10+ */
+  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.0) 100%); /* Mozilla Firefox */
+  background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.0) 100%); /* Opera */
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0, 0, 0, 0.6)), color-stop(100, rgba(0, 0, 0, 0.0))); /* Webkit (Safari/Chrome 10) */
+  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.0) 100%); /* Webkit (Chrome 11+) */
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.0) 100%); /* W3C Markup */
+}
+
+#albumsList .albumDetailsBar .fa-check-circle {
+  display: none;
+}
+
+#albumsList .album:hover .albumDetailsBar .fa-check-circle {
+  display: inline;
+  position: relative;
+  top: -3px;
+  color: #eee;
+  font-size: 24px;
+  z-index: 1;
+}
+
+#albumsList .album:hover .albumDetailsBar .fa-check-circle:hover,
+#albumsList .album:hover .albumDetailsBar .fa-check-circle:focus {
+  color: #fff;
+}
+
+#albumsList .webix_dataview_item.webix_selected .albumDetailsBar .fa-check-circle,
+#albumsList .webix_dataview_item.webix_selected .albumDetailsBar .fa-check-circle:hover,
+#albumsList .webix_dataview_item.webix_selected .albumDetailsBar .fa-check-circle:focus {
+  color: #96d7eb;
+}
+
+
+#albumsList .albumDetailsBar .albumWebUrl {
+  display: none;
+  line-height: 1;
+  font-size: 13px;
+  color: #eee;
+}
+
+#albumsList .albumDetailsBar .albumWebUrl sup {
+  padding-left: 3px;
+  position: relative;
+  top: -3px;
+}
+
+#albumsList .album:hover .albumDetailsBar .albumWebUrl {
+  display: inline;
+}
+
+#albumsList .album:hover .albumDetailsBar .albumWebUrl:hover,
+#albumsList .album:hover .albumDetailsBar .albumWebUrl:focus {
+  color: #fff;
+  text-decoration: none;
 }
