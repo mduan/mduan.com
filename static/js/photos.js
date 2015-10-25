@@ -398,6 +398,12 @@ $(function() {
       this.map.fitWorld();
     };
 
+    PhotoMap.prototype.initControls = function() {
+      this.initDateRangePicker();
+      this.initReloadButton();
+      this.initChooseAlbumsButton();
+    };
+
     PhotoMap.prototype.updateBoundsIfNeccessary = function() {
       if (!this.options.isMapLocked) {
         if (this.photos.length) {
@@ -659,18 +665,16 @@ $(function() {
       });
     };
 
-    PhotoMap.prototype.initControls = function() {
-      this.hasInitializedControls = true;
-      this.initDateRangePicker();
-      this.initReloadButton();
-      this.initChooseAlbumsButton();
-    };
-
     PhotoMap.prototype.render = function() {
-      var self = this;
-      if (!this.hasInitializedControls) {
-        this.initControls();
+      if (this.isRendering) {
+        this.hasQueuedRender = true;
+        return;
       }
+
+      this.hasQueuedRender = false;
+      this.isRendering = true;
+
+      var self = this;
       this.beforeRender();
       return this.fetchAndSavePhotosIfNecessary()
         .then(self.queryPhotos.bind(self))
@@ -714,13 +718,15 @@ $(function() {
     };
 
     PhotoMap.prototype.afterRender = function() {
-      this.$reloadButton.removeAttr('disabled');
-        //enable();
-        //$(this.$reloadButton.$view).find('button').css('background-color', '');
-      this.$chooseAlbumsButton.removeAttr('disabled');
-      // TODO(mduan): Find cleaner way to do this
-      $(this.map._container).removeClass('disabled');
-      this.options.cssLoader.stopLoading();
+      this.isRendering = false;
+      if (this.hasQueuedRender) {
+        return this.render();
+      } else {
+        this.$reloadButton.removeAttr('disabled');
+        this.$chooseAlbumsButton.removeAttr('disabled');
+        $(this.map._container).removeClass('disabled');
+        this.options.cssLoader.stopLoading();
+      }
     };
 
     PhotoMap.prototype.fetchAndSavePhotosIfNecessary = function() {
@@ -753,6 +759,7 @@ $(function() {
       this.albumTemplate = compileTemplate($('#albumTemplate'));
       this.photoPopupTemplate = compileTemplate($('#photoPopupTemplate'));
       this.initMap();
+      this.initControls();
       this.render();
     }
 
