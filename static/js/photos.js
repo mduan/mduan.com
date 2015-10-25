@@ -648,15 +648,17 @@ $(function() {
     };
 
     PhotoMap.prototype.fetchPhotos = function() {
+      this.isFetching = true;
       var self = this;
       return this.options.photosFetcher.fetchAndSave().then(function(stats) {
+        self.isFetching = false;
         self.fetchStats = stats;
       });
     };
 
     PhotoMap.prototype.resetAndRender = function() {
       this.beforeRender();
-      this.beforeFetch();
+      this.removeAlbumChooserIfNecessary();
       return this.resetIdb()
         .then(this.fetchPhotos.bind(this))
         .then(this.render.bind(this));
@@ -680,8 +682,8 @@ $(function() {
     };
 
     PhotoMap.prototype.render = function() {
-      if (this.isRendering) {
-        this.hasQueuedRender = true;
+      if (this.isFetching || this.isRendering) {
+        this.hasQueuedRender = this.isRendering;
         return Promise.resolve({ rendered: false });
       }
 
@@ -705,6 +707,7 @@ $(function() {
       // TODO(mduan): Find cleaner way to do this
       $(this.map._container).addClass('disabled');
 
+      this.$chooseAlbumsButton.attr('disabled', 'disabled');
       this.$reloadButton.attr('disabled', 'disabled');
     };
 
@@ -713,7 +716,7 @@ $(function() {
       this.photos = [];
     };
 
-    PhotoMap.prototype.beforeFetch = function() {
+    PhotoMap.prototype.removeAlbumChooserIfNecessary = function() {
       if (this.$chooseAlbumsButton.hasClass('active')) {
         this.$chooseAlbumsButton.removeClass('active');
         if (this.$$albumsList) {
@@ -721,7 +724,6 @@ $(function() {
           this.$$albumsList = null;
         }
       }
-      this.$chooseAlbumsButton.attr('disabled', 'disabled');
     };
 
     PhotoMap.prototype.afterRender = function() {
