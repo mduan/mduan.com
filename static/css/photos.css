@@ -184,13 +184,6 @@
   margin-bottom: 10px;
 }
 
-#albumsList .webix_dataview_item.animate,
-#albumsList .webix_dataview_item.animate .albumThumbnail {
-  -webkit-transition: all 0.2s linear;
-  -moz-transition: all 0.2s linear;
-  transition: all 0.2s linear;
-}
-
 #albumsList .webix_dataview_item {
   border: 0;
   padding: 4px;

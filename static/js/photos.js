@@ -613,7 +613,6 @@ $(function() {
           * 1. Need to use .on() to listen to clicks on links, but need to listen
           *    to an element lower in DOM than what webix listens to prevent selection
           *    if click on link.
-          * 2. To allow for css transition animation on selection change.
           *****************************************************/
 
         $(self.$$albumsList.$view)
@@ -621,50 +620,6 @@ $(function() {
           .on('click', '.albumWebUrl', function(e) {
             e.stopPropagation();
           });
-
-        var savedCssStyles = {};
-        var onBeforeSelectChange = function(item) {
-          var $el = $(self.$$albumsList.getItemNode(item));
-          savedCssStyles = {
-            'background': $el.css('background'),
-            'border': $el.css('border'),
-            'padding': $el.css('padding'),
-            'width': $el.find('.albumThumbnail').css('width'),
-            'height': $el.find('.albumThumbnail').css('height')
-          };
-        };
-        var onAfterSelection = function(item) {
-          var $el = $(self.$$albumsList.getItemNode(item));
-          $el.css({
-            'background': savedCssStyles['background'],
-            'border': savedCssStyles['border'],
-            'padding': savedCssStyles['padding']
-          }).find('.albumThumbnail')
-            .css({
-              'width': savedCssStyles['width'],
-              'height': savedCssStyles['height']
-            });
-          $el.addClass('animate');
-
-          setTimeout(function() {
-            $el.css({
-              'background': '',
-              'border': '',
-              'padding': ''
-            }).find('.albumThumbnail')
-              .css({
-                'width': '',
-                'height': ''
-              });
-          });
-        };
-
-        self.$$albumsList.attachEvent('onBeforeSelect', onBeforeSelectChange);
-        self.$$albumsList.attachEvent('onBeforeUnSelect', onBeforeSelectChange);
-
-        self.$$albumsList.attachEvent('onAfterSelect', onAfterSelection);
-        self.$$albumsList.attachEvent('onAfterUnSelect', onAfterSelection);
-
 
         /***********************************
           * End of hacky code.
@@ -692,10 +647,10 @@ $(function() {
       });
     };
 
-    PhotoMap.prototype.fetchAndSavePhotos = function() {
+    PhotoMap.prototype.fetchPhotos = function() {
       var self = this;
       return this.options.photosFetcher.fetchAndSave().then(function(stats) {
-        self.fetchAndSaveStats = stats;
+        self.fetchStats = stats;
       });
     };
 
@@ -703,7 +658,7 @@ $(function() {
       this.beforeRender();
       this.beforeFetch();
       return this.resetIdb()
-        .then(this.fetchAndSavePhotos.bind(this))
+        .then(this.fetchPhotos.bind(this))
         .then(this.render.bind(this))
         .then(this.afterRender.bind(this));
     };
@@ -715,10 +670,10 @@ $(function() {
         if (count) {
           return Promise.resolve();
         } else {
-          return self.fetchAndSavePhotos();
+          return self.fetchPhotos();
         }
-      }).then(self.render.bind(self))
-        .then(self.afterRender.bind(self));
+      }).then(this.render.bind(this))
+        .then(this.afterRender.bind(this));
     };
 
     PhotoMap.prototype.onlyRender = function() {
@@ -729,7 +684,7 @@ $(function() {
     PhotoMap.prototype.render = function() {
       if (this.isRendering) {
         this.hasQueuedRender = true;
-        return;
+        return Promise.resolve();
       }
 
       this.hasQueuedRender = false;
@@ -774,11 +729,11 @@ $(function() {
         $(this.map._container).removeClass('disabled');
 
         var message;
-        if (this.fetchAndSaveStats) {
-          if (this.fetchAndSaveStats.numAlbumsErrored || this.fetchAndSaveStats.hasFetchingError) {
+        if (this.fetchStats) {
+          if (this.fetchStats.numAlbumsErrored || this.fetchStats.hasFetchingError) {
             message = 'Some photos could not be fetched. Try again later.';
           }
-          this.fetchAndSaveStats = null;
+          this.fetchStats = null;
         }
 
         if (message) {
