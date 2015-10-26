@@ -591,15 +591,15 @@ $(function() {
           container: 'albumsList',
           borderless: true,
           type: {
-            width: 286,
-            height: 217,
+            width: 238,
+            height: 160,
             template: function(album) {
               return self.albumTemplate(album);
             }
           },
           scroll: true,
-          width: 860,
-          height: 350,
+          width: 952,
+          height: 350
         });
 
         if (self.options.albumIds.length) {

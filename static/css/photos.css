@@ -19,7 +19,7 @@
 #mapOptions .mapOptionsRow {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   width: 100%;
 }
 
@@ -42,9 +42,10 @@
 }
 
 #map {
-  width: 860px;
-  height: 550px;
+  width: 960px;
+  height: 600px;
   margin-bottom: 50px;
+  border: 1px solid #ddd;
 }
 
 #map.disabled {
@@ -226,47 +227,49 @@
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
+#albumsList {
+  border: 1px solid #ddd;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
 #albumsList .webix_dataview {
-  background: #fdfdfd;
-  box-shadow: inset 0 0 3px #999;
-  border-radius: 4px;
-  padding: 1px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  padding-left: 3px;
+  padding-right: 3px;
 }
 
 #albumsList .webix_dataview_item {
   border: 0;
-  padding: 4px;
-}
-
-#albumsList .webix_dataview_item.webix_selected {
-  background: #eee;
-  padding: 16px;
-  border: 2px solid #fff;
+  padding: 1px;
 }
 
 #albumsList .albumThumbnail {
   position: relative;
-  width: 278px;
-  height: 209px;
+  width: 236px;
+  height: 158px;
+}
+
+#albumsList .webix_dataview_item.webix_selected {
+  background: #ddd;
+  padding: 7px;
+  border: 1px solid #fff;
 }
 
 #albumsList .webix_dataview_item.webix_selected .albumThumbnail {
-  width: 250px;
-  height: 181px;
+  width: 222px;
+  height: 144px;
 }
 
 #albumsList .albumInfo {
   position: absolute;
-  bottom: 15px;
-  left: 20px;
+  bottom: 10px;
+  left: 10px;
   color: #fff;
   text-shadow: 1px 1px 5px #000;
 }
 
 #albumsList .albumInfo .albumTitle {
-  font-size: 20px;
+  font-size: 17px;
   font-weight: bold;
 }
 
@@ -329,9 +332,9 @@
 #albumsList .albumDetailsBar .albumWebUrl {
   display: none;
   line-height: 1;
-  font-size: 13px;
+  font-size: 12px;
   color: #eee;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+  text-shadow: 1px 1px 5px #000;
 }
 
 #albumsList .albumDetailsBar .albumWebUrl sup {
