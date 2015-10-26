@@ -68,10 +68,10 @@
   color: #444;
 }
 
-#map .leaflet-control-locate.active,
+#lockDateRangeButton .fa-lock,
+#map .leaflet-control-locate.active a,
 #map .leaflet-control-lock .fa-lock {
-  /* color: #2074b6; */
-  color: #337ab7;
+  color: #08c;
 }
 
 #map .leafletMarkerPhoto {
@@ -162,13 +162,17 @@
   align-items: center;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 5px;
-  border: 1px solid #6bc6ed;
+  border: 1px solid #4285f4;
+  border: 1px solid #8bb5f8;
+  border: 1px solid #80d4ff;
+  border: 1px solid #47c2ff;
+  border: 1px solid #6cf;
   padding: 20px;
 }
 
 .loaderBox .message {
   z-index: 1;
-  color: #6bc6ed;
+  color: #6cf;
   font-size: 20px;
   font-weight: 400;
   padding-right: 10px;
@@ -176,14 +180,56 @@
 
 .loaderBox .loader {
   z-index: 1;
-  color: #6bc6ed;
+  color: #6cf;
+}
+
+#albumsListContainer {
+  display: none;
+}
+
+#albumsSelectedBarContainer {
+  position: relative;
+}
+
+.albumsSelectedBar {
+  position: absolute;
+  right: 11px;
+  bottom: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: #08c;
+  padding: 8px 12px;
+  box-shadow: 1px 1px 3px 0 rgba(0,0,0,0.5);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 14px;
+  z-index: 1;
+}
+
+.albumsSelectedBar .numSelectedText {
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  padding-right: 12px;
+}
+
+.albumsSelectedBar .clearSelectionButton {
+  position: relative;
+  font-weight: 500;
+  margin-left: 12px;
+  cursor: pointer;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.albumsSelectedBar .clearSelectionButton:hover {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 #albumsList .webix_dataview {
-  -moz-box-shadow: inset 0 0 3px #999;
-  -webkit-box-shadow: inset 0 0 3px #999;
-  box-shadow: inset 0 0 3px #999;
   background: #fdfdfd;
+  box-shadow: inset 0 0 3px #999;
+  border-radius: 4px;
   padding: 1px;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -259,7 +305,7 @@
   font-size: 24px;
   position: relative;
   top: -1px;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 #albumsList .album:hover .albumDetailsBar .fa-check-circle {
@@ -276,7 +322,7 @@
 #albumsList .webix_dataview_item.webix_selected .album:hover .albumDetailsBar .fa-check-circle,
 #albumsList .webix_dataview_item.webix_selected .album:hover .albumDetailsBar .fa-check-circle {
   display: inline;
-  color: #96d7eb;
+  color: #9df;
 }
 
 
@@ -285,7 +331,7 @@
   line-height: 1;
   font-size: 13px;
   color: #eee;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 #albumsList .albumDetailsBar .albumWebUrl sup {

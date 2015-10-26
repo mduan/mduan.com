@@ -68,7 +68,12 @@
             </div>
           </div>
         </div>
-        <div class="mapOptionsRow" id="albumsList"></div>
+        <div class="mapOptionsRow">
+          <div id="albumsListContainer">
+            <div id="albumsList"></div>
+            <div id="albumsSelectedBarContainer"></div>
+          </div>
+        </div>
       </div>
       <div id="map">
         <div id="overlay"></div>
@@ -107,6 +112,12 @@
     <div class="mediaDetails">
       <span class="mediaDatetime">From <a class="mediaDate" href="#" data-timestamp="<%- data.timestamp %>"><%- data.dateStr %></a> at <%- data.timeStr %></span>
       <a class="mediaWebUrl" href="<%= data.webUrl%>" target="_blank">View original<sup><i class="fa fa-external-link"></i></sup></a>
+    </div>
+  </script>
+  <script id="albumsSelectedBarTemplate" type="text/template">
+    <div class="albumsSelectedBar">
+      <span class="numSelectedText"><span class="numSelected"><%- data.numSelected %></span> selected</span>
+      <span class="clearSelectionButton">Clear</span>
     </div>
   </script>
 </body>

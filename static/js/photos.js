@@ -304,7 +304,7 @@ $(function() {
           .all();
       }
 
-      if (this.options.albumIds) {
+      if (this.options.albumIds.length) {
         var albumIdsSet = arrayToSet(this.options.albumIds);
         query = query.filter(function(photo) {
           return photo.albumId in albumIdsSet;
@@ -486,18 +486,14 @@ $(function() {
         var $el = $(this);
         $el.blur();
         if ($el.find('.fa-unlock-alt').length) {
-          $el.addClass('active')
-            .find('.fa-unlock-alt')
-              .addClass('fa-lock')
-              .removeClass('fa-unlock-alt')
-              .addClass('active');
+          $el.find('.fa-unlock-alt')
+            .addClass('fa-lock')
+            .removeClass('fa-unlock-alt')
           self.options.isDateRangeLocked = true;
         } else {
-          $el.removeClass('active')
-            .find('.fa-lock')
-              .addClass('fa-unlock-alt')
-              .removeClass('fa-lock')
-              .removeClass('active');
+          $el.find('.fa-lock')
+            .addClass('fa-unlock-alt')
+            .removeClass('fa-lock');
           self.options.isDateRangeLocked = false;
           self.onlyRender();
         }
@@ -541,11 +537,27 @@ $(function() {
       });
     };
 
+    PhotoMap.prototype.updateAlbumsSelectedBar = function(numSelected) {
+      if (numSelected) {
+        var templateHtml = this.albumsSelectedBarTemplate({ numSelected: numSelected });
+        this.$albumsSelectedBar.html(templateHtml);
+        var self = this;
+        this.$albumsSelectedBar.find('.clearSelectionButton').click(function() {
+          self.$$albumsList.unselectAll();
+        });
+      } else {
+        this.$albumsSelectedBar.empty();
+      }
+    }
+
     PhotoMap.prototype.renderAlbums = function() {
       if (this.$$albumsList) {
-        this.$$albumsList.show();
+        this.$albumsListContainer.show();
         return;
       }
+
+      this.$albumsListContainer = $('#albumsListContainer').show();
+      this.$albumsSelectedBar = this.$albumsListContainer.find('#albumsSelectedBarContainer');
 
       var self = this;
       this.options.idb.albums.query().all().execute().then(function(albums) {
@@ -590,17 +602,19 @@ $(function() {
           height: 350,
         });
 
-        if (Array.isArray(self.options.albumIds)) {
+        if (self.options.albumIds.length) {
           // Select the elements before we bind the onSelectChange listener
           self.$$albumsList.select(self.options.albumIds);
         }
         self.$$albumsList.attachEvent('onSelectChange', function() {
           var albumIds = self.$$albumsList.getSelectedId();
           if (!albumIds) {
-            albumIds = null;
+            albumIds = [];
           } else if (!Array.isArray(albumIds)) {
             albumIds = [albumIds];
           }
+
+          self.updateAlbumsSelectedBar(albumIds.length);
           self.options.albumIds = albumIds;
           self.onlyRender();
         });
@@ -641,7 +655,7 @@ $(function() {
           self.renderAlbums();
         } else {
           if (self.$$albumsList) {
-            self.$$albumsList.hide();
+            self.$albumsListContainer.hide();
           }
         }
       });
@@ -658,7 +672,7 @@ $(function() {
 
     PhotoMap.prototype.resetAndRender = function() {
       this.beforeRender();
-      this.removeAlbumChooserIfNecessary();
+      this.beforeFetch();
       return this.resetIdb()
         .then(this.fetchPhotos.bind(this))
         .then(this.render.bind(this));
@@ -671,6 +685,7 @@ $(function() {
         if (count) {
           return Promise.resolve();
         } else {
+          self.beforeFetch();
           return self.fetchPhotos();
         }
       }).then(this.render.bind(this));
@@ -706,9 +721,6 @@ $(function() {
 
       // TODO(mduan): Find cleaner way to do this
       $(this.map._container).addClass('disabled');
-
-      this.$chooseAlbumsButton.attr('disabled', 'disabled');
-      this.$reloadButton.attr('disabled', 'disabled');
     };
 
     PhotoMap.prototype.beforeMapRender = function() {
@@ -716,12 +728,19 @@ $(function() {
       this.photos = [];
     };
 
-    PhotoMap.prototype.removeAlbumChooserIfNecessary = function() {
+    PhotoMap.prototype.beforeFetch = function() {
+      this.$chooseAlbumsButton.attr('disabled', 'disabled');
+      this.$reloadButton.attr('disabled', 'disabled');
+
       if (this.$chooseAlbumsButton.hasClass('active')) {
         this.$chooseAlbumsButton.removeClass('active');
         if (this.$$albumsList) {
           this.$$albumsList.destructor();
           this.$$albumsList = null;
+          this.$albumsListContainer.hide();
+          this.$albumsListContainer = null;
+          this.$albumsSelectedBar.empty();
+          this.$albumsSelectedBar = null;
         }
       }
     };
@@ -770,6 +789,8 @@ $(function() {
 
       this.albumTemplate = compileTemplate($('#albumTemplate'));
       this.photoPopupTemplate = compileTemplate($('#photoPopupTemplate'));
+      this.albumsSelectedBarTemplate = compileTemplate($('#albumsSelectedBarTemplate'));
+
       this.initMap();
       this.initControls();
       this.fetchIfNecessaryAndRender();
@@ -880,8 +901,8 @@ $(function() {
       mapboxAccessToken: 'pk.eyJ1IjoibWR1YW4iLCJhIjoiY2lnMTdhaTl6MG9rN3VybTNzZjFwYTM3OCJ9._GTMIAxNtoh5p63xBiPykQ',
       startTime: parseInt(getParameterByName('startTime')),
       endTime: parseInt(getParameterByName('endTime')),
-      // TODO(mduan): Convert to array
-      albumIds: getParameterByName('albumIds'),
+      // TODO(mduan): Support albumIds query param
+      albumIds: [],
       isMapLocked: !!getParameterByName('isMapLocked'),
       isDateRangeLocked: !!getParameterByName('isDateRangeLocked')
     }));
