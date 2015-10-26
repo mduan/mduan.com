@@ -31,12 +31,8 @@ h2 .fa {
 
 h3 {
   font-size: 14px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-.section.h3 {
-  font-size: 12px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 ul {
@@ -72,6 +68,10 @@ a:focus {
   outline-offset: -2px;
 }
 
+.deprecated {
+  display: none;
+}
+
 .options {
   position: absolute;
   right: 10px;
@@ -101,15 +101,6 @@ a:focus {
   display: inline-block;
   margin-bottom: 0;
 }
-/*
-#header .photo {
-  vertical-align: 50%;
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  margin-left: 20px;
-}
-*/
 
 .contact {
   padding: 20px 30px 0 30px;
@@ -167,6 +158,11 @@ a:focus {
 .hresume.collapsed > .lhs .sidebarContainer {
   position: fixed;
 }
+
+.skillsSection .skills {
+  font-size: 12px;
+}
+
 
 .hresume.collapsed > .lhs .skillsSection,
 .hresume.collapsed > .lhs .toggle.collapse {
@@ -259,58 +255,36 @@ a:focus {
   position: relative;
 }
 
-.work.experience .header .org {
-  margin-top: 0;
-  margin-bottom: 0;
-  position: relative;
-}
-
-.work.experience .header .org,
-.work.experience .header .row2 {
-  position: relative;
-}
-.work.experience .header .org a,
-.work.experience .header .title {
-  position: absolute;
-  top: 0;
-  left: 20px;
-  /**
-   * TODO(mack): Find less hacky way to give absolutely-positioned element
-   * width w/o manually setting width.
-   */
-  width: 500px;
-}
-
-.work.experience .header .row1 {
-  margin-bottom: 3px;
-}
 .work.experience .header {
-  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.work.experience .header .lhs {
-  display: inline-block;
-  float: left;
-}
-
-.work.experience .header .rhs {
-  display: inline-block;
-  text-align: right;
-  float: right;
-}
-
-.work.experience .title,
-.work.experience .title a {
-  font-style: italic;
-}
-
-.work.experience .location {
-  color: #AAA;
+.work.experience .header .org {
+  flex: 0 1 auto;
 }
 
 .work.experience .org img {
   margin-top: -4px;
   width: 15px;
+}
+
+.work.experience .header .titleSeparator {
+  flex: 0 1 auto;
+  font-weight: bold;
+  font-size: 20px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.work.experience .header .title {
+  flex: 1 1 auto;
+  font-style: italic;
+}
+
+.work.experience .header .timeRange {
+  flex: 0 1 auto;
 }
 
 .hresume:not(.collapsed) .work:hover,
@@ -333,16 +307,27 @@ a:focus {
 }
 
 .project.experience .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 8px;
 }
 
-.project.experience .title {
-  float: left;
-  margin: 0;
+.project.experience .projectDetails {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
-.project.experience .timeRange {
-  float: right;
+.project.experience .projectDetails .screenshot {
+  width: 44%;
+  margin-right: 20px;
+}
+
+.project.experience .projectDetails .description {
+  flex: 1 1 auto;
+  width: 44%;
+  margin-right: 20px;
 }
 
 .project.experience > .lhs {
