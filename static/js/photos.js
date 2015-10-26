@@ -46,6 +46,7 @@ $(function() {
     PicasaFetcher.prototype.fetchAlbumsList = function() {
       var albumsUrl = 'https://picasaweb.google.com/data/feed/api/user/'
         + this.options.userId + '?thumbsize=' + this.options.albumThumbnailSize;
+
       var self = this;
       return this.requestJsonP(albumsUrl).then(function(response) {
         var albumsToIgnoreSet = arrayToSet(self.options.albumsToIgnore);
@@ -62,6 +63,30 @@ $(function() {
       ).then(function(response) {
         return response.feed.entry;
       });
+    };
+
+    PicasaFetcher.prototype.fetchAndSavePhotosInAlbums = function(albums) {
+      this.numAlbumsErrored = 0;
+      this.numAlbumsSaved = 0;
+
+      this.options.cssLoader.updateMessage('Fetching albums');
+
+      var self = this;
+      var promises = albums.map(function(album) {
+        return self.fetchPhotosInAlbum(album).then(function(photos) {
+          self.savePhotos(self.extractPhotos(photos)).then(function(photos) {
+            ++self.numAlbumsSaved;
+            self.options.cssLoader.updateMessage(
+              'Saved ' + self.numAlbumsSaved + ' of ' + albums.length + ' albums'
+            );
+            return self.updateAlbum(album, photos);
+          });
+        }, function() {
+          ++self.numAlbumsErrored;
+        });
+      });
+
+      return Promise.all(promises).then(self.onComplete.bind(self));
     };
 
     PicasaFetcher.prototype.extractAlbums = function(albums) {
@@ -81,8 +106,21 @@ $(function() {
       });
     };
 
-    PicasaFetcher.prototype.saveAlbumsToIdb = function(albums) {
+    PicasaFetcher.prototype.saveAlbums = function(albums) {
       return this.options.idb.albums.update(albums);
+    };
+
+    PicasaFetcher.prototype.updateAlbum = function(album, photos) {
+      if (photos.length) {
+        var minPhoto = _.min(photos, function(photo) { return photo.timestamp; });
+        var maxPhoto = _.max(photos, function(photo) { return photo.timestamp; });
+        $.extend(album, {
+          minTimestamp: _.isNumber(minPhoto) && !isFinite(minPhoto) ? null : minPhoto.timestamp,
+          maxTimestamp: _.isNumber(maxPhoto) && !isFinite(maxPhoto) ? null : maxPhoto.timestamp
+        });
+      }
+      album.numPhotos = photos.length;
+      return this.saveAlbums([album]);
     };
 
     PicasaFetcher.prototype.extractPhotos = function(photos) {
@@ -105,7 +143,7 @@ $(function() {
       });
     };
 
-    PicasaFetcher.prototype.savePhotosToIdb = function(photos) {
+    PicasaFetcher.prototype.savePhotos = function(photos) {
       return this.options.idb.photos.update(photos);
     };
 
@@ -149,41 +187,13 @@ $(function() {
     };
 
     PicasaFetcher.prototype.fetchAndSave = function() {
-      this.numAlbumsErrored = 0;
       this.hasFetchingError = false;
 
       var self = this;
       this.options.cssLoader.updateMessage('Fetching from Picasa');
       return this.fetchAlbumsList().then(function(albums) {
-        albums = self.extractAlbums(albums);
-        self.options.cssLoader.updateMessage('Fetching albums');
-
-        var numAlbumsSaved = 0;
-        var promises = albums.map(function(album) {
-          return self.fetchPhotosInAlbum(album).then(function(photos) {
-            photos = self.extractPhotos(photos);
-            if (photos.length) {
-              var minPhoto = _.min(photos, function(photo) { return photo.timestamp; });
-              var maxPhoto = _.max(photos, function(photo) { return photo.timestamp; });
-              $.extend(album, {
-                minTimestamp: _.isNumber(minPhoto) && !isFinite(minPhoto) ? null : minPhoto.timestamp,
-                maxTimestamp: _.isNumber(maxPhoto) && !isFinite(maxPhoto) ? null : maxPhoto.timestamp
-              });
-            }
-
-            return self.savePhotosToIdb(photos).then(function(photos) {
-              ++numAlbumsSaved;
-              self.options.cssLoader.updateMessage(
-                'Saved ' + numAlbumsSaved + ' of ' + albums.length + ' albums'
-              );
-            });
-          }, function() {
-            ++self.numAlbumsErrored;
-          });
-        });
-        return Promise.all(promises)
-          .then(self.saveAlbumsToIdb.bind(self, albums))
-          .then(self.onComplete.bind(self));
+        return self.saveAlbums(self.extractAlbums(albums))
+          .then(self.fetchAndSavePhotosInAlbums.bind(self));
       }, function() {
         self.hasFetchingError = true;
         return self.onComplete();
