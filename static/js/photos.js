@@ -575,9 +575,9 @@ $(function() {
       this.options.idb.albums.query().all().execute().then(function(albums) {
         albums.sort(function(albumA, albumB) {
           var aMinTimestamp = albumA.minTimestamp || 0;
-          var aMaxTimestamp = !isNaN(albumA.maxTimestamp) ? albumA.maxTimestamp : Infinity;
+          var aMaxTimestamp = albumA.maxTimestamp || 0;
           var bMinTimestamp = albumB.minTimestamp || 0;
-          var bMaxTimestamp = !isNaN(albumB.maxTimestamp) ? albumB.maxTimestamp : Infinity;
+          var bMaxTimestamp = albumB.maxTimestamp || 0;
           if (aMaxTimestamp === bMaxTimestamp) {
             return bMinTimestamp - aMinTimestamp;
           } else {
