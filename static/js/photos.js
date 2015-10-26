@@ -95,7 +95,9 @@ $(function() {
         return {
           id: album.gphoto$id.$t,
           title: album.title.$t,
-          numPhotos: album.gphoto$numphotos.$t,
+          // This is will be updated later after retrieving photos. So no need
+          // to save it here; album.gphoto$numphotos.$t
+          numPhotos: 0,
           imageUrl: mediaGroup.media$content[0].url,
           thumbnailUrl: mediaGroup.media$thumbnail[0].url,
           timestamp: parseInt(album.gphoto$timestamp.$t),
