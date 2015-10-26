@@ -530,6 +530,7 @@ $(function() {
     };
 
     PhotoMap.prototype.resetIdb = function() {
+      this.options.cssLoader.updateMessage('Removing saved photos');
       return Promise.all([
         this.options.idb.photos.clear(),
         this.options.idb.albums.clear()
