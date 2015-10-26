@@ -74,7 +74,7 @@ $(function() {
       var self = this;
       var promises = albums.map(function(album) {
         return self.fetchPhotosInAlbum(album).then(function(photos) {
-          self.savePhotos(self.extractPhotos(photos)).then(function(photos) {
+          return self.savePhotos(self.extractPhotos(photos)).then(function(photos) {
             ++self.numAlbumsSaved;
             self.options.cssLoader.updateMessage(
               'Saved ' + self.numAlbumsSaved + ' of ' + albums.length + ' albums'
@@ -874,6 +874,8 @@ $(function() {
     CssLoader.prototype.stopLoading = function() {
       var elapsedTime = Math.max(Date.now() - this.startTime, 0);
       if (elapsedTime < this.options.minDuration) {
+        // TODO(mduan): Handle the case we call updateMessage during the
+        // setTimeout period.
         setTimeout(this.reset.bind(this), this.options.minDuration - elapsedTime);
       } else {
         this.reset();
