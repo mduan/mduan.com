@@ -52,7 +52,6 @@ var resumeData = (function() {
     });
 
     _.each(idToSkill, function(skill) {
-      console.log('deleting', skill.id);
       skill.hidden = true;
     });
   };

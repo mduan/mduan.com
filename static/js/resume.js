@@ -102,7 +102,7 @@ $(function() {
   setTimeout(function() {
     var $skillsSection = $('.skills.section');
     var $nextSection = $skillsSection.next();
-    var $placeholder = $('<div>').insertAfter($skillsSection);
+    var $placeholder = $('<div class="skillsPlaceholder">').insertAfter($skillsSection);
     var skillsSectionoffset = $skillsSection.offset().top;
     var $affixSkillsCheckbox = $('#affixSkillsCheckbox');
     var $window = $(window);

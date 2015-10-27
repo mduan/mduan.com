@@ -149,9 +149,8 @@ ul {
 .skills.section.affixed {
   display: flex;
   justify-content: center;
-  background-color: #fbfbfb;
   background-color: #fafdff;
-  padding: 10px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #ddd;
   box-shadow: 1px 1px 3px #ddd;
   z-index: 1;

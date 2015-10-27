@@ -1,7 +1,27 @@
 .skills.section .sectionHeader .resumeOptions {
-  display: none;
+  display: none !important;
 }
 
 .section {
-  padding: 15px 20px;
+  padding: 10px 20px !important;
+}
+
+.section:not(:last-child) {
+  border-bottom: 1px solid #ddd !important;
+}
+
+.section:not(:last-child):after {
+  display: none;
+}
+
+.skillsPlaceholder {
+  display: none !important;
+}
+
+.skills.section.affixed {
+  position: static !important;
+  display: block !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  z-index: 0 !important;
 }
