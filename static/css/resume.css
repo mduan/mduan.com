@@ -94,12 +94,12 @@ ul {
 
 .subsectionHeader {
   display: flex;
+  margin-bottom: 4px;
 }
 
 .subsectionTitle {
   font-size: 14px;
   font-weight: bold;
-  margin-bottom: 5px;
 }
 
 .subsectionHeader .titleSeparator {
@@ -241,3 +241,21 @@ ul {
   padding: 2px;
   border: 1px solid #ddd;
 }
+
+
+/**
+ * Education section
+ */
+
+.educations.section .subsectionHeader {
+  margin-bottom: 4px;
+}
+
+/**
+ * Awards section
+ */
+
+.awards.section .subsectionHeader {
+  margin-bottom: 0;
+ }
+

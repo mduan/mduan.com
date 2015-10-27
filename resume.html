@@ -95,7 +95,7 @@
             <div class="subsectionTitle org">
               <img src="<%= job.orgImageUrl %>">
               <% if (job.orgUrl) { %>
-                <a class="iconLink" href="<%= job.orgUrl %>"><%= job.orgName %></a>
+                <a href="<%= job.orgUrl %>"><%= job.orgName %></a>
               <% } else { %>
                 <%= job.orgName %>
               <% } %>
@@ -164,10 +164,12 @@
       <div class="sectionTitle"><i class="fa fa-trophy"></i> Awards and Accomplishments</div>
       <% _.each(data.awards, function(award) { %>
         <div class="award subsection">
-          <span class="subsectionTitle"><%= award.name %></span>
-          <span class="titleSeparator">&bull;</span>
-          <span class="location"><%= award.location %></span>
-          <span class="timeRange"><%= award.timeRange %></span>
+          <div class="subsectionHeader">
+            <span class="subsectionTitle"><%= award.name %></span>
+            <span class="titleSeparator">&bull;</span>
+            <span class="location"><%= award.location %></span>
+            <span class="timeRange"><%= award.timeRange %></span>
+          </div>
         </div>
       <% }); %>
     </div>
