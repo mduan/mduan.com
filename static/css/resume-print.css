@@ -30,7 +30,7 @@ a.printableLink .linkUrl {
 
 .jobs.section .subsection,
 .projects.section .subsection {
-  padding: 10px !important;
+  padding: 9px 10px !important;
 }
 
 .skillsPlaceholder {
