@@ -8,10 +8,9 @@ a {
 }
 
 a:hover, a:focus, a:active {
-  color: #2a6496;
   color: #069;
-  text-decoration: underline;
   outline: 0;
+  text-decoration: underline;
 }
 
 a .fa-external-link {
@@ -166,13 +165,13 @@ ul {
 }
 
 .skills.section .sectionHeader .resumeOptions label {
-  color: #999;
+  opacity: 0.6;
   margin-left: 10px;
 }
 
 .skills.section .sectionHeader .resumeOptions label:hover,
 .skills.section .sectionHeader .resumeOptions label:focus {
-  color: #000;
+  opacity: 1;
 }
 
 .skills.section .categorySkills {

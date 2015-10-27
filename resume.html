@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Resume of Mack Duan</title>
+  <title>Resume (Mack Duan)</title>
   <link href='http://fonts.googleapis.com/css?family=Alegreya+SC:700,400' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="/static/css/normalize.css" />
   <link rel="stylesheet" href="/static/ext/font-awesome/css/font-awesome.min.css" />
@@ -118,7 +118,7 @@
           <div class="subsectionHeader">
             <div class="subsectionTitle">
               <% if (project.url) { %>
-                <a class="iconLink" href="<%= project.url %>"><%= project.name %></a>
+                <a class="iconLink printableLink" href="<%= project.url %>"><%= project.name %></a>
               <% } else { %>
                 <%= project.name %>
               <% } %>

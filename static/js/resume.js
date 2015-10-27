@@ -26,7 +26,7 @@ $(function() {
   }));
 
   /**
-   * Create styling for external links
+   * Create styling for links
    */
   $('a').each(function() {
     var $el = $(this);
@@ -35,6 +35,13 @@ $(function() {
     }
     if (!$el.hasClass('internal')) {
       $el.attr('target', '_blank');
+    }
+    if ($el.hasClass('printableLink')) {
+      var href = $el.attr('href');
+      var $linkUrl = $('<span>').addClass('linkUrl')
+        .text(' (' + href + ')')
+        .hide();
+      $el.append($linkUrl);
     }
   });
 

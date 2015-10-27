@@ -134,7 +134,7 @@ var resumeData = (function() {
       title: 'Software Engineeer Intern &ndash; Mozilla Labs',
       timeRange: formatTimeRange({ year: 2013, month: 0}, { year: 2013, month: 3 }),
       descriptions: [
-        '<a class="iconLink" href="https://air.mozilla.org/intern-pdfjs/">Worked in Mozilla Labs team on PDF.js, PDF viewer in Firefox written in JavaScript</a>',
+        '<a class="iconLink printableLink" href="https://air.mozilla.org/intern-pdfjs/">Worked in Mozilla Labs team on PDF.js, PDF viewer in Firefox written in JavaScript</a>',
         'Proposed and implemented performance enhancements, improving loading time by an order of magnitude',
         'Added support for PDF annotations'
       ],
@@ -182,7 +182,7 @@ var resumeData = (function() {
       title: 'Software Engineer Intern &ndash; Location Tagging',
       timeRange: formatTimeRange({ year: 2011, month: 8 }, { year: 2011, month: 11 }),
       descriptions: [
-        'Proposed and implemented changes to gather location data from photos leading to a 5X increase in location data, and <a class="iconLink" href="https://news.ycombinator.com/item?id=3377018">causing controversy on Reddit and Hacker News</a>',
+        'Proposed and implemented changes to gather location data from photos leading to a 5X increase in location data, and <a class="iconLink printableLink" href="https://news.ycombinator.com/item?id=3377018">causing controversy on Reddit and Hacker News</a>',
         'Built infrastructure to process and analyze gathered location data',
         'Built features to expose new location data to users'
       ],
@@ -286,7 +286,7 @@ var resumeData = (function() {
       ]
     }, {
       name: 'Github Side-by-Side Diffs',
-      url: 'https://chrome.google.com/webstore/detail/github-side-by-side-diffs/ahamcncifjblaomhphpfpopppadboiin',
+      url: 'https://github.com/mduan/Github-Enhancement-Suite',
       timeRange: formatTimeRange({ year: 2013, month: 10 }, { year: 2013, month: 10 }),
       imageUrl: 'static/img/thumbnail_github.jpg',
       descriptions: [
@@ -378,7 +378,7 @@ var resumeData = (function() {
       location: 'University of Waterloo',
       timeRange: formatTimeRange({ year: 2009, month: 8 }, { year: 2009, month: 3 })
     }, {
-      name: '<a class="iconLink" href="http://www.ocdsb.ca/stu/Pages/TopScholar.aspx" target="_blank">Second highest average in school district</a>',
+      name: '<a class="iconLink" href="http://www.ocdsb.ca/stu/Pages/TopScholar.aspx">Second highest average in school district &ndash; 98.8%</a>',
       location: 'Ottawa-Carleton District School Board',
       timeRange: formatTimeRange({ year: 2009, month: 8 }, { year: 2009, month: 6 })
     }],
