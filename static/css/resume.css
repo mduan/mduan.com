@@ -78,7 +78,9 @@ ul {
   display: block;
   content: "";
   height: 1px;
-  background: linear-gradient(to right, rgba(221,221,221,0.1) 0%, rgba(221,221,221,1) 50%, rgba(221,221,221,0.1) 100%);
+  background: -moz-gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#ccc), to(#f9f9f9));
+  background: -webkit-gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#ccc), to(#f9f9f9));
+  background: gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#ccc), to(#f9f9f9));
   margin-top: 15px;
 }
 

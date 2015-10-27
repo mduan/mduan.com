@@ -40,15 +40,23 @@ body {
 
 .links {
   display: flex;
-  justify-container: space-around;
-  font-size: 22px;
+  justify-content: space-around;
+  font-size: 21px;
   padding: 0;
   margin: 50px auto 20px auto;
 }
 
-.links > .link {
+.links > a {
   flex: 1 1 auto;
   text-align: center;
+}
+
+.links > a:hover, .links > a:focus, .links > a:active  {
+  outline: 0;
+}
+
+.links > a .fa {
+  padding-right: 5px;
 }
 
 .intro {
@@ -60,7 +68,7 @@ body {
   border: 0;
   height: 1px;
   background: #ccc;
-  background: -moz-gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#ccc), to(#fff));
-  background: -webkit-gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#ccc), to(#fff));
-  background: gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#ccc), to(#fff));
+  background: -moz-gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#ccc), to(#f9f9f9));
+  background: -webkit-gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#ccc), to(#f9f9f9));
+  background: gradient(radial, 50% 50%, 50, 50% 50%, 500, from(#ccc), to(#f9f9f9));
 }
