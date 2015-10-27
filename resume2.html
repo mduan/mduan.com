@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Resume of Mack Duan</title>
+  <!--<meta http-equiv="content-type" content="text/html; charset=utf-8">-->
+  <link href='http://fonts.googleapis.com/css?family=Alegreya+SC:700,400' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/static/css/normalize.css" />
+  <link rel="stylesheet" href="/static/ext/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="/static/css/resume2.css" />
+  <!--<link rel="stylesheet" media="print" href="/static/css/resume-print.css" />-->
+  <script src="/static/ext/jquery/jquery-2.0.3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <script src="/static/ext/moment/moment.min.js"></script>
+  <script src="/static/js/resume_data.js"></script>
+  <script src="/static/js/resume2.js"></script>
+</head>
+<body>
+  <div id="resume">
+  </div>
+
+  <script id="resumeTemplate" type="text/template">
+    <div class="resume">
+      <div class="pageHeader">
+        <div class="pageTitle">Mack Duan</div>
+        <div class="contactMethods">
+          <span class="contactMethod">
+            <i class="fa fa-globe"></i>
+            <a href="http://mduan.com" target="_blank">mduan.com</a>
+          </span>
+          <span class="contactMethod">
+            <i class="fa fa-envelope-o"></i>
+            <a href="mailto:mack@mduan.com">mack@mduan.com</a>
+          </span>
+          <span class="contactMethod">
+            <i class="fa fa-github-alt"></i>
+            <a href="https://github.com/mduan" target="_blank">github.com/mduan</a>
+          </span>
+        </div>
+      </div>
+      <%= data.skillsTemplate({ skills: data.resumeData.skills }) %>
+      <%= data.jobsTemplate({ jobs: data.resumeData.jobs }) %>
+      <%= data.projectsTemplate({ projects: data.resumeData.projects }) %>
+      <%= data.educationsTemplate({ educations: data.resumeData.educations }) %>
+      <%= data.awardsTemplate({ awards: data.resumeData.awards }) %>
+    </div>
+  </script>
+
+  <script id="skillsTemplate" type="text/template">
+    <div class="skills section">
+      <div class="sectionTitle"><i class="fa fa-tasks"></i> Skills</div>
+      <% _.each(data.skills, function(category) { %>
+        <div class="categorySkills subsection">
+          <div class="subsectionTitle"><%- category.name %></div>
+          <ul>
+            <% _.each(category.items, function(skill) { %>
+              <li data-skill="<%- skill.id %>" class="skill">
+                <a href="<%- skill.url %>"><%- skill.name %></a>
+              </li>
+            <% }); %>
+          </ul>
+        </div>
+      <% }); %>
+    </div>
+  </script>
+
+  <script id="experienceDescriptionTemplate" type="text/template">
+    <ul class="description">
+      <% _.each(data.descriptions, function(description) { %>
+        <li><%= description %></li>
+      <% }); %>
+      <li>Skills:
+        <ul class="skills">
+          <% _.each(data.skills, function(skill, idx) { %>
+            <li data-skill="<%- skill.id %>" class="skill <% if (skill.hidden) { %> hidden <% } %>">
+              <%- skill.name %><% if (idx !== data.skills.length - 1) { %>,<% } %>
+            </li>
+          <% }); %>
+        </ul>
+      </li>
+    </ul>
+  </script>
+
+  <script id="jobsTemplate" type="text/template">
+    <div class="jobs section">
+      <div class="sectionTitle"><i class="fa fa-briefcase"></i> Work Experience</div>
+      <% _.each(data.jobs, function(job) { %>
+        <div class="job subsection">
+          <div class="subsectionHeader">
+            <div class="subsectionTitle org">
+              <img src="<%= job.orgImageUrl %>">
+              <% if (job.orgUrl) { %>
+                <a href="http://www.microsoft.com"><%- job.orgName %></a>
+              <% } else { %>
+                <%- job.orgName %>
+              <% } %>
+            </div>
+            <span class="titleSeparator">&middot;</span>
+            <span class="title summary"><%= job.title %></span>
+            <span class="timeRange"><%- job.timeRange %></span>
+          </div>
+          <%= data.experienceDescriptionTemplate({ descriptions: job.descriptions, skills: job.skills }) %>
+        </div>
+      <% }); %>
+    </div>
+  </script>
+
+  <script id="projectsTemplate" type="text/template">
+    <div class="projects section">
+      <div class="sectionTitle"><i class="fa fa-flask"></i> Side Projects</div>
+      <% _.each(data.projects, function(project) { %>
+        <div class="project subsection">
+          <div class="subsectionHeader">
+            <div class="subsectionTitle">
+              <% if (project.url) { %>
+                <a href="<%= project.url %>"><%- project.name %></a>
+              <% } else { %>
+                <%- project.name %>
+              <% } %>
+            </div>
+            <span class="timeRange"><%- project.timeRange %></span>
+          </div>
+          <div class="projectDetails">
+            <a class="screenshot" href="<%= project.url %>">
+              <img src="<%= project.imageUrl %>">
+            </a>
+            <%= data.experienceDescriptionTemplate({ descriptions: project.descriptions, skills: project.skills }) %>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </script>
+
+  <script id="educationsTemplate" type="text/template">
+    <div class="educations section">
+      <div class="sectionTitle"><i class="fa fa-book"></i> Education</div>
+      <% _.each(data.educations, function(education) { %>
+        <div class="education subsection">
+          <div class="subsectionHeader">
+            <span class="subsectionTitle"><%= education.name %></span> &ndash;
+            <span class="location"><%= education.location %></span>
+            <span class="timeRange"><%= education.timeRange %></span>
+          </div>
+          <ul class="description">
+            <% _.each(education.descriptions, function(description) { %>
+              <li><%= description %></li>
+            <% }); %>
+          </ul>
+        </div>
+      <% }); %>
+    </div>
+  </script>
+
+  <script id="awardsTemplate" type="text/template">
+    <div class="awards section">
+      <div class="sectionTitle"><i class="fa fa-trophy"></i> Awards and Accomplishments</div>
+      <% _.each(data.awards, function(award) { %>
+        <div class="award subsection">
+          <span class="subsectionTitle"><%= award.name %></span> &ndash;
+          <span class="location"><%= award.location %></span>
+          <span class="timeRange"><%= award.timeRange %></span>
+        </div>
+      <% }); %>
+    </div>
+  </script>
+</body>
+</html>

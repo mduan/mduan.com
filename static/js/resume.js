@@ -26,26 +26,26 @@ function getParameterByName(name) {
  * Main logic
  */
 
-if (getParameterByName('resolve_url')) {
-  var SERVER_ROOT = 'http://mduan.com';
-  $('a').each(function() {
-    var $el = $(this);
-    var href = $el.attr('href');
-    if (href && href[0] === '/') {
-      $el.attr('href', SERVER_ROOT + href);
-    }
-  });
-}
+//if (getParameterByName('resolve_url')) {
+//  var SERVER_ROOT = 'http://mduan.com';
+//  $('a').each(function() {
+//    var $el = $(this);
+//    var href = $el.attr('href');
+//    if (href && href[0] === '/') {
+//      $el.attr('href', SERVER_ROOT + href);
+//    }
+//  });
+//}
 
-$('a').each(function() {
-  var $el = $(this);
-  if ($el.hasClass('icon')) {
-    $el.append($('<sup><i class="fa fa-external-link"></i></sup>'));
-  }
-  if (!$el.hasClass('internal')) {
-    $el.attr('target', '_blank');
-  }
-});
+//$('a').each(function() {
+//  var $el = $(this);
+//  if ($el.hasClass('icon')) {
+//    $el.append($('<sup><i class="fa fa-external-link"></i></sup>'));
+//  }
+//  if (!$el.hasClass('internal')) {
+//    $el.attr('target', '_blank');
+//  }
+//});
 
 //$(window).scroll(function() {
 //  var offset = $('.contact').offset().top + $('.contact').outerHeight(true);
@@ -123,51 +123,3 @@ $('.hresume > .lhs .toggle').click(function() {
 });
 
 });
-
-var getSkill = (function() {
-  var skills = {
-    lanuguages: {
-      c: {
-      }
-    }
-  };
-
-  var skillIdMap = {};
-  skills.forEach(function(skill) {
-    if (skill.id in skillIdMap) {
-      throw 'Skill ' + skill.id + ' already exists';
-    }
-    skillIdMap[skill.id] = skill;
-  });
-
-  return function(id) {
-    if (!(id in skillIdMap)) {
-      throw 'Skill ' + skill.id + ' does not exist';
-    }
-    return skillsIdMap[id];
-  };
-})();
-
-var data = {
-  works: [{
-    org: 'Microsoft',
-    orgImageUrl: '/static/img/logo_microsoft.png',
-    title: 'Software Engineer Intern – Windows Performance',
-    startTime: moment('201309', 'YYYYMM').startOf('month'),
-    endTime: moment('201312', 'YYYYMM').endOf('month'),
-    description: [
-      'Analyzed video memory allocations in Windows to enhance performance',
-      'Built new tools to visualize video memory usage from both application/OS-centric perspectives'
-    ],
-    skills: [
-      getSkill('windows'),
-
-    ]
-  }],
-  projects: [
-  ],
-  education: [
-  ],
-  awards: [
-  ]
-};
