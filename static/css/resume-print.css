@@ -16,7 +16,7 @@ a.printableLink .linkUrl {
 }
 
 .section {
-  padding: 15px 20px !important;
+  padding: 10px 20px !important;
   border: 0 !important;
 }
 
@@ -26,6 +26,11 @@ a.printableLink .linkUrl {
 
 .sectionTitle {
   margin-bottom: 10px !important;
+}
+
+.jobs.section .subsection,
+.projects.section .subsection {
+  padding: 10px !important;
 }
 
 .skillsPlaceholder {
@@ -38,7 +43,4 @@ a.printableLink .linkUrl {
   background-color: transparent !important;
   box-shadow: none !important;
   z-index: 0 !important;
-}
-
-.updatedDateContainer {
 }
