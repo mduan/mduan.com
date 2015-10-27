@@ -168,7 +168,7 @@ var resumeData = (function() {
       title: 'Software Engineeer Intern &ndash; Mozilla Labs',
       timeRange: formatTimeRange({ year: 2013, month: 0}, { year: 2013, month: 3 }),
       descriptions: [
-        '<a class="iconLink printableLink" href="https://air.mozilla.org/intern-pdfjs/">Worked in Mozilla Labs team on PDF.js, PDF viewer in Firefox written in JavaScript</a>',
+        '<a class="iconLink printableLink" href="https://air.mozilla.org/intern-pdfjs/">Worked on PDF.js, PDF viewer in Firefox written in JavaScript</a>',
         'Proposed and implemented performance enhancements, improving loading time by an order of magnitude',
         'Added support for PDF annotations'
       ],
@@ -423,7 +423,7 @@ var resumeData = (function() {
       ]
     }],
     educations: [{
-      name: 'Bachelor of Software Engineering',
+      name: '<a class="iconLink" href="https://uwaterloo.ca/software-engineering">Bachelor of Software Engineering</a>',
       location: 'University of Waterloo',
       timeRange: formatTimeRange({ year: 2009, month: 8 }, { year: 2014, month: 3 }),
       descriptions: [
@@ -431,17 +431,17 @@ var resumeData = (function() {
       ]
     }],
     awards: [{
-      name: 'Dean\'s Honours List',
+      name: '<a class="iconLink" href="http://ugradcalendar.uwaterloo.ca/page/MATH-Recognition-of-Excellence">With Distinction &ndash; Dean\'s Honours List</a>',
       location: 'University of Waterloo',
       timeRange: formatTimeRange({ year: 2009, month: 8 }, { year: 2014, month: 3 })
     }, {
-      name: 'President\'s Scholarship of Distinction',
+      name: '<a class="iconLink" href="https://uwaterloo.ca/find-out-more/financing/scholarships/presidents-scholarships">President\'s Scholarship of Distinction</a>',
       location: 'University of Waterloo',
-      timeRange: formatTimeRange({ year: 2009, month: 8 }, { year: 2009, month: 3 })
+      timeRange: formatTimeRange({ year: 2009, month: 8 }, { year: 2009, month: 8})
     }, {
       name: '<a class="iconLink" href="http://www.ocdsb.ca/stu/Pages/TopScholar.aspx">Second highest average in school district &ndash; 98.8%</a>',
       location: 'Ottawa-Carleton District School Board',
-      timeRange: formatTimeRange({ year: 2009, month: 8 }, { year: 2009, month: 6 })
+      timeRange: formatTimeRange({ year: 2009, month: 6 }, { year: 2009, month: 6})
     }],
     skills: skills
   };

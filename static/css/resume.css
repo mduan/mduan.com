@@ -67,7 +67,7 @@ ul {
 
 .content {
   max-width: 1120px;
-  margin: 0 auto 50px;
+  margin: 0 auto 20px;
 }
 
 .section {
@@ -89,7 +89,7 @@ ul {
 }
 
 .subsection {
-  padding: 6px 20px;
+  padding: 6px 10px;
 }
 
 .subsectionHeader {
@@ -178,7 +178,8 @@ ul {
 .skills.section .categorySkills {
   display: flex;
   align-items: flex-start;
-  padding: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .skills.section .categorySkills .subsectionTitle {
