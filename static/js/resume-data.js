@@ -60,34 +60,40 @@ var resumeData = (function() {
     id: 'languages',
     name: 'Languages',
     items: [
-      { id: 'c', name: 'C', url: 'http://en.wikipedia.org/wiki/C_(programming_language)' },
-      { id: 'cpp', name: 'C++', url: 'http://en.wikipedia.org/wiki/C++' },
-      { id: 'csharp', name: 'C#', url: 'http://en.wikipedia.org/wiki/C_Sharp_(programming_language)' },
-      { id: 'java', name: 'Java', url: 'http://en.wikipedia.org/wiki/Java_(programming_language)' },
-      { id: 'php', name: 'PHP', url: 'http://php.net' },
+      { id: 'html', name: 'HTML5', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML' },
+      { id: 'css', name: 'CSS3', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS' },
+      { id: 'javascript', name: 'JavaScript', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript' },
       { id: 'python', name: 'Python', url: 'http://python.org' },
+      { id: 'cpp', name: 'C++', url: 'http://www.cplusplus.com' },
+      { id: 'c', name: 'C', url: 'http://en.wikipedia.org/wiki/C_(programming_language)' },
+      { id: 'csharp', name: 'C#', url: 'https://msdn.microsoft.com/en-us/library/z1zx9t92.aspx' },
+      { id: 'scala', name: 'Scala', url: 'http://www.scala-lang.org' },
+      { id: 'java', name: 'Java', url: 'https://www.oracle.com/java/index.html' },
+      { id: 'php', name: 'PHP', url: 'http://php.net' },
       { id: 'erlang', name: 'Erlang', url: 'http://www.erlang.org' },
-      { id: 'rails', name: 'Ruby on Rails', url: 'Ruby on Rails' },
-      { id: 'html', name: 'HTML', url: 'http://en.wikipedia.org/wiki/HTML' },
-      { id: 'css', name: 'CSS', url: 'http://en.wikipedia.org/wiki/Cascading_Style_Sheets' },
-      { id: 'javascript', name: 'JavaScript', url: 'http://en.wikipedia.org/wiki/JavaScript' }
+      { id: 'rails', name: 'Ruby on Rails', url: 'http://rubyonrails.org' }
     ]
   }, {
     id: 'frameworks',
     name: 'Frameworks',
     items: [
-      { id: 'flask', name: 'Flask', url: 'http://flask.pocoo.org' },
-      { id: 'nodejs', name: 'Node.js', url: 'http://nodejs.org' },
-      { id: 'sass', name: 'Sass', url: 'http://sass-lang.com' },
-      { id: 'bootstrap', name: 'Bootstrap', url: 'http://getbootstrap.com' },
       { id: 'jquery', name: 'jQuery', url: 'http://jquery.com' },
       { id: 'backbone', name: 'Backbone.js', url: 'http://backbonejs.org' },
+      { id: 'webix', name: 'webix', url: 'http://webix.com' },
       { id: 'reactjs', name: 'React.js', url: 'http://facebook.github.io/react' },
+      { id: 'bootstrap', name: 'Bootstrap', url: 'http://getbootstrap.com' },
+      { id: 'sass', name: 'Sass', url: 'http://sass-lang.com' },
+      { id: 'mustache', name: 'mustache', url: 'https://mustache.github.io' },
+      { id: 'flightjs', name: 'Flight.js', url: 'https://flightjs.github.io' },
+      { id: 'nodejs', name: 'Node.js', url: 'http://nodejs.org' },
+      { id: 'leafletjs', name: 'Leaflet.js', url: 'http://leafletjs.com/' },
       { id: 'requirejs', name: 'Require.js', url: 'http://requirejs.org' },
       { id: 'phantomjs', name: 'PhantomJS', url: 'http://phantomjs.org/download.html' },
+      { id: 'flask', name: 'Flask', url: 'http://flask.pocoo.org' },
       { id: 'mongodb', name: 'MongoDB', url: 'http://mongodb.org' },
       { id: 'mongoengine', name: 'mongoengine', url: 'http://mongoengine.org' },
       { id: 'redis', name: 'Redis', url: 'http://redis.io' },
+      { id: 'indexeddb', name: 'IndexedDB', url: 'IndexedDB' },
       { id: 'mysql', name: 'MySQL', url: 'http://mysql.com' },
       { id: 'hive', name: 'Hive', url: 'http://hive.apache.org' },
       { id: 'asp', name: 'ASP.NET', url: 'http://asp.net' }
@@ -105,12 +111,39 @@ var resumeData = (function() {
       { id: 'vim', name: 'Vim', url: 'http://vim.org' },
       { id: 'visualstudio', name: 'Visual Studio', url: 'http://visualstudio.com' },
       { id: 'eclipse', name: 'Eclipse', url: 'http://eclipse.org' },
+      { id: 'intellij', name: 'IntelliJ', url: 'https://www.jetbrains.com/idea/' },
       { id: 'zsh', name: 'Zsh', url: 'http://zsh.org' }
     ]
   }];
 
   var resumeData = {
     jobs: [{
+      orgId: 'twitter',
+      orgName: 'Twitter',
+      orgUrl: 'http://www.twitter.com',
+      orgImageUrl: '/static/img/logo_twitter.png',
+      title: 'Software Engineer &ndash; Web Client',
+      timeRange: formatTimeRange({ year: 2014, month: 7 }, { year: 2015, month: 9 }),
+      descriptions: [
+        'Built revamped design of <a class="iconLink" href="https://twitter.com/search?q=obama&src=typd">Twitter search</a>',
+        'Built component for showing user recommendations in the home timeline',
+        'Built custom search experience for NFL Superbowl',
+        'Built component for showing related tweets on permalink pages'
+      ],
+      skills: [
+        getSkill('tools', 'mac', { hidden: true }),
+        getSkill('tools', 'vim', { hidden: true }),
+        getSkill('tools', 'git', { hidden: true }),
+        getSkill('tools', 'intellij', { hidden: true }),
+        getSkill('languages', 'scala'),
+        getSkill('languages', 'html'),
+        getSkill('languages', 'css'),
+        getSkill('languages', 'javascript'),
+        getSkill('frameworks', 'flightjs'),
+        getSkill('frameworks', 'mustache')
+      ]
+    }, {
+      orgId: 'microsoft',
       orgName: 'Microsoft',
       orgUrl: 'http://www.microsoft.com',
       orgImageUrl: '/static/img/logo_microsoft.png',
@@ -128,6 +161,7 @@ var resumeData = (function() {
         getSkill('languages', 'csharp')
       ]
     }, {
+      orgId: 'mozilla',
       orgName: 'Mozilla',
       orgUrl: 'http://www.mozilla.org',
       orgImageUrl: '/static/img/logo_mozilla.png',
@@ -148,6 +182,7 @@ var resumeData = (function() {
         getSkill('languages', 'javascript')
       ]
     }, {
+      orgId: 'wish',
       orgName: 'Wish',
       orgUrl: 'https://www.wish.com',
       orgImageUrl: '/static/img/logo_wish.png',
@@ -176,6 +211,7 @@ var resumeData = (function() {
         getSkill('frameworks', 'redis')
       ]
     }, {
+      orgId: 'facebook',
       orgName: 'Facebook',
       orgUrl: 'https://www.facebook.com',
       orgImageUrl: '/static/img/logo_facebook.png',
@@ -199,6 +235,7 @@ var resumeData = (function() {
         getSkill('frameworks', 'hive')
       ]
     }, {
+      orgId: 'waterloo',
       orgName: 'University of Waterloo',
       hidden: true,
       orgUrl: 'http://uwaterloo.ca',
@@ -219,6 +256,7 @@ var resumeData = (function() {
         getSkill('languages', 'python')
       ]
     }, {
+      orgId: 'facebook',
       orgName: 'Facebook',
       hidden: true,
       orgUrl: 'http://facebook.com',
@@ -237,9 +275,10 @@ var resumeData = (function() {
         getSkill('languages', 'erlang')
       ]
     }, {
+      orgId: 'xtremelabs',
       orgName: 'Xtreme Labs',
       hidden: true,
-      orgUrl: 'http://xtremelabs.com',
+      orgUrl: 'https://www.crunchbase.com/organization/xtreme-labs',
       orgImageUrl: '/static/img/logo_xtremelabs.png',
       title: 'Mobile Developer Intern',
       timeRange: formatTimeRange({ year: 2010, month: 4 }, { year: 2010, month: 7 }),
@@ -256,6 +295,28 @@ var resumeData = (function() {
       ]
     }],
     projects: [{
+      name: 'Photo Map',
+      url: '/photos.html',
+      timeRange: formatTimeRange({ year: 2015, month: 9 }, { year: 2015, month: 9 }),
+      imageUrl: '/static/img/thumbnail_photomap.png',
+      descriptions: [
+        'Built web app for fetching my geo-tagged Google Photos and showing them on a map',
+        'Various filters such as by album, time range, and location'
+      ],
+      skills: [
+        getSkill('tools', 'mac', { hidden: true }),
+        getSkill('tools', 'vim', { hidden: true }),
+        getSkill('tools', 'zsh', { hidden: true }),
+        getSkill('tools', 'git', { hidden: true }),
+        getSkill('languages', 'html'),
+        getSkill('languages', 'css'),
+        getSkill('languages', 'javascript'),
+        getSkill('frameworks', 'leafletjs'),
+        getSkill('frameworks', 'indexeddb'),
+        getSkill('frameworks', 'webix'),
+        getSkill('frameworks', 'bootstrap')
+      ]
+    }, {
       name: 'UW Flow',
       url: 'http://uwflow.com/demo',
       timeRange: formatTimeRange({ year: 2012, month: 7 }, { year: 2014, month: 3 }),

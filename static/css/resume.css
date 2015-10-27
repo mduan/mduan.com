@@ -37,7 +37,7 @@ ul {
  */
 
 .pageHeader {
-  padding-bottom: 20px;
+  padding: 20px;
   border-bottom: 1px solid #ddd;
   box-shadow: 1px 1px 3px #ddd;
 }
@@ -46,6 +46,7 @@ ul {
   font: 48px "Alegreya SC", Georgia, "Times New Roman", Times, serif;
   font-weight: bold;
   text-align: center;
+  margin-bottom: 5px;
 }
 
 .contactMethods {
@@ -213,6 +214,11 @@ ul {
   vertical-align: middle;
 }
 
+.jobs.section .org.twitter img {
+  margin-right: -4px;
+  width: 23px;
+}
+
 .jobs.section .title {
   font-style: italic;
 }
@@ -258,3 +264,12 @@ ul {
   margin-bottom: 0;
  }
 
+ /**
+  * Last update date footer
+  */
+.updatedDateContainer {
+  text-align: right;
+  color: #aaa;
+  padding: 20px;
+  font-style: italic;
+}

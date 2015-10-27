@@ -41,6 +41,7 @@
       <%= data.educationsTemplate({ educations: data.resumeData.educations }) %>
       <%= data.awardsTemplate({ awards: data.resumeData.awards }) %>
     </div>
+    <div class="updatedDateContainer">Last updated <span class="updatedDate"></span></div>
   </script>
 
   <script id="skillsTemplate" type="text/template">
@@ -49,8 +50,12 @@
         <div class="sectionHeader">
           <div class="sectionTitle"><i class="fa fa-tasks"></i> Skills</div>
           <div class="resumeOptions">
-            <label for="showFullResumeCheckbox">Show full resume <input id="showFullResumeCheckbox" type="checkbox"></label>
-            <label for="affixSkillsCheckbox">Show on scroll <input id="affixSkillsCheckbox" type="checkbox" checked></label>
+            <label for="showFullResumeCheckbox" title="Show older jobs and projects">
+              Show full resume <input id="showFullResumeCheckbox" type="checkbox">
+            </label>
+            <label for="affixSkillsCheckbox" title="Keep this section pinned to the top of page on scroll">
+              Show on scroll <input id="affixSkillsCheckbox" type="checkbox" checked>
+            </label>
           </div>
         </div>
         <% _.each(data.skills, function(category) { %>
@@ -92,7 +97,7 @@
       <% _.each(data.jobs, function(job) { %>
         <div class="job subsection <% if (job.hidden) { %> hidden <% } %>">
           <div class="subsectionHeader">
-            <div class="subsectionTitle org">
+            <div class="subsectionTitle org <%= job.orgId %>">
               <img src="<%= job.orgImageUrl %>">
               <% if (job.orgUrl) { %>
                 <a href="<%= job.orgUrl %>"><%= job.orgName %></a>

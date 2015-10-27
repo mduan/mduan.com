@@ -38,6 +38,9 @@ $(function() {
     }
     if ($el.hasClass('printableLink')) {
       var href = $el.attr('href');
+      if (href.indexOf('http://') !== 0 && href.indexOf('https://') !== 0) {
+        href = window.location.origin + href;
+      }
       var $linkUrl = $('<span>').addClass('linkUrl')
         .text(' (' + href + ')')
         .hide();
@@ -162,4 +165,14 @@ $(function() {
       }
     });
   }, 100);
+
+
+  /**
+   * Last updated time on the footer
+   */
+  (function() {
+    // TODO(mack): Fix timezone bug (time from lastModified is UTC time).
+    var dateStr = moment(document.lastModified, 'MM/DD/YYYY hh:mm:ss').format('MMMM Do, YYYY');
+    $('.updatedDate').text(dateStr);
+  })();
 });
