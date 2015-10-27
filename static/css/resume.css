@@ -1,38 +1,21 @@
-* {
-  font-family: Helvetica, Arial, "Liberation Sans", FreeSans, sans-serif;
-  line-height: 1.25em;
+/**
+ * Page-wide rules
+ */
+
+a {
+  color: #000;
+  text-decoration: none;
 }
 
-h1 * {
-  font: 48px "Alegreya SC", Georgia, "Times New Roman", Times, serif;
-  font-weight: bold;
-  margin-top: 0;
+a:hover, a:focus, a:active {
+  color: #2a6496;
+  color: #069;
+  text-decoration: underline;
+  outline: 0;
 }
 
-h2 {
-  font: 20px "Alegreya SC", Georgia, "Times New Roman", Times, serif;
-  font-weight: normal;
-  color: #09A5A5;
-  margin-bottom: 10px;
-}
-
-h2 .fa {
-  opacity: 0.5;
-  margin-right: 5px;
-}
-
-.section.h2 {
-  font-size: 14px;
-  padding-left: 15px;
-}
-.skillsSection .section.h2 {
-  padding-left: 0;
-}
-
-h3 {
-  font-size: 14px;
-  margin-top: 0;
-  margin-bottom: 0;
+a .fa-external-link {
+  padding-left: 4px;
 }
 
 ul {
@@ -40,369 +23,222 @@ ul {
   margin-bottom: 0;
 }
 
-li {
-  margin-top: 5px;
-}
-li:first-child {
-  margin-top: 0;
+.hidden {
+  display: none !important;
 }
 
-a {
-  color: #000;
-  text-decoration: none;
+#resume {
+  font-family: Helvetica, Arial, "Liberation Sans", FreeSans, sans-serif;
+  font-size: 14px;
+  min-width: 800px;
 }
 
-a:hover, a:focus {
-  color: #2A6496;
-  text-decoration: underline;
-  border-bottom: 0;
+/**
+ * Rules for the page header
+ */
+
+.pageHeader {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 1px 1px 3px #ddd;
 }
 
-a:active, a:hover {
-  outline: 0;
-}
-
-a:focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-
-.deprecated {
-  display: none;
-}
-
-.options {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  font-size: 12px;
-  z-index: 100;
-}
-
-.option {
-  opacity: 0.6;
-  padding: 6px 12px;
-}
-.option:hover {
-  opacity: 1.0;
-}
-
-.hresume {
-  max-width: 1280px;
-  margin: 0 auto 10px auto;
-  border-bottom: 1px solid #EEE;
-}
-
-#header {
+.pageTitle {
+  font: 48px "Alegreya SC", Georgia, "Times New Roman", Times, serif;
+  font-weight: bold;
   text-align: center;
 }
-#header .fn {
-  display: inline-block;
-  margin-bottom: 0;
+
+.contactMethods {
+  display: flex;
+  justify-content: center;
+  padding: 0 50px;
 }
 
-.contact {
-  padding: 20px 30px 0 30px;
-  border-bottom: 1px solid #EEE;
-}
-.contact .contactOptions {
-  display: table;
-  table-layout: fixed;
-  margin: 0 auto 20px auto;
-  width: 768px;
+.contactMethod {
+  min-width: 300px;
+  font-size: 16px;
   text-align: center;
 }
-.contact .contactOption {
-  display: table-cell;
-  width: 2%;
+
+/**
+ * General rules for sections
+ */
+
+.content {
+  max-width: 1120px;
+  margin: 0 auto 50px;
 }
 
-.hresume > .lhs {
-  float: left;
-  -moz-transition: width 0.15s;
-  -webkit-transition: width 0.15s;
-  transition: width 0.15s;
-}
-.hresume > .rhs {
-  border-left: 1px solid #EEE;
-  -moz-box-shadow: inset 6px 0px 10px -10px #999;
-  -webkit-box-shadow: inset 6px 0px 10px -10px #999;
-  box-shadow: inset 6px 0px 10px -10px #999;
+.section {
+  padding: 15px 40px 0;
 }
 
-.hresume:not(.collapsed) > .lhs {
-  width: 25%;
-  /* Need to manually set max-width because of fixed position */
-  max-width: 320px;
-  position: fixed;
-}
-.hresume:not(.collapsed) > .rhs {
-  width: 75%;
-  float: right;
-}
-
-.hresume.collapsed > .lhs {
-  width: 39px;
-  /* Set minimum height */
+.section:not(:last-child):after {
+  display: block;
+  content: "";
   height: 1px;
-}
-.hresume.collapsed > .rhs {
-  overflow: hidden;
-}
-
-.timeRange {
-  color: #AAA;
+  background: linear-gradient(to right, rgba(221,221,221,0.1) 0%, rgba(221,221,221,1) 50%, rgba(221,221,221,0.1) 100%);
+  margin-top: 15px;
 }
 
-.hresume.collapsed > .lhs .sidebarContainer {
-  position: fixed;
+.sectionTitle {
+  font: 20px "Alegreya SC", Georgia, "Times New Roman", Times, serif;
+  color: #007ebd;
+  margin-bottom: 5px;
 }
 
-.skillsSection .skills {
-  font-size: 12px;
+.subsection {
+  padding: 6px 20px;
 }
 
-
-.hresume.collapsed > .lhs .skillsSection,
-.hresume.collapsed > .lhs .toggle.collapse {
-  display: none;
+.subsectionHeader {
+  display: flex;
 }
 
-.hresume:not(.collapsed) > .lhs .skillsText,
-.hresume:not(.collapsed) > .lhs .toggle.expand {
-  display: none;
+.subsectionTitle {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-.hresume > .lhs .toggleContainer {
-  color: #AAA;
+.subsectionHeader .titleSeparator {
+  font-weight: bold;
+  margin-left: 3px;
+  margin-right: 3px;
 }
-.hresume > .lhs .toggleContainer {
-  margin-top: 10px;
-}
-.hresume:not(.collapsed) > .lhs .toggleContainer {
-  margin-right: 10px;
+
+.subsectionHeader .timeRange {
+  flex: 1;
+  color: #aaa;
   text-align: right;
 }
-.hresume.collapsed > .lhs .toggleContainer {
-  text-align: center;
+
+.description li {
+  line-height: 1.5;
 }
 
-.hresume > .lhs .toggleContainer .toggle {
-  opacity: 0.7;
-}
-
-.hresume > .lhs .toggleContainer .toggle:hover {
-  cursor: pointer;
-  opacity: 1.0;
-}
-
-.hresume > .lhs .skillsText {
-  -moz-transform: rotate(90deg);
-  -webkit-transform: rotate(90deg);
-  transform: rotate(90deg);
-  display: inline-block;
-  color: #AAA;
-  margin-top: 20px;
-}
-
-.skillsSection h2 {
-  margin-top: 0;
-  margin-bottom: 0;
-  display: inline-block;
-}
-
-.sectionContainer.skillsSection {
-  border-top: 0;
-  margin-top: 0;
-}
-
-.subSkillsSection {
-  padding-top: 2px;
-}
-
-.skillsSection .skills {
-  list-style: none;
-  padding-left: 5px;
-}
-
-.skillsSection .skill {
-  font-weight: normal;
-  display: inline-block;
-  margin: .4em .2em;
-  padding: .4em;
-  border: 1px solid #CCDFF0;
-  border-radius: .5em;
-  color: #333;
-  box-shadow: 0 0 2px #eee;
-  cursor: default;
-}
-
-.experience .skills {
+.description .skills,
+.description .skills .skill {
   display: inline;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.experience .skills .skill:not(.hide) {
-  display: inline-block;
-  margin: 0;
-  padding: 0;
+
+.content:not(.unhighlightable) .jobs.section .job:hover,
+.jobs.section .job.highlight,
+.content:not(.unhighlightable) .projects.section .project:hover,
+.projects.section .project.highlight {
+  background-color: #ebf8ff;
 }
 
-.work.experience {
-  margin-bottom: 17px;
-  position: relative;
+.skills.section .skill:hover,
+.skills.section .skill.highlight {
+  background-color: #cef;
 }
 
-.work.experience .header {
+/**
+ * Skills section
+ */
+
+.skills.section {
+  padding-top: 15px;
+}
+
+.skills.section.affixed {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
+  background-color: #fbfbfb;
+  background-color: #fafdff;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 1px 1px 3px #ddd;
+  z-index: 1;
 }
 
-.work.experience .header .org {
-  flex: 0 1 auto;
-}
-
-.work.experience .org img {
-  margin-top: -4px;
-  width: 15px;
-}
-
-.work.experience .header .titleSeparator {
-  flex: 0 1 auto;
-  font-weight: bold;
-  font-size: 20px;
-  padding-left: 3px;
-  padding-right: 3px;
-}
-
-.work.experience .header .title {
-  flex: 1 1 auto;
-  font-style: italic;
-}
-
-.work.experience .header .timeRange {
-  flex: 0 1 auto;
-}
-
-.hresume:not(.collapsed) .work:hover,
-.hresume:not(.collapsed) .project:hover,
-.hresume:not(.collapsed) .skill:hover {
-  background-color: #FFFBDD;
-}
-
-.hresume:not(.collapsed) .work.highlight,
-.hresume:not(.collapsed) .project.highlight,
-.hresume:not(.collapsed) .skill.highlight {
-  background-color: #FFFBCC;
-}
-
-.project.experience:first-child {
-  margin-top: 0;
-}
-.project.experience {
-  margin-top: 17px;
-}
-
-.project.experience .header {
+.skills.section .sectionHeader {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.project.experience .projectDetails {
-  display: flex;
-  justify-content: flex-start;
   align-items: flex-start;
 }
 
-.project.experience .projectDetails .screenshot {
-  width: 44%;
-  margin-right: 20px;
+.skills.section .sectionHeader .sectionTitle {
+  flex: 1;
 }
 
-.project.experience .projectDetails .description {
-  flex: 1 1 auto;
-  width: 44%;
-  margin-right: 20px;
+.skills.section .sectionHeader .resumeOptions label {
+  color: #999;
+  margin-left: 10px;
 }
 
-.project.experience > .lhs {
+.skills.section .sectionHeader .resumeOptions label:hover,
+.skills.section .sectionHeader .resumeOptions label:focus {
+  color: #000;
+}
+
+.skills.section .categorySkills {
+  display: flex;
+  align-items: flex-start;
+  padding: 0;
+}
+
+.skills.section .categorySkills .subsectionTitle {
+  flex: 0 0 auto;
+  width: 60px;
+  position: relative;
+  top: 10px;
+}
+
+.skills.section .categorySkills ul {
+  list-style: none;
+}
+
+.skills.section .categorySkills .skill {
   display: inline-block;
-  padding-right: 10px;
-  width: 45%;
-  max-width: 400px;
-  float: left;
-  margin-top: 0;
+  border-radius: 5px;
+  margin: 4px 2px;
+  padding: 5px;
+  border: 1px solid #ddd;
 }
 
-.project.experience > .rhs {
-  display: inline-block;
-  padding-left: 10px;
-  width: 55%;
-  float: right;
+/**
+ * Jobs section
+ */
+
+.jobs.section .subsectionHeader {
+  margin-bottom: 4px;
 }
 
-.project.experience > .rhs .thumbnail {
-  display: inline-block;
-  width: 100%;
-}
-
-.education .summary,
-.awards .summary {
-  display: inline-block;
-  margin: 0;
-}
-
-.education .timeRange,
-.awards .timeRange {
-  float: right;
-}
-
-a .fa-external-link {
-  padding-left: 4px;
-}
-
-img {
+.jobs.section .org img {
+  margin-top: -4px;
+  width: 15px;
   vertical-align: middle;
 }
 
-img.thumbnail {
-  display: inline-block;
-  height: auto;
+.jobs.section .title {
+  font-style: italic;
+}
+
+/**
+ * Projects section
+ */
+
+.projects.section .subsectionHeader {
+  margin-bottom: 10px;
+}
+
+.projects.section .details {
+  display: flex;
+}
+
+.projects.section .details .screenshot {
+  flex: 0 0 auto;
+  width: 40%;
+  max-width: 500px;
+}
+
+.projects.section .details .screenshot img {
   max-width: 100%;
   padding: 2px;
-  line-height: 1.428571429;
-  background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 0px;
-  -webkit-transition: all .2s ease-in-out;
-  transition: all .2s ease-in-out;
-}
-
-.sectionContainer {
-  padding: 0 20px;
-  margin-top: 20px;
-  border-top: 1px solid #EEE;
-}
-.sectionContainer:first-child {
-  border-top: 0;
-}
-.sectionContainer:last-child {
-  padding-bottom: 20px;
-}
-
-abbr[title] {
-  border-bottom: 0;
-}
-
-.footer {
-  font-style: italic;
-  float: right;
-  padding: 10px;
-  color: #AAA;
-  font-size: 13px;
 }

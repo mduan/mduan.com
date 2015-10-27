@@ -1,5 +1,11 @@
 var resumeData = (function() {
 
+  function assert(predicate, msg) {
+    if (!predicate) {
+      throw new Error(msg || 'Assertion failed');
+    }
+  }
+
   function getSkill(categoryId, skillId, options) {
     // TODO(mduan): Optimize by converting to maps
     var category = _.find(skills, function(category) {
@@ -26,6 +32,30 @@ var resumeData = (function() {
       return startMoment.format(formatStr) + ' \u2015 Present';
     }
   }
+
+  function hideUnusedSkills(skills, resumeData) {
+    // TODO(mduan): This code assumes no duplicate skill ids across categories
+    var idToSkill = {};
+    skills.forEach(function(category) {
+      category.items.forEach(function(skill) {
+        assert(!(skill.id in idToSkill));
+        idToSkill[skill.id] = skill;
+      });
+    });
+
+    resumeData.jobs.concat(resumeData.projects).filter(function(experience) {
+      return !experience.hidden;
+    }).forEach(function(experience) {
+      experience.skills.forEach(function(skill) {
+        delete idToSkill[skill.id];
+      });
+    });
+
+    _.each(idToSkill, function(skill) {
+      console.log('deleting', skill.id);
+      skill.hidden = true;
+    });
+  };
 
   var skills = [{
     id: 'languages',
@@ -80,12 +110,12 @@ var resumeData = (function() {
     ]
   }];
 
-  return {
+  var resumeData = {
     jobs: [{
       orgName: 'Microsoft',
       orgUrl: 'http://www.microsoft.com',
       orgImageUrl: '/static/img/logo_microsoft.png',
-      jobTitle: 'Software Engineer Intern &ndash; Windows Performance',
+      title: 'Software Engineer Intern &ndash; Windows Performance',
       timeRange: formatTimeRange({ year: 2013, month: 8 }, { year: 2013, month: 11 }),
       descriptions: [
         'Analyzed video memory allocations in Windows to enhance performance',
@@ -102,10 +132,10 @@ var resumeData = (function() {
       orgName: 'Mozilla',
       orgUrl: 'http://www.mozilla.org',
       orgImageUrl: '/static/img/logo_mozilla.png',
-      jobTitle: 'Software Engineeer Intern &ndash; Mozilla Labs',
+      title: 'Software Engineeer Intern &ndash; Mozilla Labs',
       timeRange: formatTimeRange({ year: 2013, month: 0}, { year: 2013, month: 3 }),
       descriptions: [
-        '<a href="https://air.mozilla.org/intern-pdfjs/">Worked in Mozilla Labs team on PDF.js, PDF viewer in Firefox written in JavaScript</a>',
+        '<a class="iconLink" href="https://air.mozilla.org/intern-pdfjs/">Worked in Mozilla Labs team on PDF.js, PDF viewer in Firefox written in JavaScript</a>',
         'Proposed and implemented performance enhancements, improving loading time by an order of magnitude',
         'Added support for PDF annotations'
       ],
@@ -122,7 +152,7 @@ var resumeData = (function() {
       orgName: 'Wish',
       orgUrl: 'https://www.wish.com',
       orgImageUrl: '/static/img/logo_wish.png',
-      jobTitle: 'Web Developer Intern',
+      title: 'Web Developer Intern',
       timeRange: formatTimeRange({ year: 2012, month: 4 }, { year: 2012, month: 7 }),
       descriptions: [
         'Implemented user-facing features of Wish',
@@ -150,10 +180,10 @@ var resumeData = (function() {
       orgName: 'Facebook',
       orgUrl: 'https://www.facebook.com',
       orgImageUrl: '/static/img/logo_facebook.png',
-      jobTitle: 'Software Engineer Intern &ndash; Location Tagging',
+      title: 'Software Engineer Intern &ndash; Location Tagging',
       timeRange: formatTimeRange({ year: 2011, month: 8 }, { year: 2011, month: 11 }),
       descriptions: [
-        'Proposed and implemented changes to gather location data from photos leading to a 5X increase in location data, and <a href="https://news.ycombinator.com/item?id=3377018">causing controversy on Reddit and Hacker News</a>',
+        'Proposed and implemented changes to gather location data from photos leading to a 5X increase in location data, and <a class="iconLink" href="https://news.ycombinator.com/item?id=3377018">causing controversy on Reddit and Hacker News</a>',
         'Built infrastructure to process and analyze gathered location data',
         'Built features to expose new location data to users'
       ],
@@ -171,9 +201,10 @@ var resumeData = (function() {
       ]
     }, {
       orgName: 'University of Waterloo',
+      hidden: true,
       orgUrl: 'http://uwaterloo.ca',
       orgImageUrl: '/static/img/logo_uwaterloo.png',
-      jobTitle: '<a href="https://uwaterloo.ca/engineering/ura">Research Assistant</a>',
+      title: '<a class="iconLink" href="https://uwaterloo.ca/engineering/ura">Research Assistant</a>',
       timeRange: formatTimeRange({ year: 2011, month: 4 }, { year: 2011, month: 7 }),
       descriptions: [
         'Built search engine interface on top of Google and Bing to be used in research experiments'
@@ -190,9 +221,10 @@ var resumeData = (function() {
       ]
     }, {
       orgName: 'Facebook',
+      hidden: true,
       orgUrl: 'http://facebook.com',
       orgImageUrl: '/static/img/logo_facebook.png',
-      jobTitle: 'Software Engineer Intern &ndash; Realtime Infrastructure',
+      title: 'Software Engineer Intern &ndash; Realtime Infrastructure',
       timeRange: formatTimeRange({ year: 2011, month: 0 }, { year: 2011, month: 3 }),
       descriptions: [
         'Built system to support load balancing on Facebook\'s chat servers, significantly reducing number of needed servers',
@@ -207,9 +239,10 @@ var resumeData = (function() {
       ]
     }, {
       orgName: 'Xtreme Labs',
+      hidden: true,
       orgUrl: 'http://xtremelabs.com',
       orgImageUrl: '/static/img/logo_xtremelabs.png',
-      jobTitle: 'Mobile Developer Intern',
+      title: 'Mobile Developer Intern',
       timeRange: formatTimeRange({ year: 2010, month: 4 }, { year: 2010, month: 7 }),
       descriptions: [
         'Developed and maintained several BlackBerry applications for various clients',
@@ -224,28 +257,6 @@ var resumeData = (function() {
       ]
     }],
     projects: [{
-      name: 'Github Side-by-Side Diffs',
-      url: 'https://chrome.google.com/webstore/detail/github-side-by-side-diffs/ahamcncifjblaomhphpfpopppadboiin',
-      timeRange: formatTimeRange({ year: 2013, month: 10 }, { year: 2013, month: 10 }),
-      imageUrl: 'static/img/thumbnail_github.jpg',
-      descriptions: [
-        'Built a Chrome extension that allows improves GitHub\'s diff viewer',
-        'Supports viewing diffs side-by-side',
-        'Supports showing more context around changes'
-      ],
-      skills: [
-        getSkill('tools', 'mac', { hidden: true }),
-        getSkill('tools', 'vim', { hidden: true }),
-        getSkill('tools', 'zsh', { hidden: true }),
-        getSkill('tools', 'git', { hidden: true }),
-        getSkill('languages', 'html'),
-        getSkill('languages', 'css'),
-        getSkill('languages', 'javascript'),
-        getSkill('frameworks', 'reactjs'),
-        getSkill('frameworks', 'backbone'),
-        getSkill('frameworks', 'jquery')
-      ]
-    }, {
       name: 'UW Flow',
       url: 'http://uwflow.com/demo',
       timeRange: formatTimeRange({ year: 2012, month: 7 }, { year: 2014, month: 3 }),
@@ -275,13 +286,35 @@ var resumeData = (function() {
         getSkill('frameworks', 'redis')
       ]
     }, {
+      name: 'Github Side-by-Side Diffs',
+      url: 'https://chrome.google.com/webstore/detail/github-side-by-side-diffs/ahamcncifjblaomhphpfpopppadboiin',
+      timeRange: formatTimeRange({ year: 2013, month: 10 }, { year: 2013, month: 10 }),
+      imageUrl: 'static/img/thumbnail_github.jpg',
+      descriptions: [
+        'Built a Chrome extension that allows improves GitHub\'s diff viewer',
+        'Supports viewing diffs side-by-side',
+        'Supports showing more context around changes'
+      ],
+      skills: [
+        getSkill('tools', 'mac', { hidden: true }),
+        getSkill('tools', 'vim', { hidden: true }),
+        getSkill('tools', 'zsh', { hidden: true }),
+        getSkill('tools', 'git', { hidden: true }),
+        getSkill('languages', 'html', { hidden: true }),
+        getSkill('languages', 'css', { hidden: true }),
+        getSkill('languages', 'javascript', { hidden: true }),
+        getSkill('frameworks', 'reactjs'),
+        getSkill('frameworks', 'backbone'),
+        getSkill('frameworks', 'jquery')
+      ]
+    }, {
       name: 'Numbers API',
       url: 'http://numbersapi.com',
       timeRange: formatTimeRange({ year: 2012, month: 3 }, { year: 2012, month: 3 }),
       imageUrl: '/static/img/thumbnail_numbersapi.jpg',
       descriptions: [
         'Built an API for getting interesting number facts that gets 20,000 requests per day',
-        '<a href="https://news.ycombinator.com/item?id=3667469">Made the front page of Hacker News</a>'
+        '<a class="iconLink" href="https://news.ycombinator.com/item?id=3667469">Made the front page of Hacker News</a>'
       ],
       skills: [
         getSkill('tools', 'ubuntu', { hidden: true }),
@@ -298,6 +331,7 @@ var resumeData = (function() {
       ]
     }, {
       name: 'JobMine Improved',
+      hidden: true,
       timeRange: formatTimeRange({ year: 2010, month: 6 }, { year: 2010, month: 6 }),
       descriptions: [
         'Built a service to provide a more user-friendly interface of searching for jobs on University of Waterloo\'s job board'
@@ -309,10 +343,11 @@ var resumeData = (function() {
         getSkill('languages', 'html'),
         getSkill('languages', 'css'),
         getSkill('languages', 'javascript'),
-        getSkill('frameworks', 'rails')
+        getSkill('languages', 'rails')
       ]
     }, {
       name: 'Discussion Forum',
+      hidden: true,
       timeRange: formatTimeRange({ year: 2009, month: 8 }, { year: 2009, month: 11 }),
       descriptions: [
         'Built discussion forum for University of Waterloo\'s IEEE branch'
@@ -344,10 +379,13 @@ var resumeData = (function() {
       location: 'University of Waterloo',
       timeRange: formatTimeRange({ year: 2009, month: 8 }, { year: 2009, month: 3 })
     }, {
-      name: '<a href="http://www.ocdsb.ca/stu/Pages/TopScholar.aspx" target="_blank">Second highest average in school district</a>',
+      name: '<a class="iconLink" href="http://www.ocdsb.ca/stu/Pages/TopScholar.aspx" target="_blank">Second highest average in school district</a>',
       location: 'Ottawa-Carleton District School Board',
       timeRange: formatTimeRange({ year: 2009, month: 8 }, { year: 2009, month: 6 })
     }],
     skills: skills
   };
+
+  hideUnusedSkills(skills, resumeData);
+  return resumeData;
 })();

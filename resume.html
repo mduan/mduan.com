@@ -2,614 +2,176 @@
 <html>
 <head>
   <title>Resume of Mack Duan</title>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <link href='http://fonts.googleapis.com/css?family=Alegreya+SC:700,400' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="/static/css/normalize.css" />
   <link rel="stylesheet" href="/static/ext/font-awesome/css/font-awesome.min.css" />
   <link rel="stylesheet" href="/static/css/resume.css" />
   <link rel="stylesheet" media="print" href="/static/css/resume-print.css" />
   <script src="/static/ext/jquery/jquery-2.0.3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
   <script src="/static/ext/moment/moment.min.js"></script>
+  <script src="/static/js/resume-data.js"></script>
   <script src="/static/js/resume.js"></script>
 </head>
 <body>
-  <div class="options">
-    <span class="option pdf">
-      <i class="fa fa-file"></i>
-      <a class="internal" href="/static/files/resume.pdf"> PDF version</a>
-    </span>
+  <div id="resume">
   </div>
-  <div class="hresume clearfix">
-    <div class="contact vcard clearfix">
-      <div id="header">
-        <h1 class="fn n" id="name">
-          <span class="givenName">Mack</span>
-          <span class="familyName">Duan</span>
-        </h1>
-      </div>
-      <div class="contactOptions">
-        <span class="contactOption">
+
+  <script id="resumeTemplate" type="text/template">
+    <div class="pageHeader">
+      <div class="pageTitle">Mack Duan</div>
+      <div class="contactMethods">
+        <span class="contactMethod">
           <i class="fa fa-globe"></i>
-          <a class="icon" href="http://mduan.com" class="url" rel="me">mduan.com</a>
+          <a class="iconLink" href="http://mduan.com">mduan.com</a>
         </span>
-        <span class="contactOption">
+        <span class="contactMethod">
           <i class="fa fa-envelope-o"></i>
-          <a class="internal" href="mailto:mack@mduan.com" class="email">mack@mduan.com</a>
+          <a href="mailto:mack@mduan.com">mack@mduan.com</a>
         </span>
-        <span class="contactOption">
+        <span class="contactMethod">
           <i class="fa fa-github-alt"></i>
-          <a class="icon" href="https://github.com/mduan" class="url" rel="me">github.com/mduan</a>
+          <a class="iconLink" href="https://github.com/mduan">github.com/mduan</a>
         </span>
       </div>
     </div>
-
-    <div class="lhs clearfix">
-      <div class="sidebarContainer">
-        <div class="toggleContainer">
-          <i class="fa fa-chevron-circle-left toggle collapse"></i>
-          <i class="fa fa-chevron-circle-right toggle expand"></i>
-        </div>
-        <div class="sectionContainer skillsSection">
-          <h2><i class="fa fa-tasks"></i> Skills</h2>
-          <div class="section h2">
-            <h3>Languages</h3>
-            <ul class="skills languageSkills section h3">
-              <li data-skill="c" class="skill" rel="tag">
-                <a href="http://en.wikipedia.org/wiki/C_(programming_language)">C</a>
-              </li>
-              <li data-skill="cpp" class="skill" rel="tag">
-                <a href="http://en.wikipedia.org/wiki/C++">C++</a>
-              </li>
-              <li data-skill="csharp" class="skill" rel="tag">
-                <a href="http://en.wikipedia.org/wiki/C_Sharp_(programming_language)">C#</a>
-              </li>
-              <li data-skill="java" class="skill" rel="tag">
-                <a href="http://en.wikipedia.org/wiki/Java_(programming_language)">Java</a>
-              </li>
-              <li data-skill="php" class="skill" rel="tag">
-                <a href="http://php.net/">PHP</a>
-              </li>
-              <li data-skill="python" class="skill" rel="tag">
-                <a href="http://python.org/">Python</a>
-              </li>
-              <li data-skill="erlang" class="skill" rel="tag">
-                <a href="http://www.erlang.org/">Erlang</a>
-              </li>
-              <li data-skill="rails" class="skill" rel="tag">
-                <a href="http://rubyonrails.org/">Ruby on Rails</a>
-              </li>
-              <li data-skill="html" class="skill" rel="tag">
-                <a href="http://en.wikipedia.org/wiki/HTML">HTML</a>
-              </li>
-              <li data-skill="css" class="skill" rel="tag">
-                <a href="http://en.wikipedia.org/wiki/Cascading_Style_Sheets">CSS</a>
-              </li>
-              <li data-skill="javascript" class="skill" rel="tag">
-                <a href="http://en.wikipedia.org/wiki/JavaScript">JavaScript</a>
-              </li>
-            </ul>
-          </div>
-          <div class="section h2">
-            <h3>Frameworks</h3>
-            <ul class="skills frameworkSkills section h3">
-              <li data-skill="flask" class="skill" rel="tag">
-                <a href="http://flask.pocoo.org/">Flask</a>
-              </li>
-              <li data-skill="nodejs" class="skill" rel="tag">
-                <a href="http://nodejs.org/">Node.js</a>
-              </li>
-              <li data-skill="sass" class="skill" rel="tag">
-                <a href="http://sass-lang.com/">Sass</a>
-              </li>
-              <li data-skill="bootstrap" class="skill" rel="tag">
-                <a href="http://getbootstrap.com/">Bootstrap</a>
-              </li>
-              <li data-skill="jquery" class="skill" rel="tag">
-                <a href="http://jquery.com/">jQuery</a>
-              </li>
-              <li data-skill="backbone" class="skill" rel="tag">
-                <a href="http://backbonejs.org/">Backbone.js</a>
-              </li>
-              <li data-skill="reactjs" class="skill" rel="tag">
-                <a href="http://facebook.github.io/react/">React.js</a>
-              </li>
-              <li data-skill="requirejs" class="skill" rel="tag">
-                <a href="http://requirejs.org/">Require.js</a>
-              </li>
-              <li data-skill="phantomjs" class="skill" rel="tag">
-                <a href="http://phantomjs.org/download.html">PhantomJS</a>
-              </li>
-              <li data-skill="mongodb" class="skill" rel="tag">
-                <a href="http://mongodb.org/">MongoDB</a>
-              </li>
-              <li data-skill="mongoengine" class="skill" rel="tag">
-                <a href="http://mongoengine.org/">mongoengine</a>
-              </li>
-              <li data-skill="redis" class="skill" rel="tag">
-                <a href="http://redis.io/">Redis</a>
-              </li>
-              <li data-skill="mysql" class="skill" rel="tag">
-                <a href="http://mysql.com/">MySQL</a>
-              </li>
-              <li data-skill="hive" class="skill" rel="tag">
-                <a href="http://hive.apache.org/">Hive</a>
-              </li>
-              <li data-skill="asp" class="skill" rel="tag">
-                <a href="http://asp.net/">ASP.NET</a>
-              </li>
-            </ul>
-          </div>
-          <div class="section h2">
-            <h3>Tools</h3>
-            <ul class="skills toolSkills section h3">
-              <li data-skill="windows" class="skill" rel="tag">
-                <a href="http://windows.microsoft.com/">Windows</a>
-              </li>
-              <li data-skill="mac" class="skill" rel="tag">
-                <a href="http://apple.com/osx/">Mac OS X</a>
-              </li>
-              <li data-skill="ubuntu" class="skill" rel="tag">
-                <a href="http://ubuntu.com">Ubuntu</a>
-              </li>
-              <li data-skill="aws" class="skill" rel="tag">
-                <a href="http://aws.amazon.com/">AWS</a>
-              </li>
-              <li data-skill="git" class="skill" rel="tag">
-                <a href="http://git-scm.com/">Git</a>
-              </li>
-              <li data-skill="svn" class="skill" rel="tag">
-                <a href="http://subversion.apache.org/">SVN</a>
-              </li>
-              <li data-skill="vim" class="skill" rel="tag">
-                <a href="http://vim.org/">Vim</a>
-              </li>
-              <li data-skill="visualstudio" class="skill" rel="tag">
-                <a href="http://visualstudio.com/">Visual Studio</a>
-              </li>
-              <li data-skill="eclipse" class="skill" rel="tag">
-                <a href="http://eclipse.org/">Eclipse</a>
-              </li>
-              <li data-skill="zsh" class="skill" rel="tag">
-                <a href="http://zsh.org/">Zsh</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="skillsText collapsed">Skills</div>
-      </div>
+    <div class="content">
+      <%= data.skillsTemplate({ skills: data.resumeData.skills }) %>
+      <%= data.jobsTemplate({ jobs: data.resumeData.jobs }) %>
+      <%= data.projectsTemplate({ projects: data.resumeData.projects }) %>
+      <%= data.educationsTemplate({ educations: data.resumeData.educations }) %>
+      <%= data.awardsTemplate({ awards: data.resumeData.awards }) %>
     </div>
+  </script>
 
-    <div class="rhs clearfix">
-      <div class="sectionContainer worksContainer">
-        <h2><i class="fa fa-briefcase"></i> Work Experience</h2>
-        <div class="works vcalendar section h2">
-          <div class="microsoft work experience vevent vcard">
-            <div class="header">
-              <h3 class="org">
-                <img src="/static/img/logo_microsoft.png"></img>
-                <a href="http://www.microsoft.com">Microsoft</a>
-              </h3>
-              <span class="titleSeparator">&middot;</span>
-              <span class="title summary">Software Engineer Intern &ndash; Windows Performance</span>
-              <span class="timeRange">
-                <abbr class="dtstart" title="2013-09-01">Sep 2013</abbr> &ndash;
-                <abbr class="dtend" title="2013-12-31">Dec 2013</abbr>
-              </span>
-            </div>
-            <ul class="description">
-              <li>Analyzed video memory allocations in Windows to enhance performance</li>
-              <li>Built new tools to visualize video memory usage from both application/OS-centric perspectives</li>
-              <li>Skills:
-                <ul class="skills">
-                  <li data-skill="windows" class="skill hide"></li>
-                  <li data-skill="visualstudio" class="skill hide"></li>
-                  <li data-skill="c" class="skill">C</li>,
-                  <li data-skill="cpp" class="skill">C++</li>,
-                  <li data-skill="csharp" class="skill">C#</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div class="mozilla work experience vevent vcard">
-            <div class="header">
-              <h3 class="org lhs">
-                <img src="/static/img/logo_mozilla.png"></img>
-                <a href="http://www.mozilla.org">Mozilla</a>
-              </h3>
-              <span class="titleSeparator">&middot;</span>
-              <span class="title summary">Software Engineeer Intern &ndash; Mozilla Labs</span>
-              <span class="timeRange">
-                <abbr class="dtstart" title="2013-01-01">Jan 2013</abbr> &ndash;
-                <abbr class="dtend" title="2013-04-30">Apr 2013</abbr>
-              </span>
-            </div>
-            <ul class="description">
-              <li><a class="icon" href="https://air.mozilla.org/intern-pdfjs/">Worked in Mozilla Labs team on PDF.js, PDF viewer in Firefox written in JavaScript</a></li>
-              <li>Proposed and implemented performance enhancements, improving loading time by an order of magnitude</li>
-              <li>Added support for PDF annotations</li>
-              <li>Skills:
-                <ul class="skills">
-                  <li data-skill="mac" class="skill hide"></li>
-                  <li data-skill="vim" class="skill hide"></li>
-                  <li data-skill="zsh" class="skill hide"></li>
-                  <li data-skill="git" class="skill hide"></li>
-                  <li data-skill="html" class="skill">HTML</li>,
-                  <li data-skill="css" class="skill">CSS</li>,
-                  <li data-skill="javascript" class="skill">JavaScript</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div class="wish work experience vevent vcard">
-            <div class="header">
-              <h3 class="org">
-                <img src="/static/img/logo_wish.png"></img>
-                <a href="https://www.wish.com">Wish.com</a>
-              </h3>
-              <span class="titleSeparator">&middot;</span>
-              <span class="title summary">Web Developer Intern</span>
-              <span class="timeRange">
-                <abbr class="dtstart" title="2012-05-01">May 2012</abbr> &ndash;
-                <abbr class="dtend" title="2013-08-30">Aug 2012</abbr>
-              </span>
-            </div>
-            <ul class="description">
-              <li>Implemented user-facing features of Wish</li>
-              <li>Set up and managed build system</li>
-              <li>Got exposure to and worked on entire web-stack, gaining experience with many technologies used at startups</li>
-              <li>Skills:
-                <ul class="skills">
-                  <li data-skill="ubuntu" class="skill hide"></li>
-                  <li data-skill="vim" class="skill hide"></li>
-                  <li data-skill="zsh" class="skill hide"></li>
-                  <li data-skill="git" class="skill hide"></li>
-                  <li data-skill="html" class="skill hide"></li>
-                  <li data-skill="css" class="skill hide"></li>
-                  <li data-skill="javascript" class="skill hide">JavaScript</li>
-                  <li data-skill="sass" class="skill">Sass</li>,
-                  <li data-skill="requirejs" class="skill">Require.js</li>,
-                  <li data-skill="backbone" class="skill">BackBone.js</li>,
-                  <li data-skill="jquery" class="skill">jQuery</li>,
-                  <li data-skill="python" class="skill">Python</li>,
-                  <li data-skill="mongodb" class="skill">MongoDB</li>,
-                  <li data-skill="mongoengine" class="skill">mongoengine</li>,
-                  <li data-skill="redis" class="skill">Redis</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div class="facebook work experience vevent vcard">
-            <div class="header">
-              <h3 class="org ">
-                <img src="/static/img/logo_facebook.png"></img>
-                <a href="https://www.facebook.com">Facebook</a>
-              </h3>
-              <span class="titleSeparator">&middot;</span>
-              <span class="title summary">Software Engineer Intern &ndash; Location Tagging</span>
-              <span class="timeRange">
-                <abbr class="dtstart" title="2011-09-01">Sep 2011</abbr> &ndash;
-                <abbr class="dtend" title="2011-12-31">Dec 2011</abbr>
-              </span>
-            </div>
-            <ul class="description">
-              <li>Proposed and implemented changes to gather location data from photos leading to a 5X increase in location data, and <a class="icon" href="https://news.ycombinator.com/item?id=3377018">causing controversy on Reddit and Hacker News</a></li>
-              <li>Built infrastructure to process and analyze gathered location data</li>
-              <li>Built features to expose new location data to users</li>
-              <li>Skills:
-                <ul class="skills">
-                  <li data-skill="mac" class="skill hide"></li>
-                  <li data-skill="vim" class="skill hide"></li>
-                  <li data-skill="zsh" class="skill hide"></li>
-                  <li data-skill="git" class="skill hide"></li>
-                  <li data-skill="html" class="skill">HTML</li>,
-                  <li data-skill="css" class="skill">CSS</li>,
-                  <li data-skill="javascript" class="skill">JavaScript</li>,
-                  <li data-skill="php" class="skill">PHP</li>,
-                  <li data-skill="mysql" class="skill">MySQL</li>,
-                  <li data-skill="hive" class="skill">Hive</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div class="uwaterloo work experience vevent vcard">
-            <div class="header">
-              <h3 class="org">
-                <img src="/static/img/logo_uwaterloo.png"></img>
-                <a href="http://uwaterloo.ca">University of Waterloo</a>
-              </h3>
-              <span class="titleSeparator">&middot;</span>
-              <a class="title summary icon" href="https://uwaterloo.ca/engineering/ura">Research Assistant</a>
-              <span class="timeRange">
-                <abbr class="dtstart" title="2011-05-01">May 2011</abbr> &ndash;
-                <abbr class="dtend" title="2011-08-31">Aug 2011</abbr>
-              </span>
-            </div>
-            <ul class="description">
-              <li>Built search engine interface on top of Google and Bing to be used in research experiments</li>
-              <li>Skills:
-                <ul class="skills">
-                  <li data-skill="ubuntu" class="skill hide"></li>
-                  <li data-skill="vim" class="skill hide"></li>
-                  <li data-skill="zsh" class="skill hide"></li>
-                  <li data-skill="git" class="skill hide"></li>
-                  <li data-skill="html" class="skill">HTML</li>,
-                  <li data-skill="css" class="skill">CSS</li>,
-                  <li data-skill="javascript" class="skill">JavaScript</li>,
-                  <li data-skill="python" class="skill">Python</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div class="facebook work experience vevent vcard">
-            <div class="header">
-              <h3 class="org">
-                <img src="/static/img/logo_facebook.png"></img>
-                <a href="http://facebook.com">Facebook</a>
-              </h3>
-              <span class="titleSeparator">&middot;</span>
-              <span class="title summary lhs">Software Engineer Intern &ndash; Realtime Infrastructure</span>
-              <span class="timeRange">
-                <abbr class="dtstart" title="2011-01-01">Jan 2011</abbr> &ndash;
-                <abbr class="dtend" title="2011-04-31">Apr 2011</abbr>
-              </span>
-            </div>
-            <ul class="description">
-              <li>Built system to support load balancing on Facebook's chat servers, significantly reducing number of needed servers
-              <li>Ran simulations to stress-test load balancing system</li>
-              <li>Skills:
-                <ul class="skills">
-                  <li data-skill="mac" class="skill hide"></li>
-                  <li data-skill="vim" class="skill hide"></li>
-                  <li data-skill="svn" class="skill hide"></li>
-                  <li data-skill="php" class="skill">PHP</li>,
-                  <li data-skill="erlang" class="skill">Erlang</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div class="xtremelabs work experience vevent vcard">
-            <div class="header">
-              <h3 class="org">
-                <img src="/static/img/logo_xtremelabs.png"></img>
-                <a href="http://xtremelabs.com">Xtreme Labs</a>
-              </h3>
-              <span class="titleSeparator">&middot;</span>
-              <span class="title summary">Mobile Developer Intern</span>
-              <span class="timeRange">
-                <abbr class="dtstart" title="2010-05-01">May 2010</abbr> &ndash;
-                <abbr class="dtend" title="2010-08-31">Aug 2010</abbr>
-              <span>
-            </div>
-            <ul class="description">
-              <li>Developed and maintained several BlackBerry applications for various clients</li>
-              <li>Maintained websites for various clients</li>
-              <li>Skills:
-                <ul class="skills">
-                  <li data-skill="windows" class="skill hide"></li>
-                  <li data-skill="eclipse" class="skill hide"></li>
-                  <li data-skill="svn" class="skill hide"></li>
-                  <li data-skill="java" class="skill">Java</li>,
-                  <li data-skill="rails" class="skill">Ruby on Rails</li>
-                </ul>
-              </li>
-            </ul>
+  <script id="skillsTemplate" type="text/template">
+    <div class="skills section">
+      <div class="skillsInner">
+        <div class="sectionHeader">
+          <div class="sectionTitle"><i class="fa fa-tasks"></i> Skills</div>
+          <div class="resumeOptions">
+            <label for="showFullResumeCheckbox">Show full resume <input id="showFullResumeCheckbox" type="checkbox"></label>
+            <label for="affixSkillsCheckbox">Show on scroll <input id="affixSkillsCheckbox" type="checkbox" checked></label>
           </div>
         </div>
-      </div>
-
-      <div class="sectionContainer projectsContainer">
-        <h2><i class="fa fa-flask"></i> Side Projects</h2>
-        <div class="vcalendar projects section h2">
-          <div class="project experience vevent vcard">
-            <div class="header">
-              <h3 class="title summary">
-                <a class="icon" href="https://chrome.google.com/webstore/detail/github-side-by-side-diffs/ahamcncifjblaomhphpfpopppadboiin">Github Side-by-Side Diffs</a>
-              </h3>
-              <span class="timeRange">
-                <abbr class="dtstart" title="2013-11-01">Nov 2013</abbr>
-              </span>
-            </div>
-            <div class="projectDetails">
-              <a class="screenshot" href="https://chrome.google.com/webstore/detail/github-side-by-side-diffs/ahamcncifjblaomhphpfpopppadboiin">
-                <img class="thumbnail" src="/static/img/thumbnail_github.jpg" alt="Github Enhancement Suite" />
-              </a>
-              <ul class="description">
-                <li>Built a Chrome extension that allows improves GitHub's diff viewer
-                <li>Supports viewing diffs side-by-side</li>
-                <li>Supports showing more context around changes</li>
-                <li>Skills:
-                  <ul class="skills">
-                    <li data-skill="mac" class="skill hide"></li>
-                    <li data-skill="vim" class="skill hide"></li>
-                    <li data-skill="zsh" class="skill hide"></li>
-                    <li data-skill="git" class="skill hide"></li>
-                    <li data-skill="html" class="skill">HTML</li>,
-                    <li data-skill="css" class="skill">CSS</li>,
-                    <li data-skill="javascript" class="skill">JavaScript</li>,
-                    <li data-skill="reactjs" class="skill">React.js</li>,
-                    <li data-skill="backbone" class="skill">Backbone.js</li>,
-                    <li data-skill="jquery" class="skill">jQuery</li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="project experience vevent vcard">
-            <div class="header">
-              <h3 class="title summary">
-                <a class="icon" href="http://uwflow.com/demo">UW Flow</a>
-              </h3>
-              <span class="timeRange">
-                <abbr class="dtstart" title="2012-08-01">Aug 2012</abbr> &ndash;
-                <abbr class="dtstart" title="present">Present</abbr>
-              </span>
-            </div>
-            <div class="projectDetails">
-              <a class="screenshot" href="http://uwflow.com/demo">
-                <img class="thumbnail" src="/static/img/thumbnail_uwflow.jpg" alt="UW Flow"/>
-              </a>
-              <ul class="description">
-                <li>Co-founded a website that lets university students review and plan courses</li>
-                <li>Currently has 4000 users, 40 000 ratings, and 200 000 course searches</li>
-                <li>Skills:
-                  <ul class="skills">
-                    <li data-skill="mac" class="skill hide"></li>
-                    <li data-skill="vim" class="skill hide"></li>
-                    <li data-skill="zsh" class="skill hide"></li>
-                    <li data-skill="git" class="skill hide"></li>
-                    <li data-skill="aws" class="skill hide"></li>
-                    <li data-skill="html" class="skill hide"></li>
-                    <li data-skill="css" class="skill hide"></li>
-                    <li data-skill="javascript" class="skill hide"></li>
-                    <li data-skill="sass" class="skill">Sass</li>,
-                    <li data-skill="bootstrap" class="skill">Bootstrap</li>,
-                    <li data-skill="requirejs" class="skill">Require.js</li>,
-                    <li data-skill="backbone" class="skill">Backbone.js</li>,
-                    <li data-skill="phantomjs" class="skill">PhantomJS</li>,
-                    <li data-skill="python" class="skill">Python</li>,
-                    <li data-skill="flask" class="skill">Flask</li>,
-                    <li data-skill="mongodb" class="skill">MongoDB</li>,
-                    <li data-skill="mongoengine" class="skill">mongoengine</li>,
-                    <li data-skill="redis" class="skill">Redis</li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="project experience vevent vcard">
-            <div class="header">
-              <h3 class="title summary">
-                <a class="icon" href="http://numbersapi.com">Numbers API</a>
-              </h3>
-              <span class="timeRange">
-                <abbr class="dtstart" title="2011-04-01">Apr 2011</abbr>
-              </span>
-            </div>
-            <div class="projectDetails">
-              <a class="screenshot" href="http://numbersapi.com">
-                <img class="thumbnail" src="/static/img/thumbnail_numbersapi.jpg" alt="Numbers API" />
-              </a>
-              <ul class="description">
-                <li>Built an API for getting interesting number facts that gets 20,000 requests per day</li>
-                <li><a class="icon" href="https://news.ycombinator.com/item?id=3667469">Made the front page of Hacker News</a></li>
-                <li>Skills:
-                  <ul class="skills">
-                    <li data-skill="ubuntu" class="skill hide"></li>
-                    <li data-skill="vim" class="skill hide"></li>
-                    <li data-skill="zsh" class="skill hide"></li>
-                    <li data-skill="git" class="skill hide"></li>
-                    <li data-skill="aws" class="skill hide"></li>
-                    <li data-skill="html" class="skill hide"></li>
-                    <li data-skill="css" class="skill hide"></li>
-                    <li data-skill="javascript" class="skill hide"></li>
-                    <li data-skill="bootstrap" class="skill">Bootstrap</li>,
-                    <li data-skill="requirejs" class="skill">Require.js</li>,
-                    <li data-skill="nodejs" class="skill">Node.js</li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="project experience vevent vcard">
-            <div class="header">
-              <h3 class="title summary">JobMine Improved</h3>
-              <span class="timeRange">
-                <abbr class="dtstart" title="2010-07-01">Jul 2010</abbr>
-              </span>
-            </div>
-            <ul class="description">
-              <li>Built a service to provide a more user-friendly interface of searching for jobs on University of Waterloo's job board</li>
-              <li>Skills:
-                <ul class="skills">
-                  <li data-skill="ubuntu" class="skill hide"></li>
-                  <li data-skill="zsh" class="skill hide"></li>
-                  <li data-skill="git" class="skill hide"></li>
-                  <li data-skill="html" class="skill">HTML</li>,
-                  <li data-skill="css" class="skill">CSS</li>,
-                  <li data-skill="javascript" class="skill">JavaScript</li>,
-                  <li data-skill="rails" class="skill">Ruby on Rails</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div class="project experience vevent vcard">
-            <div class="header">
-              <h3 class="title summary">Discussion Forum</h3>
-              <span class="timeRange">
-                <abbr class="dtstart" title="2009-09-01">Sept 2009</abbr> &ndash;
-                <abbr class="dtend" title="2009-12-31">Dec 2009</abbr>
-              </span>
-            </div>
-            <ul class="description">
-              <li>Built discussion forum for University of Waterloo's IEEE branch</li>
-              <li>Skills:
-                <ul class="skills">
-                  <li data-skill="windows" class="skill hide"></li>
-                  <li data-skill="visualstudio" class="skill hide"></li>
-                  <li data-skill="html" class="skill">HTML</li>,
-                  <li data-skill="css" class="skill">CSS</li>,
-                  <li data-skill="javascript" class="skill">JavaScript</li>,
-                  <li data-skill="csharp" class="skill">C#</li>,
-                  <li data-skill="asp" class="skill">ASP.NET</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="sectionContainer educationsContainer">
-        <h2><i class="fa fa-book"></i>  Education</h2>
-        <div class="educations vcalendar section h2">
-          <div class="education vevent vcard">
-            <div class="header">
-              <h3 class="summary">Bachelor of Software Engineering</h3> &ndash;
-              <a class="org fn url" href="http://uwaterloo.ca">University of Waterloo</a>
-              <span class="timeRange"><abbr class="dtstart" title="2009-09-01">Nov 2013</abbr> &ndash; Present</span>
-            </div>
+        <% _.each(data.skills, function(category) { %>
+          <div class="categorySkills subsection">
+            <div class="subsectionTitle"><%= category.name %></div>
             <ul>
-              <li><a class="icon" href="/static/files/transcript.pdf">Cumulative average of 92.0%</a></li>
+              <% _.each(category.items, function(skill) { %>
+                <li data-skill="<%= skill.id %>" class="skill <% if (skill.hidden) { %> hidden <% } %>">
+                  <a href="<%= skill.url %>"><%= skill.name %></a>
+                </li>
+              <% }); %>
             </ul>
           </div>
-        </div>
-      </div>
-
-      <div class="sectionContainer awardsContainer">
-        <h2><i class="fa fa-trophy"></i> Awards and Accomplishments</h2>
-        <ul class="awards vcalendar section h2">
-          <li class="experience vevent vcard">
-            <h3 class="title summary">Dean's Honours List</h3> &ndash;
-            <a class="org fn" href="http://uwaterloo.ca">University of Waterloo</a>
-            <span class="timeRange">
-              <abbr class="dtstart" title="2009-09-01">Sep 2009</abbr> &ndash;
-              <abbr class="dtstart" title="present">Present</abbr>
-            </span>
-          </li>
-          <li class="experience vevent vcard">
-            <h3 class="title summary">President's Scholarship of Distinction</h3> &ndash;
-            <a class="org fn" href="http://uwaterloo.ca">University of Waterloo</a>
-            <span class="timeRange">
-              <abbr class="dtstart" title="2009-09-01">Sep 2009</abbr>
-            </span>
-          </li>
-          <li class="experience vevent vcard">
-            <h3 class="title summary">
-              <a class="icon" href="http://www.ocdsb.ca/stu/Pages/TopScholar.aspx">Second highest average in school district</a>
-            </h3> &ndash;
-            <a class="org fn" href="http://ocdsb.ca/Pages/default.aspx">Ottawa-Carleton District School Board</a>
-            <span class="timeRange">
-              <abbr class="dtstart" title="2009-07-01">July 2009</abbr>
-            </span>
-          </li>
-        </ul>
+        <% }); %>
       </div>
     </div>
+  </script>
 
-  </div>
+  <script id="experienceDescriptionTemplate" type="text/template">
+    <ul class="description">
+      <% _.each(data.descriptions, function(description) { %>
+        <li><%= description %></li>
+      <% }); %>
+      <li>Skills:
+        <ul class="skills">
+          <% _.each(data.skills, function(skill, idx) { %>
+            <li data-skill="<%= skill.id %>" class="skill <% if (skill.hidden) { %> hidden <% } %>">
+              <%= skill.name %><% if (idx !== data.skills.length - 1) { %>,<% } %>
+            </li>
+          <% }); %>
+        </ul>
+      </li>
+    </ul>
+  </script>
 
-  <span class="footer">
-    Last updated <span class="updatedDate">October 26th, 2015</span>.
-  </span>
+  <script id="jobsTemplate" type="text/template">
+    <div class="jobs section">
+      <div class="sectionTitle"><i class="fa fa-briefcase"></i> Work Experience</div>
+      <% _.each(data.jobs, function(job) { %>
+        <div class="job subsection <% if (job.hidden) { %> hidden <% } %>">
+          <div class="subsectionHeader">
+            <div class="subsectionTitle org">
+              <img src="<%= job.orgImageUrl %>">
+              <% if (job.orgUrl) { %>
+                <a class="iconLink" href="<%= job.orgUrl %>"><%= job.orgName %></a>
+              <% } else { %>
+                <%= job.orgName %>
+              <% } %>
+            </div>
+            <span class="titleSeparator">&bull;</span>
+            <span class="title"><%= job.title %></span>
+            <span class="timeRange"><%= job.timeRange %></span>
+          </div>
+          <%= data.experienceDescriptionTemplate({ descriptions: job.descriptions, skills: job.skills }) %>
+        </div>
+      <% }); %>
+    </div>
+  </script>
 
+  <script id="projectsTemplate" type="text/template">
+    <div class="projects section">
+      <div class="sectionTitle"><i class="fa fa-flask"></i> Side Projects</div>
+      <% _.each(data.projects, function(project) { %>
+        <div class="project subsection <% if (project.hidden) { %> hidden <% } %>">
+          <div class="subsectionHeader">
+            <div class="subsectionTitle">
+              <% if (project.url) { %>
+                <a class="iconLink" href="<%= project.url %>"><%= project.name %></a>
+              <% } else { %>
+                <%= project.name %>
+              <% } %>
+            </div>
+            <span class="timeRange"><%= project.timeRange %></span>
+          </div>
+          <div class="details">
+            <% if (project.url && project.imageUrl) { %>
+              <a class="screenshot" href="<%= project.url %>">
+                <img src="<%= project.imageUrl %>">
+              </a>
+            <% } %>
+            <%= data.experienceDescriptionTemplate({ descriptions: project.descriptions, skills: project.skills }) %>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </script>
+
+  <script id="educationsTemplate" type="text/template">
+    <div class="educations section">
+      <div class="sectionTitle"><i class="fa fa-book"></i> Education</div>
+      <% _.each(data.educations, function(education) { %>
+        <div class="education subsection">
+          <div class="subsectionHeader">
+            <span class="subsectionTitle"><%= education.name %></span>
+            <span class="titleSeparator">&bull;</span>
+            <span class="location"><%= education.location %></span>
+            <span class="timeRange"><%= education.timeRange %></span>
+          </div>
+          <ul class="description">
+            <% _.each(education.descriptions, function(description) { %>
+              <li><%= description %></li>
+            <% }); %>
+          </ul>
+        </div>
+      <% }); %>
+    </div>
+  </script>
+
+  <script id="awardsTemplate" type="text/template">
+    <div class="awards section">
+      <div class="sectionTitle"><i class="fa fa-trophy"></i> Awards and Accomplishments</div>
+      <% _.each(data.awards, function(award) { %>
+        <div class="award subsection">
+          <span class="subsectionTitle"><%= award.name %></span>
+          <span class="titleSeparator">&bull;</span>
+          <span class="location"><%= award.location %></span>
+          <span class="timeRange"><%= award.timeRange %></span>
+        </div>
+      <% }); %>
+    </div>
+  </script>
 </body>
 </html>
