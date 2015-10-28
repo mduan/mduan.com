@@ -58,7 +58,9 @@ ul {
 }
 
 .contactMethods {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: center;
   justify-content: center;
   padding: 0 50px;
 }
@@ -103,6 +105,7 @@ ul {
 }
 
 .subsectionHeader {
+  display: -webkit-flex;
   display: flex;
   margin-bottom: 4px;
 }
@@ -119,6 +122,7 @@ ul {
 }
 
 .subsectionHeader .timeRange {
+  -webkit-flex: 1;
   flex: 1;
   color: #aaa;
   text-align: right;
@@ -157,7 +161,9 @@ ul {
 }
 
 .skills.section.affixed {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: center;
   justify-content: center;
   background-color: #fafdff;
   padding-bottom: 10px;
@@ -167,11 +173,14 @@ ul {
 }
 
 .skills.section .sectionHeader {
+  display: -webkit-flex;
   display: flex;
+  -webkit-align-items: flex-start;
   align-items: flex-start;
 }
 
 .skills.section .sectionHeader .sectionTitle {
+  -webkit-flex: 1;
   flex: 1;
 }
 
@@ -186,13 +195,16 @@ ul {
 }
 
 .skills.section .categorySkills {
+  display: -webkit-flex;
   display: flex;
+  -webkit-align-items: flex-start;
   align-items: flex-start;
   padding-top: 0;
   padding-bottom: 0;
 }
 
 .skills.section .categorySkills .subsectionTitle {
+  -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
   width: 60px;
   position: relative;
@@ -243,10 +255,12 @@ ul {
 }
 
 .projects.section .details {
+  display: -webkit-flex;
   display: flex;
 }
 
 .projects.section .details .screenshot {
+  -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
   width: 40%;
   max-width: 500px;

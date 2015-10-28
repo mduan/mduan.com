@@ -16,11 +16,13 @@ body {
 .contentContainer {
   font: 13px/22px Georgia, "Times New Roman", serif;
   color: #6e6e6e;
+  display: -webkit-flex;
   display: flex;
   padding: 100px 50px;
   margin: 0 auto;
   min-width: 740px;
   max-width: 1010px;
+  -webkit-justify-content: center;
   justify-content: center;
 }
 
@@ -39,7 +41,9 @@ body {
 }
 
 .links {
+  display: -webkit-flex;
   display: flex;
+  -webkit-justify-content: space-around;
   justify-content: space-around;
   font-size: 21px;
   padding: 0;
@@ -47,6 +51,7 @@ body {
 }
 
 .links > a {
+  -webkit-flex: 1 1 auto;
   flex: 1 1 auto;
   text-align: center;
 }
