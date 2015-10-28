@@ -10,3 +10,10 @@
   margin: 20px 0 20px 0;
   text-rendering: optimizeLegibility;
 }
+
+/**
+ * Disable font boosting in android chrome
+ */
+body * {
+  max-height: 1000000px;
+}
