@@ -11,6 +11,10 @@ a.printableLink .linkUrl {
   padding: 30px 0 !important;
 }
 
+.pdfLink {
+  display: none !important;
+}
+
 .skills.section .sectionHeader .resumeOptions {
   display: none !important;
 }

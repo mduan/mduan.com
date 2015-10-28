@@ -42,6 +42,14 @@ ul {
   box-shadow: 1px 1px 3px #ddd;
 }
 
+.pdfLink {
+  float: right;
+}
+
+.pdfLink .fa {
+  padding-right: 3px;
+}
+
 .pageTitle {
   font: 48px "Alegreya SC", Georgia, "Times New Roman", Times, serif;
   font-weight: bold;

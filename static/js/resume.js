@@ -33,7 +33,7 @@ $(function() {
     if ($el.hasClass('iconLink')) {
       $el.append($('<sup><i class="fa fa-external-link"></i></sup>'));
     }
-    if (!$el.hasClass('internal')) {
+    if (!$el.hasClass('internalLink')) {
       $el.attr('target', '_blank');
     }
     if ($el.hasClass('printableLink')) {
