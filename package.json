@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "My personal website",
   "main": "gulpfile.js",
-  "dependencies": {
-    "gulp": "^3.9.0"
-  },
   "devDependencies": {
     "gulp": "^3.9.0"
   },
@@ -14,12 +11,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mduan/website.git"
+    "url": "git+https://github.com/mduan/mduan.com.git"
   },
   "author": "Mack Duan",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mduan/website/issues"
+    "url": "https://github.com/mduan/mduan.com/issues"
   },
-  "homepage": "https://github.com/mduan/website#readme"
+  "homepage": "https://github.com/mduan/mduan.com#readme"
 }
