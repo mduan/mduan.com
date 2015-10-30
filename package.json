@@ -4,17 +4,14 @@
   "description": "My personal website",
   "main": "gulpfile.js",
   "devDependencies": {
-    "gulp": "^3.9.0"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "gulp": "^3.9.0",
+    "gulp-jshint": "^1.12.0"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mduan/mduan.com.git"
   },
   "author": "Mack Duan",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/mduan/mduan.com/issues"
   },

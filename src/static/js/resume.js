@@ -1,3 +1,5 @@
+/* globals resumeData */
+
 $(function() {
 
   /**
@@ -72,7 +74,7 @@ $(function() {
     var $experiences = $('.jobs.section .job, .projects.section .project');
     var $skills = $('.skills.section .skill');
     $experiences.mouseenter(function() {
-      if (!$affixSkillsCheckbox.prop('checked')) { return }
+      if (!$affixSkillsCheckbox.prop('checked')) { return; }
       $(this).find('.skills .skill').each(function() {
         var skill = $(this).attr('data-skill');
         $skills.filter('[data-skill="' + skill + '"]').addClass('highlight');
@@ -85,7 +87,7 @@ $(function() {
     });
 
     $skills.mouseenter(function() {
-      if (!$affixSkillsCheckbox.prop('checked')) { return }
+      if (!$affixSkillsCheckbox.prop('checked')) { return; }
       var skill = $(this).attr('data-skill');
       $experiences.each(function() {
         var $el = $(this);
@@ -121,7 +123,6 @@ $(function() {
     // Padding needed from left/right side of element to left/right side of screen respectively
     var paddingLeft = parseInt($skillsSection.css('padding-left'));
     var paddingRight = parseInt($skillsSection.css('padding-right'));
-    debugger;
 
     function onViewportChange() {
       // TODO(mduan): Would be more efficient to unbind the scroll listener when

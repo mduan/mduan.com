@@ -1,3 +1,5 @@
+/* globals L */
+
 L.Photo = L.FeatureGroup.extend({
   options: {
     icon: {
@@ -24,7 +26,6 @@ L.Photo = L.FeatureGroup.extend({
   },
 
   createMarker: function(photo) {
-    var self = this;
     var latLng = {
       lat: photo.latitude,
       lng: photo.longitude

@@ -1,20 +1,6 @@
 var gulp = require('gulp');
+var jshint = require('gulp-jshint');
 var spawn = require('child_process').spawn;
-
-function runJekyll(options) {
-  options = options || {};
-  var args = ['build'];
-  if (options.watch) {
-    args.push('--watch');
-  }
-
-  return new Promise(function(resolve, reject) {
-    var jekyllCmd = spawn('jekyll', args, {stdio: 'inherit'});
-    jekyllCmd.on('exit', function(code) {
-      resolve(code === 0 ? null : 'ERROR: Jekyll process exited with code: ' + code);
-    });
-  });
-}
 
 gulp.task('install', function() {
   return new Promise(function(resolve, reject) {
@@ -26,10 +12,24 @@ gulp.task('install', function() {
   });
 });
 
-gulp.task('watch', function() {
-  return runJekyll({watch: true});
+gulp.task('jshint', function() {
+  return gulp.src('src/static/js/**/*.js')
+    .pipe(jshint({lookup: true}))
+    .pipe(jshint.reporter('default', {verbose: true}));
+    //.pipe(jshint.reporter('fail'));
 });
 
-gulp.task('default', function() {
-  return runJekyll();
+gulp.task('jekyll', ['jshint'], function() {
+  return new Promise(function(resolve, reject) {
+    var jekyllCmd = spawn('jekyll', ['build'], {stdio: 'inherit'});
+    jekyllCmd.on('exit', function(code) {
+      resolve(code === 0 ? null : 'ERROR: Jekyll process exited with code: ' + code);
+    });
+  });
 });
+
+gulp.task('watch', ['jekyll'], function() {
+  return gulp.watch('src/**/*', ['jekyll']);
+});
+
+gulp.task('default', ['jekyll']);

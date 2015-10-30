@@ -1,4 +1,4 @@
-var resumeData = (function() {
+window.resumeData = (function() {
 
   function assert(predicate, msg) {
     if (!predicate) {
@@ -54,7 +54,7 @@ var resumeData = (function() {
     _.each(idToSkill, function(skill) {
       skill.hidden = true;
     });
-  };
+  }
 
   var skills = [{
     id: 'languages',
