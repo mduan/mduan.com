@@ -110,6 +110,7 @@ $(function() {
   // TODO(mduan): For some reason, this offset is incorrect on page ready,
   // hence why it's done in a setTimeout.
   setTimeout(function() {
+    var $content = $('.content');
     var $skillsSection = $('.skills.section');
     var $nextSection = $skillsSection.next();
     var $placeholder = $('<div class="skillsPlaceholder">').insertAfter($skillsSection);
@@ -120,8 +121,9 @@ $(function() {
     // Padding needed from left/right side of element to left/right side of screen respectively
     var paddingLeft = parseInt($skillsSection.css('padding-left'));
     var paddingRight = parseInt($skillsSection.css('padding-right'));
+    debugger;
 
-    function onScroll() {
+    function onViewportChange() {
       // TODO(mduan): Would be more efficient to unbind the scroll listener when
       // checkbox is unchecked.
       if ($window.scrollTop() > skillsSectionoffset && $affixSkillsCheckbox.prop('checked')) {
@@ -129,35 +131,38 @@ $(function() {
         $skillsSection.css({
           position: 'fixed',
           top: 0,
+          width: $nextSection.width(),
           left: 0,
           right: 0,
-          paddingLeft: paddingLeft,
-          paddingRight: paddingRight
+          paddingLeft: paddingLeft + parseInt($content.css('margin-left')),
+          paddingRight: paddingRight + parseInt($content.css('margin-right'))
         }).addClass('affixed');
       } else {
         $skillsSection.css({
           position: '',
           top: '',
+          width: '',
           left: '',
+          right: '',
           paddingLeft: '',
           paddingRight: ''
         }).removeClass('affixed');
         $placeholder.css('height', '');
       }
     }
-    onScroll();
-    $window.scroll(onScroll);
+    onViewportChange();
+    $window.on('scroll resize', onViewportChange);
 
     $affixSkillsCheckbox.click(function() {
       if ($affixSkillsCheckbox.prop('checked')) {
         $('.content').removeClass('unhighlightable');
-        $window.scroll(onScroll);
-        onScroll();
+        $window.on('scroll resize', onViewportChange);
+        onViewportChange();
       } else {
         $('.content').addClass('unhighlightable');
-        $window.off('scroll');
+        $window.off('scroll resize');
         var scrollTop = $window.scrollTop();
-        onScroll();
+        onViewportChange();
         // TODO(mduan): Have to do in a timeout for this to work. Figure out why.
         setTimeout(function() {
           $window.scrollTop(scrollTop);
