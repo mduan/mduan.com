@@ -22,10 +22,6 @@ ul {
   margin-bottom: 0;
 }
 
-.hidden {
-  display: none !important;
-}
-
 #resume {
   font-family: Helvetica, Arial, "Liberation Sans", FreeSans, sans-serif;
   font-size: 14px;
@@ -272,7 +268,6 @@ ul {
   border: 1px solid #ddd;
 }
 
-
 /**
  * Education section
  */
@@ -298,3 +293,5 @@ ul {
   padding: 20px;
   font-style: italic;
 }
+
+@import url('resume-print.css') print;

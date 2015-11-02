@@ -4,8 +4,18 @@
   "description": "My personal website",
   "main": "gulpfile.js",
   "devDependencies": {
+    "css-loader": "^0.21.0",
+    "extract-text-webpack-plugin": "^0.8.2",
+    "file-loader": "^0.8.4",
+    "font-awesome": "^4.4.0",
     "gulp": "^3.9.0",
-    "gulp-jshint": "^1.12.0"
+    "gulp-jshint": "^1.12.0",
+    "jquery": "^2.1.4",
+    "moment": "^2.10.6",
+    "style-loader": "^0.13.0",
+    "underscore": "^1.8.3",
+    "url-loader": "^0.5.6",
+    "webpack": "^1.12.2"
   },
   "repository": {
     "type": "git",

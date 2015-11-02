@@ -19,17 +19,17 @@ gulp.task('jshint', function() {
     //.pipe(jshint.reporter('fail'));
 });
 
-gulp.task('jekyll', ['jshint'], function() {
+gulp.task('webpack', ['jshint'], function() {
   return new Promise(function(resolve, reject) {
-    var jekyllCmd = spawn('jekyll', ['build'], {stdio: 'inherit'});
-    jekyllCmd.on('exit', function(code) {
-      resolve(code === 0 ? null : 'ERROR: Jekyll process exited with code: ' + code);
+    var webpackCmd = spawn('webpack', [], {stdio: 'inherit'});
+    webpackCmd.on('exit', function(code) {
+      resolve(code === 0 ? null : 'ERROR: Webpack process exited with code: ' + code);
     });
   });
 });
 
-gulp.task('watch', ['jekyll'], function() {
-  return gulp.watch('src/**/*', ['jekyll']);
+gulp.task('watch', ['webpack'], function() {
+  return gulp.watch('src/**/*', ['webpack']);
 });
 
-gulp.task('default', ['jekyll']);
+gulp.task('default', ['webpack']);

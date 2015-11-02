@@ -1,4 +1,7 @@
-/* globals resumeData */
+require('./shared.js');
+require('../css/resume.css');
+var moment = require('moment');
+var resumeData = require('./resume-data.js');
 
 $(function() {
 
