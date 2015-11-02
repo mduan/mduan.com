@@ -43,7 +43,8 @@ ul {
 }
 
 .pdfLink {
-  float: right;
+  display: block;
+  text-align: right;
 }
 
 .pdfLink .fa {
