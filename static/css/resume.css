@@ -32,6 +32,10 @@ ul {
   min-width: 800px;
 }
 
+#errorMessage {
+  padding: 20px;
+}
+
 /**
  * Rules for the page header
  */

@@ -1,5 +1,16 @@
 $(function() {
 
+  window.onerror = function() {
+    // This error message will only show for errors that occur before and during template
+    // rendering since after the resume is rendered the #errorMessage element will have
+    // been replaced by the rendered resume.
+    console.log($('#errorMessage'));
+    $('#errorMessage').html(
+      '<span>Error rendering resume. Please try changing browsers or view a PDF version at ' +
+      '<a href="http://mduan.com/static/files/resume.pdf">http://mduan.com/static/files/resume.pdf</a></span>'
+    );
+  };
+
   /**
    * Template rendering
    */
