@@ -123,8 +123,8 @@ ul {
 }
 
 .subsectionHeader .timeRange {
-  -webkit-flex: 1;
-  flex: 1;
+  -webkit-flex: 1 0 auto;
+  flex: 1 0 auto;
   color: #aaa;
   text-align: right;
 }
@@ -141,15 +141,15 @@ ul {
   list-style: none;
 }
 
-.content:not(.unhighlightable) .jobs.section .job:hover,
-.jobs.section .job.highlight,
-.content:not(.unhighlightable) .projects.section .project:hover,
-.projects.section .project.highlight {
+.content:not(.unhighlightable) #jobs.section .job:hover,
+#jobs.section .job.highlight,
+.content:not(.unhighlightable) #projects.section .project:hover,
+#projects.section .project.highlight {
   background-color: #ebf8ff;
 }
 
-.skills.section .skill:hover,
-.skills.section .skill.highlight {
+#skills.section .skill:hover,
+#skills.section .skill.highlight {
   background-color: #cef;
 }
 
@@ -157,11 +157,11 @@ ul {
  * Skills section
  */
 
-.skills.section {
+#skills.section {
   padding-top: 15px;
 }
 
-.skills.section.affixed {
+#skills.section.affixed {
   display: -webkit-flex;
   display: flex;
   -webkit-justify-content: center;
@@ -173,29 +173,29 @@ ul {
   z-index: 1;
 }
 
-.skills.section .sectionHeader {
+#skills.section .sectionHeader {
   display: -webkit-flex;
   display: flex;
   -webkit-align-items: flex-start;
   align-items: flex-start;
 }
 
-.skills.section .sectionHeader .sectionTitle {
+#skills.section .sectionHeader .sectionTitle {
   -webkit-flex: 1;
   flex: 1;
 }
 
-.skills.section .sectionHeader .resumeOptions label {
+#skills.section .sectionHeader .resumeOptions label {
   opacity: 0.6;
   margin-left: 10px;
 }
 
-.skills.section .sectionHeader .resumeOptions label:hover,
-.skills.section .sectionHeader .resumeOptions label:focus {
+#skills.section .sectionHeader .resumeOptions label:hover,
+#skills.section .sectionHeader .resumeOptions label:focus {
   opacity: 1;
 }
 
-.skills.section .categorySkills {
+#skills.section .categorySkills {
   display: -webkit-flex;
   display: flex;
   -webkit-align-items: flex-start;
@@ -204,7 +204,7 @@ ul {
   padding-bottom: 0;
 }
 
-.skills.section .categorySkills .subsectionTitle {
+#skills.section .categorySkills .subsectionTitle {
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
   width: 60px;
@@ -212,11 +212,11 @@ ul {
   top: 10px;
 }
 
-.skills.section .categorySkills ul {
+#skills.section .categorySkills ul {
   list-style: none;
 }
 
-.skills.section .categorySkills .skill {
+#skills.section .categorySkills .skill {
   display: inline-block;
   border-radius: 5px;
   margin: 4px 2px;
@@ -228,22 +228,22 @@ ul {
  * Jobs section
  */
 
-.jobs.section .subsectionHeader {
+#jobs.section .subsectionHeader {
   margin-bottom: 4px;
 }
 
-.jobs.section .org img {
+#jobs.section .org img {
   margin-top: -4px;
   width: 15px;
   vertical-align: middle;
 }
 
-.jobs.section .org.twitter img {
+#jobs.section .org.twitter img {
   margin-right: -4px;
   width: 23px;
 }
 
-.jobs.section .title {
+#jobs.section .title {
   font-style: italic;
 }
 
@@ -251,23 +251,23 @@ ul {
  * Projects section
  */
 
-.projects.section .subsectionHeader {
+#projects.section .subsectionHeader {
   margin-bottom: 10px;
 }
 
-.projects.section .details {
+#projects.section .details {
   display: -webkit-flex;
   display: flex;
 }
 
-.projects.section .details .screenshot {
+#projects.section .details .screenshot {
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
   width: 40%;
   max-width: 500px;
 }
 
-.projects.section .details .screenshot img {
+#projects.section .details .screenshot img {
   max-width: 100%;
   padding: 2px;
   border: 1px solid #ddd;
@@ -278,7 +278,7 @@ ul {
  * Education section
  */
 
-.educations.section .subsectionHeader {
+#educations.section .subsectionHeader {
   margin-bottom: 4px;
 }
 
@@ -286,7 +286,7 @@ ul {
  * Awards section
  */
 
-.awards.section .subsectionHeader {
+#awards.section .subsectionHeader {
   margin-bottom: 0;
  }
 

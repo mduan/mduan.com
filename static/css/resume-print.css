@@ -15,7 +15,7 @@ a.printableLink .linkUrl {
   display: none !important;
 }
 
-.skills.section .sectionHeader .resumeOptions {
+#skills.section .sectionHeader .resumeOptions {
   display: none !important;
 }
 
@@ -32,16 +32,20 @@ a.printableLink .linkUrl {
   margin-bottom: 10px !important;
 }
 
-.jobs.section .subsection,
-.projects.section .subsection {
+#jobs.section .subsection,
+#projects.section .subsection {
   padding: 9px 10px !important;
+}
+
+#projects.section .details .screenshot {
+  width: 35% !important;
 }
 
 .skillsPlaceholder {
   display: none !important;
 }
 
-.skills.section.affixed {
+#skills.section.affixed {
   position: static !important;
   display: block !important;
   background-color: transparent !important;

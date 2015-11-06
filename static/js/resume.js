@@ -54,11 +54,11 @@ $(function() {
   $('#showFullResumeCheckbox').click(function() {
     var $el = $(this);
     if ($el.prop('checked')) {
-      $('.subsection.hidden, .skills.section .skill.hidden')
+      $('.subsection.hidden, #skills.section .skill.hidden')
         .removeClass('hidden')
         .addClass('unhidden');
     } else {
-      $('.subsection.unhidden, .skills.section .skill.unhidden')
+      $('.subsection.unhidden, #skills.section .skill.unhidden')
         .removeClass('unhidden')
         .addClass('hidden');
     }
@@ -69,16 +69,16 @@ $(function() {
    */
   (function() {
     var $affixSkillsCheckbox = $('#affixSkillsCheckbox');
-    var $experiences = $('.jobs.section .job, .projects.section .project');
-    var $skills = $('.skills.section .skill');
+    var $experiences = $('#jobs.section .job, #projects.section .project');
+    var $skills = $('#skills.section .skill');
     $experiences.mouseenter(function() {
       if (!$affixSkillsCheckbox.prop('checked')) { return }
-      $(this).find('.skills .skill').each(function() {
+      $(this).find('#skills .skill').each(function() {
         var skill = $(this).attr('data-skill');
         $skills.filter('[data-skill="' + skill + '"]').addClass('highlight');
       });
     }).mouseleave(function() {
-      $(this).find('.skills .skill').each(function() {
+      $(this).find('#skills .skill').each(function() {
         var skill = $(this).attr('data-skill');
         $skills.filter('[data-skill="' + skill + '"]').removeClass('highlight');
       });
@@ -111,7 +111,7 @@ $(function() {
   // hence why it's done in a setTimeout.
   setTimeout(function() {
     var $content = $('.content');
-    var $skillsSection = $('.skills.section');
+    var $skillsSection = $('#skills.section');
     var $nextSection = $skillsSection.next();
     var $placeholder = $('<div class="skillsPlaceholder">').insertAfter($skillsSection);
     var skillsSectionoffset = $skillsSection.offset().top;
@@ -121,7 +121,6 @@ $(function() {
     // Padding needed from left/right side of element to left/right side of screen respectively
     var paddingLeft = parseInt($skillsSection.css('padding-left'));
     var paddingRight = parseInt($skillsSection.css('padding-right'));
-    debugger;
 
     function onViewportChange() {
       // TODO(mduan): Would be more efficient to unbind the scroll listener when
@@ -151,6 +150,16 @@ $(function() {
       }
     }
     onViewportChange();
+
+    var $hashEl = $(window.location.hash);
+    if ($hashEl.length && $skillsSection.hasClass('affixed')) {
+      var offsetTop = $hashEl.offset().top - $skillsSection.outerHeight();
+      // TODO(mduan): Have to do in a timeout for this to work. Figure out why.
+      setTimeout(function() {
+        $window.scrollTop(offsetTop);
+      }, 100);
+    }
+
     $window.on('scroll resize', onViewportChange);
 
     $affixSkillsCheckbox.click(function() {

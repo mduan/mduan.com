@@ -70,6 +70,7 @@ var resumeData = (function() {
       { id: 'scala', name: 'Scala', url: 'http://www.scala-lang.org' },
       { id: 'java', name: 'Java', url: 'https://www.oracle.com/java/index.html' },
       { id: 'php', name: 'PHP', url: 'http://php.net' },
+      { id: 'mysql', name: 'MySQL', url: 'http://mysql.com' },
       { id: 'erlang', name: 'Erlang', url: 'http://www.erlang.org' },
       { id: 'rails', name: 'Ruby on Rails', url: 'http://rubyonrails.org' }
     ]
@@ -79,22 +80,20 @@ var resumeData = (function() {
     items: [
       { id: 'jquery', name: 'jQuery', url: 'http://jquery.com' },
       { id: 'backbone', name: 'Backbone.js', url: 'http://backbonejs.org' },
-      { id: 'webix', name: 'webix', url: 'http://webix.com' },
       { id: 'reactjs', name: 'React.js', url: 'http://facebook.github.io/react' },
       { id: 'bootstrap', name: 'Bootstrap', url: 'http://getbootstrap.com' },
+      { id: 'indexeddb', name: 'IndexedDB', url: 'https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API' },
       { id: 'sass', name: 'Sass', url: 'http://sass-lang.com' },
-      { id: 'mustache', name: 'mustache', url: 'https://mustache.github.io' },
-      { id: 'flightjs', name: 'Flight.js', url: 'https://flightjs.github.io' },
-      { id: 'nodejs', name: 'Node.js', url: 'http://nodejs.org' },
-      { id: 'leafletjs', name: 'Leaflet.js', url: 'http://leafletjs.com/' },
-      { id: 'requirejs', name: 'Require.js', url: 'http://requirejs.org' },
-      { id: 'phantomjs', name: 'PhantomJS', url: 'http://phantomjs.org/download.html' },
       { id: 'flask', name: 'Flask', url: 'http://flask.pocoo.org' },
       { id: 'mongodb', name: 'MongoDB', url: 'http://mongodb.org' },
       { id: 'mongoengine', name: 'mongoengine', url: 'http://mongoengine.org' },
       { id: 'redis', name: 'Redis', url: 'http://redis.io' },
-      { id: 'indexeddb', name: 'IndexedDB', url: 'IndexedDB' },
-      { id: 'mysql', name: 'MySQL', url: 'http://mysql.com' },
+      { id: 'flightjs', name: 'Flight.js', url: 'https://flightjs.github.io' },
+      { id: 'leafletjs', name: 'Leaflet.js', url: 'http://leafletjs.com/' },
+      { id: 'mustache', name: 'mustache', url: 'https://mustache.github.io' },
+      { id: 'nodejs', name: 'Node.js', url: 'http://nodejs.org' },
+      { id: 'requirejs', name: 'Require.js', url: 'http://requirejs.org' },
+      { id: 'phantomjs', name: 'PhantomJS', url: 'http://phantomjs.org/download.html' },
       { id: 'hive', name: 'Hive', url: 'http://hive.apache.org' },
       { id: 'asp', name: 'ASP.NET', url: 'http://asp.net' }
     ],
@@ -125,10 +124,10 @@ var resumeData = (function() {
       title: 'Software Engineer &ndash; Web Client',
       timeRange: formatTimeRange({ year: 2014, month: 7 }, { year: 2015, month: 9 }),
       descriptions: [
-        'Built revamped design of <a class="iconLink" href="https://twitter.com/search?q=obama&src=typd">Twitter search</a>',
-        'Built component for showing user recommendations in the home timeline',
         'Built custom search experience for NFL Superbowl',
-        'Built component for showing related tweets on permalink pages'
+        '<a class="iconLink" href="https://twitter.com/search?q=obama&src=typd">Built revamped design of Twitter search</a>',
+        'Built component for showing related tweets on permalink pages',
+        'Built component for showing user recommendations in the home timeline'
       ],
       skills: [
         getSkill('tools', 'mac', { hidden: true }),
@@ -165,11 +164,12 @@ var resumeData = (function() {
       orgName: 'Mozilla',
       orgUrl: 'http://www.mozilla.org',
       orgImageUrl: '/static/img/logo_mozilla.png',
+      githubUrl: 'https://github.com/mozilla/pdf.js/commits?author=mduan',
       title: 'Software Engineeer Intern &ndash; Mozilla Labs',
       timeRange: formatTimeRange({ year: 2013, month: 0}, { year: 2013, month: 3 }),
       descriptions: [
-        '<a class="iconLink printableLink" href="https://air.mozilla.org/intern-pdfjs/">Worked on PDF.js, PDF viewer in Firefox written in JavaScript</a>',
-        'Proposed and implemented performance enhancements, improving loading time by an order of magnitude',
+        'Worked on PDF.js, open-source PDF viewer in Firefox written in JavaScript',
+        '<a class="iconLink printableLink" href="https://air.mozilla.org/intern-pdfjs/">Proposed and implemented performance enhancements, improving loading time by an order of magnitude</a>',
         'Added support for PDF annotations'
       ],
       skills: [
@@ -191,7 +191,7 @@ var resumeData = (function() {
       descriptions: [
         'Implemented user-facing features of Wish',
         'Set up and managed build system',
-        'Got exposure to and worked on entire web-stack, gaining experience with many technologies used at startups'
+        'Worked on entire web-stack, gaining experience with many technologies used at startups'
       ],
       skills: [
         getSkill('tools', 'ubuntu', { hidden: true }),
@@ -231,7 +231,7 @@ var resumeData = (function() {
         getSkill('languages', 'css'),
         getSkill('languages', 'javascript'),
         getSkill('languages', 'php'),
-        getSkill('frameworks', 'mysql'),
+        getSkill('languages', 'mysql'),
         getSkill('frameworks', 'hive')
       ]
     }, {
@@ -297,6 +297,7 @@ var resumeData = (function() {
     projects: [{
       name: 'Photo Map',
       url: '/photos.html',
+      githubUrl: 'https://github.com/mduan/mduan.com/compare/bf81aa1...00daf31',
       timeRange: formatTimeRange({ year: 2015, month: 9 }, { year: 2015, month: 9 }),
       imageUrl: '/static/img/thumbnail_photomap.png',
       descriptions: [
@@ -313,7 +314,6 @@ var resumeData = (function() {
         getSkill('languages', 'javascript'),
         getSkill('frameworks', 'leafletjs'),
         getSkill('frameworks', 'indexeddb'),
-        getSkill('frameworks', 'webix'),
         getSkill('frameworks', 'bootstrap')
       ]
     }, {
@@ -321,9 +321,10 @@ var resumeData = (function() {
       url: 'http://uwflow.com/demo',
       timeRange: formatTimeRange({ year: 2012, month: 7 }, { year: 2014, month: 3 }),
       imageUrl: '/static/img/thumbnail_uwflow.jpg',
+      githubUrl: 'https://github.com/UWFlow/rmc/commits?author=mduan',
       descriptions: [
         'Co-founded a website that lets university students review and plan courses',
-        'Currently has 9,000 users, 80,000 ratings, and 400,000 course searches'
+        'Currently has 9,000 users, 80,000 ratings, and 400,000 course searches',
       ],
       skills: [
         getSkill('tools', 'mac', { hidden: true }),
@@ -339,7 +340,7 @@ var resumeData = (function() {
         getSkill('frameworks', 'requirejs'),
         getSkill('frameworks', 'backbone'),
         getSkill('frameworks', 'phantomjs'),
-        getSkill('frameworks', 'python'),
+        getSkill('languages', 'python'),
         getSkill('frameworks', 'flask'),
         getSkill('frameworks', 'mongodb'),
         getSkill('frameworks', 'mongoengine'),
@@ -347,7 +348,8 @@ var resumeData = (function() {
       ]
     }, {
       name: 'Github Side-by-Side Diffs',
-      url: 'https://github.com/mduan/Github-Enhancement-Suite',
+      url: 'https://chrome.google.com/webstore/detail/github-side-by-side-diffs/ahamcncifjblaomhphpfpopppadboiin',
+      githubUrl: 'https://github.com/mduan/Github-Enhancement-Suite/commits?author=mduan',
       timeRange: formatTimeRange({ year: 2013, month: 10 }, { year: 2013, month: 10 }),
       imageUrl: 'static/img/thumbnail_github.jpg',
       descriptions: [
@@ -370,11 +372,12 @@ var resumeData = (function() {
     }, {
       name: 'Numbers API',
       url: 'http://numbersapi.com',
+      githubUrl: 'https://github.com/mduan/numbers_api/commits?author=mduan',
       timeRange: formatTimeRange({ year: 2012, month: 3 }, { year: 2012, month: 3 }),
       imageUrl: '/static/img/thumbnail_numbersapi.jpg',
       descriptions: [
         'Built an API for getting interesting number facts that gets 20,000 requests per day',
-        '<a class="iconLink" href="https://news.ycombinator.com/item?id=3667469">Made the front page of Hacker News</a>'
+        '<a class="iconLink printableLink" href="https://news.ycombinator.com/item?id=3667469">Made the front page of Hacker News</a>'
       ],
       skills: [
         getSkill('tools', 'ubuntu', { hidden: true }),

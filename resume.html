@@ -47,7 +47,7 @@
   </script>
 
   <script id="skillsTemplate" type="text/template">
-    <div class="skills section">
+    <div id="skills" class="section">
       <div class="skillsInner">
         <div class="sectionHeader">
           <div class="sectionTitle"><i class="fa fa-tasks"></i> Skills</div>
@@ -81,20 +81,25 @@
       <% _.each(data.descriptions, function(description) { %>
         <li><%= description %></li>
       <% }); %>
-      <li>Skills:
-        <ul class="skills">
-          <% _.each(data.skills, function(skill, idx) { %>
-            <li data-skill="<%= skill.id %>" class="skill <% if (skill.hidden) { %> hidden <% } %>">
-              <%= skill.name %><% if (idx !== data.skills.length - 1) { %>,<% } %>
-            </li>
-          <% }); %>
-        </ul>
-      </li>
+      <% if (data.githubUrl) { %>
+        <li>Github: <a class="iconLink" href="<%= data.githubUrl %>"><%= data.githubUrl %></a></li>
+      <% } %>
+      <% if (data.skills && data.skills.length) { %>
+        <li>Skills:
+          <ul class="skills">
+            <% _.each(data.skills, function(skill, idx) { %>
+              <li data-skill="<%= skill.id %>" class="skill <% if (skill.hidden) { %> hidden <% } %>">
+                <%= skill.name %><% if (idx !== data.skills.length - 1) { %>,<% } %>
+              </li>
+            <% }); %>
+          </ul>
+        </li>
+      <% } %>
     </ul>
   </script>
 
   <script id="jobsTemplate" type="text/template">
-    <div class="jobs section">
+    <div id="jobs" class="section">
       <div class="sectionTitle"><i class="fa fa-briefcase"></i> Work Experience</div>
       <% _.each(data.jobs, function(job) { %>
         <div class="job subsection <% if (job.hidden) { %> hidden <% } %>">
@@ -111,14 +116,14 @@
             <span class="title"><%= job.title %></span>
             <span class="timeRange"><%= job.timeRange %></span>
           </div>
-          <%= data.experienceDescriptionTemplate({ descriptions: job.descriptions, skills: job.skills }) %>
+          <%= data.experienceDescriptionTemplate(job) %>
         </div>
       <% }); %>
     </div>
   </script>
 
   <script id="projectsTemplate" type="text/template">
-    <div class="projects section">
+    <div id="projects" class="section">
       <div class="sectionTitle"><i class="fa fa-flask"></i> Side Projects</div>
       <% _.each(data.projects, function(project) { %>
         <div class="project subsection <% if (project.hidden) { %> hidden <% } %>">
@@ -138,7 +143,7 @@
                 <img src="<%= project.imageUrl %>">
               </a>
             <% } %>
-            <%= data.experienceDescriptionTemplate({ descriptions: project.descriptions, skills: project.skills }) %>
+            <%= data.experienceDescriptionTemplate(project) %>
           </div>
         </div>
       <% }); %>
@@ -146,7 +151,7 @@
   </script>
 
   <script id="educationsTemplate" type="text/template">
-    <div class="educations section">
+    <div id="educations" class="section">
       <div class="sectionTitle"><i class="fa fa-book"></i> Education</div>
       <% _.each(data.educations, function(education) { %>
         <div class="education subsection">
@@ -167,7 +172,7 @@
   </script>
 
   <script id="awardsTemplate" type="text/template">
-    <div class="awards section">
+    <div id="awards" class="section">
       <div class="sectionTitle"><i class="fa fa-trophy"></i> Awards and Accomplishments</div>
       <% _.each(data.awards, function(award) { %>
         <div class="award subsection">
