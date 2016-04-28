@@ -81,9 +81,14 @@ var resumeData = (function() {
       { id: 'jquery', name: 'jQuery', url: 'http://jquery.com' },
       { id: 'backbone', name: 'Backbone.js', url: 'http://backbonejs.org' },
       { id: 'reactjs', name: 'React.js', url: 'http://facebook.github.io/react' },
+      { id: 'meteor', name: 'Meteor', url: 'https://www.meteor.com/' },
+      { id: 'webpack', name: 'Webpack', url: 'https://webpack.github.io/' },
       { id: 'bootstrap', name: 'Bootstrap', url: 'http://getbootstrap.com' },
+      { id: 'semanticui', name: 'Semantic UI', url: 'http://semantic-ui.com/' },
       { id: 'indexeddb', name: 'IndexedDB', url: 'https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API' },
+      { id: 'less', name: 'Sass', url: 'http://lesscss.org/' },
       { id: 'sass', name: 'Sass', url: 'http://sass-lang.com' },
+      { id: 'django', name: 'Django', url: 'https://www.djangoproject.com/' },
       { id: 'flask', name: 'Flask', url: 'http://flask.pocoo.org' },
       { id: 'mongodb', name: 'MongoDB', url: 'http://mongodb.org' },
       { id: 'mongoengine', name: 'mongoengine', url: 'http://mongoengine.org' },
@@ -117,12 +122,36 @@ var resumeData = (function() {
 
   var resumeData = {
     jobs: [{
+      orgId: 'robinhood',
+      orgName: 'Robinhood',
+      orgUrl: 'https://robinhood.com',
+      orgImageUrl: '/static/img/logo_robinhood.png',
+      title: 'Software Engineer &ndash; Web',
+      timeRange: formatTimeRange({ year: 2015, month: 11 }, { year: 2016, month: 3 }),
+      descriptions: [
+        'Added infrastructure for  Webpack and React.js',
+        '<a class="iconLink" href="https://robinhood.com/referral/mackd/">Built signup flow for referral program</a>',
+        '<a class="iconLink" href="https://luobinxia.com">Styled and internationalized website for China</a>',
+      ],
+      skills: [
+        getSkill('tools', 'mac', { hidden: true }),
+        getSkill('tools', 'vim', { hidden: true }),
+        getSkill('tools', 'git', { hidden: true }),
+        getSkill('tools', 'intellij', { hidden: true }),
+        getSkill('languages', 'html'),
+        getSkill('languages', 'css'),
+        getSkill('languages', 'javascript'),
+        getSkill('frameworks', 'django'),
+        getSkill('frameworks', 'webpack'),
+        getSkill('frameworks', 'reactjs')
+      ]
+    }, {
       orgId: 'twitter',
       orgName: 'Twitter',
-      orgUrl: 'http://www.twitter.com',
+      orgUrl: 'https://www.twitter.com',
       orgImageUrl: '/static/img/logo_twitter.png',
       title: 'Software Engineer &ndash; Web Client',
-      timeRange: formatTimeRange({ year: 2014, month: 7 }, { year: 2015, month: 9 }),
+      timeRange: formatTimeRange({ year: 2014, month: 7 }, { year: 2015, month: 11 }),
       descriptions: [
         'Built custom search experience for NFL Superbowl',
         '<a class="iconLink" href="https://twitter.com/search?q=obama&src=typd">Built revamped design of Twitter search</a>',
@@ -295,6 +324,30 @@ var resumeData = (function() {
       ]
     }],
     projects: [{
+      name: 'Real-time Chess',
+      url: 'http://rts-chess.mduan.com',
+      githubUrl: 'https://github.com/mduan/rts-chess',
+      timeRange: formatTimeRange({ year: 2015, month: 11 }, { year: 2016, month: 3 }),
+      imageUrl: '/static/img/thumbnail_rtschess.png',
+      descriptions: [
+        'Built real-time variant of chess that\'s not turned-based',
+        'Supports playing computer with various difficulty levels',
+        'Supports playing people over the internet',
+        'Used heuristics to cope with latency and synchronization issues'
+      ],
+      skills: [
+        getSkill('tools', 'mac', { hidden: true }),
+        getSkill('tools', 'vim', { hidden: true }),
+        getSkill('tools', 'zsh', { hidden: true }),
+        getSkill('tools', 'git', { hidden: true }),
+        getSkill('languages', 'html'),
+        getSkill('languages', 'css'),
+        getSkill('languages', 'javascript'),
+        getSkill('frameworks', 'meteor'),
+        getSkill('frameworks', 'semanticui'),
+        getSkill('frameworks', 'less')
+      ]
+    }, {
       name: 'Photo Map',
       url: '/photos.html',
       githubUrl: 'https://github.com/mduan/mduan.com/compare/bf81aa1...00daf31',
@@ -348,6 +401,7 @@ var resumeData = (function() {
       ]
     }, {
       name: 'Github Side-by-Side Diffs',
+      hidden: true,
       url: 'https://chrome.google.com/webstore/detail/github-side-by-side-diffs/ahamcncifjblaomhphpfpopppadboiin',
       githubUrl: 'https://github.com/mduan/Github-Enhancement-Suite/commits?author=mduan',
       timeRange: formatTimeRange({ year: 2013, month: 10 }, { year: 2013, month: 10 }),
