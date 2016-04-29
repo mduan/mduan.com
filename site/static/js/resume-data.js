@@ -151,7 +151,7 @@ var resumeData = (function() {
       orgUrl: 'https://www.twitter.com',
       orgImageUrl: '/static/img/logo_twitter.png',
       title: 'Software Engineer &ndash; Web Client',
-      timeRange: formatTimeRange({ year: 2014, month: 7 }, { year: 2015, month: 11 }),
+      timeRange: formatTimeRange({ year: 2014, month: 6 }, { year: 2015, month: 11 }),
       descriptions: [
         '<a class="iconLink" href="https://twitter.com/search?q=obama&src=typd">Built the redesign of Twitter search UI</a>',
         'Built component for showing user recommendations in the home timeline',
