@@ -129,9 +129,9 @@ var resumeData = (function() {
       title: 'Software Engineer &ndash; Web',
       timeRange: formatTimeRange({ year: 2015, month: 11 }, { year: 2016, month: 3 }),
       descriptions: [
-        'Added infrastructure for  Webpack and React.js',
+        '<a class="iconLink" href="https://www.luobinxia.com">Built Chinese version of Robinhood website</a>',
         '<a class="iconLink" href="https://robinhood.com/referral/mackd/">Built signup flow for referral program</a>',
-        '<a class="iconLink" href="https://luobinxia.com">Styled and internationalized website for China</a>',
+        'Designed and built infrastructure for Webpack and React.js',
       ],
       skills: [
         getSkill('tools', 'mac', { hidden: true }),
@@ -153,10 +153,10 @@ var resumeData = (function() {
       title: 'Software Engineer &ndash; Web Client',
       timeRange: formatTimeRange({ year: 2014, month: 7 }, { year: 2015, month: 11 }),
       descriptions: [
-        'Built custom search experience for NFL Superbowl',
-        '<a class="iconLink" href="https://twitter.com/search?q=obama&src=typd">Built revamped design of Twitter search</a>',
+        '<a class="iconLink" href="https://twitter.com/search?q=obama&src=typd">Built the redesign of Twitter search UI</a>',
+        'Built component for showing user recommendations in the home timeline',
         'Built component for showing related tweets on permalink pages',
-        'Built component for showing user recommendations in the home timeline'
+        'Built custom search experience for NFL Superbowl'
       ],
       skills: [
         getSkill('tools', 'mac', { hidden: true }),
@@ -213,6 +213,7 @@ var resumeData = (function() {
     }, {
       orgId: 'wish',
       orgName: 'Wish',
+      hidden: true,
       orgUrl: 'https://www.wish.com',
       orgImageUrl: '/static/img/logo_wish.png',
       title: 'Web Developer Intern',
@@ -330,10 +331,10 @@ var resumeData = (function() {
       timeRange: formatTimeRange({ year: 2015, month: 11 }, { year: 2016, month: 3 }),
       imageUrl: '/static/img/thumbnail_rtschess.png',
       descriptions: [
-        'Built real-time variant of chess that\'s not turned-based',
+        'Built real-time (i.e. not turn-based) variant of chess',
         'Supports playing computer with various difficulty levels',
         'Supports playing people over the internet',
-        'Used heuristics to cope with latency and synchronization issues'
+        'Used heuristics to deal with latency and synchronization issues'
       ],
       skills: [
         getSkill('tools', 'mac', { hidden: true }),
@@ -349,7 +350,7 @@ var resumeData = (function() {
       ]
     }, {
       name: 'Photo Map',
-      url: '/photos.html',
+      url: 'http://mduan.com/photos.html',
       githubUrl: 'https://github.com/mduan/mduan.com/compare/bf81aa1...00daf31',
       timeRange: formatTimeRange({ year: 2015, month: 9 }, { year: 2015, month: 9 }),
       imageUrl: '/static/img/thumbnail_photomap.png',
@@ -371,7 +372,7 @@ var resumeData = (function() {
       ]
     }, {
       name: 'UW Flow',
-      url: 'http://uwflow.com/demo',
+      url: 'https://uwflow.com/demo',
       timeRange: formatTimeRange({ year: 2012, month: 7 }, { year: 2014, month: 3 }),
       imageUrl: '/static/img/thumbnail_uwflow.jpg',
       githubUrl: 'https://github.com/UWFlow/rmc/commits?author=mduan',
