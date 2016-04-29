@@ -86,8 +86,8 @@ var resumeData = (function() {
       { id: 'bootstrap', name: 'Bootstrap', url: 'http://getbootstrap.com' },
       { id: 'semanticui', name: 'Semantic UI', url: 'http://semantic-ui.com/' },
       { id: 'indexeddb', name: 'IndexedDB', url: 'https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API' },
-      { id: 'less', name: 'Sass', url: 'http://lesscss.org/' },
       { id: 'sass', name: 'Sass', url: 'http://sass-lang.com' },
+      { id: 'less', name: 'Less', url: 'http://lesscss.org/' },
       { id: 'django', name: 'Django', url: 'https://www.djangoproject.com/' },
       { id: 'flask', name: 'Flask', url: 'http://flask.pocoo.org' },
       { id: 'mongodb', name: 'MongoDB', url: 'http://mongodb.org' },
@@ -129,8 +129,8 @@ var resumeData = (function() {
       title: 'Software Engineer &ndash; Web',
       timeRange: formatTimeRange({ year: 2015, month: 11 }, { year: 2016, month: 3 }),
       descriptions: [
-        '<a class="iconLink" href="https://www.luobinxia.com">Built Chinese version of Robinhood website</a>',
-        '<a class="iconLink" href="https://robinhood.com/referral/mackd/">Built signup flow for referral program</a>',
+        '<a class="iconLink printableLink" href="https://www.luobinxia.com">Built Chinese version of Robinhood website</a>',
+        '<a class="iconLink printableLink" href="https://robinhood.com/referral/mackd/">Built signup flow for referral program</a>',
         'Designed and built infrastructure for Webpack and React.js',
       ],
       skills: [
