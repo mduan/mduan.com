@@ -131,7 +131,7 @@ var resumeData = (function() {
       descriptions: [
         '<a class="iconLink printableLink" href="https://www.luobinxia.com">Built Chinese version of Robinhood website</a>',
         '<a class="iconLink printableLink" href="https://robinhood.com/referral/mackd/">Built signup flow for referral program</a>',
-        'Designed and built infrastructure for Webpack and React.js',
+        'Added infrastructure for Webpack and React.js',
       ],
       skills: [
         getSkill('tools', 'mac', { hidden: true }),
