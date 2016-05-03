@@ -1,4 +1,14 @@
 $(function() {
+  // http://stackoverflow.com/a/901144
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
 
   window.onerror = function() {
     // This error message will only show for errors that occur before and during template
@@ -59,21 +69,32 @@ $(function() {
     }
   });
 
-  /**
-   * Set up checkbox to show full resume
-   */
-  $('#showFullResumeCheckbox').click(function() {
-    var $el = $(this);
-    if ($el.prop('checked')) {
-      $('.subsection.hidden, #skills.section .skill.hidden')
-        .removeClass('hidden')
-        .addClass('unhidden');
-    } else {
-      $('.subsection.unhidden, #skills.section .skill.unhidden')
-        .removeClass('unhidden')
-        .addClass('hidden');
+  (function() {
+    var $el = $('#showFullResumeCheckbox');
+
+    /**
+    * Set up checkbox to show full resume
+    */
+    $el.click(function() {
+      var $el = $(this);
+      if ($el.prop('checked')) {
+        $('.subsection.hidden, #skills.section .skill.hidden')
+          .removeClass('hidden')
+          .addClass('unhidden');
+      } else {
+        $('.subsection.unhidden, #skills.section .skill.unhidden')
+          .removeClass('unhidden')
+          .addClass('hidden');
+      }
+    });
+
+
+    if (getParameterByName('full')) {
+      if (!$el.prop('checked')) {
+        $el.click();
+      }
     }
-  });
+  })();
 
   /**
    * Highlighting of skills
