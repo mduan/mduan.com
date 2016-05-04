@@ -33,28 +33,28 @@ var resumeData = (function() {
     }
   }
 
-  function hideUnusedSkills(skills, resumeData) {
-    // TODO(mduan): This code assumes no duplicate skill ids across categories
-    var idToSkill = {};
-    skills.forEach(function(category) {
-      category.items.forEach(function(skill) {
-        assert(!(skill.id in idToSkill));
-        idToSkill[skill.id] = skill;
-      });
-    });
+  //function hideUnusedSkills(skills, resumeData) {
+  //  // TODO(mduan): This code assumes no duplicate skill ids across categories
+  //  var idToSkill = {};
+  //  skills.forEach(function(category) {
+  //    category.items.forEach(function(skill) {
+  //      assert(!(skill.id in idToSkill));
+  //      idToSkill[skill.id] = skill;
+  //    });
+  //  });
 
-    resumeData.jobs.concat(resumeData.projects).filter(function(experience) {
-      return !experience.hidden;
-    }).forEach(function(experience) {
-      experience.skills.forEach(function(skill) {
-        delete idToSkill[skill.id];
-      });
-    });
+  //  resumeData.jobs.concat(resumeData.projects).filter(function(experience) {
+  //    return !experience.hidden;
+  //  }).forEach(function(experience) {
+  //    experience.skills.forEach(function(skill) {
+  //      delete idToSkill[skill.id];
+  //    });
+  //  });
 
-    _.each(idToSkill, function(skill) {
-      skill.hidden = true;
-    });
-  };
+  //  _.each(idToSkill, function(skill) {
+  //    skill.hidden = true;
+  //  });
+  //};
 
   var skills = [{
     id: 'languages',
@@ -66,13 +66,13 @@ var resumeData = (function() {
       { id: 'python', name: 'Python', url: 'http://python.org' },
       { id: 'cpp', name: 'C++', url: 'http://www.cplusplus.com' },
       { id: 'c', name: 'C', url: 'http://en.wikipedia.org/wiki/C_(programming_language)' },
-      { id: 'csharp', name: 'C#', url: 'https://msdn.microsoft.com/en-us/library/z1zx9t92.aspx' },
+      { id: 'csharp', name: 'C#', url: 'https://msdn.microsoft.com/en-us/library/z1zx9t92.aspx', hidden: true },
       { id: 'scala', name: 'Scala', url: 'http://www.scala-lang.org' },
       { id: 'java', name: 'Java', url: 'https://www.oracle.com/java/index.html' },
       { id: 'php', name: 'PHP', url: 'http://php.net' },
       { id: 'mysql', name: 'MySQL', url: 'http://mysql.com' },
-      { id: 'erlang', name: 'Erlang', url: 'http://www.erlang.org' },
-      { id: 'rails', name: 'Ruby on Rails', url: 'http://rubyonrails.org' }
+      { id: 'erlang', name: 'Erlang', url: 'http://www.erlang.org', hidden: true },
+      { id: 'rails', name: 'Ruby on Rails', url: 'http://rubyonrails.org', hidden: true }
     ]
   }, {
     id: 'frameworks',
@@ -85,22 +85,22 @@ var resumeData = (function() {
       { id: 'webpack', name: 'Webpack', url: 'https://webpack.github.io/' },
       { id: 'bootstrap', name: 'Bootstrap', url: 'http://getbootstrap.com' },
       { id: 'semanticui', name: 'Semantic UI', url: 'http://semantic-ui.com/' },
-      { id: 'indexeddb', name: 'IndexedDB', url: 'https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API' },
+      { id: 'indexeddb', name: 'IndexedDB', url: 'https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API', hidden: true },
       { id: 'sass', name: 'Sass', url: 'http://sass-lang.com' },
-      { id: 'less', name: 'Less', url: 'http://lesscss.org/' },
+      { id: 'less', name: 'Less', url: 'http://lesscss.org/', hidden: true },
       { id: 'django', name: 'Django', url: 'https://www.djangoproject.com/' },
       { id: 'flask', name: 'Flask', url: 'http://flask.pocoo.org' },
       { id: 'mongodb', name: 'MongoDB', url: 'http://mongodb.org' },
       { id: 'mongoengine', name: 'mongoengine', url: 'http://mongoengine.org' },
       { id: 'redis', name: 'Redis', url: 'http://redis.io' },
       { id: 'flightjs', name: 'Flight.js', url: 'https://flightjs.github.io' },
-      { id: 'leafletjs', name: 'Leaflet.js', url: 'http://leafletjs.com/' },
+      { id: 'leafletjs', name: 'Leaflet.js', url: 'http://leafletjs.com/', hidden: true },
       { id: 'mustache', name: 'mustache', url: 'https://mustache.github.io' },
       { id: 'nodejs', name: 'Node.js', url: 'http://nodejs.org' },
       { id: 'requirejs', name: 'Require.js', url: 'http://requirejs.org' },
       { id: 'phantomjs', name: 'PhantomJS', url: 'http://phantomjs.org/download.html' },
-      { id: 'hive', name: 'Hive', url: 'http://hive.apache.org' },
-      { id: 'asp', name: 'ASP.NET', url: 'http://asp.net' }
+      { id: 'hive', name: 'Hive', url: 'http://hive.apache.org', hidden: true },
+      { id: 'asp', name: 'ASP.NET', url: 'http://asp.net', hidden: true }
     ],
   }, {
     id: 'tools',
@@ -505,6 +505,6 @@ var resumeData = (function() {
     skills: skills
   };
 
-  hideUnusedSkills(skills, resumeData);
+  //hideUnusedSkills(skills, resumeData);
   return resumeData;
 })();
