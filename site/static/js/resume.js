@@ -70,26 +70,26 @@ $(function() {
   });
 
   (function() {
-    var $el = $('#showFullResumeCheckbox');
+    var $el = $('#showCondensedResumeCheckbox');
 
     /**
-    * Set up checkbox to show full resume
+    * Set up checkbox to show condensed resume
     */
     $el.click(function() {
       var $el = $(this);
       if ($el.prop('checked')) {
-        $('.subsection.hidden, #skills.section .skill.hidden')
-          .removeClass('hidden')
-          .addClass('unhidden');
-      } else {
         $('.subsection.unhidden, #skills.section .skill.unhidden')
           .removeClass('unhidden')
           .addClass('hidden');
+      } else {
+        $('.subsection.hidden, #skills.section .skill.hidden')
+          .removeClass('hidden')
+          .addClass('unhidden');
       }
     });
 
 
-    if (getParameterByName('full')) {
+    if (getParameterByName('condensed')) {
       if (!$el.prop('checked')) {
         $el.click();
       }

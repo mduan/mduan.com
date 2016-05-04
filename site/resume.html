@@ -57,8 +57,8 @@
         <div class="sectionHeader">
           <div class="sectionTitle"><i class="fa fa-tasks"></i> Skills</div>
           <div class="resumeOptions">
-            <label for="showFullResumeCheckbox" title="Show older jobs and projects">
-              Show full resume <input id="showFullResumeCheckbox" type="checkbox">
+            <label for="showCondensedResumeCheckbox" title="Show only recent jobs and projects">
+              Show condensed resume <input id="showCondensedResumeCheckbox" type="checkbox">
             </label>
             <label for="affixSkillsCheckbox" title="Keep this section pinned to the top of page on scroll">
               Show on scroll <input id="affixSkillsCheckbox" type="checkbox" checked>
@@ -70,7 +70,7 @@
             <div class="subsectionTitle"><%= category.name %></div>
             <ul>
               <% _.each(category.items, function(skill) { %>
-                <li data-skill="<%= skill.id %>" class="skill <% if (skill.hidden) { %> hidden <% } %>">
+                <li data-skill="<%= skill.id %>" class="skill <% if (skill.hidden) { %> unhidden <% } %>">
                   <a href="<%= skill.url %>"><%= skill.name %></a>
                 </li>
               <% }); %>
@@ -93,7 +93,7 @@
         <li>Skills:
           <ul class="skills">
             <% _.each(data.skills, function(skill, idx) { %>
-              <li data-skill="<%= skill.id %>" class="skill <% if (skill.hidden) { %> hidden <% } %>">
+              <li data-skill="<%= skill.id %>" class="skill <% if (skill.hidden) { %> unhidden <% } %>">
                 <%= skill.name %><% if (idx !== data.skills.length - 1) { %>,<% } %>
               </li>
             <% }); %>
@@ -107,7 +107,7 @@
     <div id="jobs" class="section">
       <div class="sectionTitle"><i class="fa fa-briefcase"></i> Work Experience</div>
       <% _.each(data.jobs, function(job) { %>
-        <div class="job subsection <% if (job.hidden) { %> hidden <% } %>">
+        <div class="job subsection <% if (job.hidden) { %> unhidden <% } %>">
           <div class="subsectionHeader">
             <div class="subsectionTitle org <%= job.orgId %>">
               <img src="<%= job.orgImageUrl %>">
@@ -131,7 +131,7 @@
     <div id="projects" class="section">
       <div class="sectionTitle"><i class="fa fa-flask"></i> Side Projects</div>
       <% _.each(data.projects, function(project) { %>
-        <div class="project subsection <% if (project.hidden) { %> hidden <% } %>">
+        <div class="project subsection <% if (project.hidden) { %> unhidden <% } %>">
           <div class="subsectionHeader">
             <div class="subsectionTitle">
               <% if (project.url) { %>
