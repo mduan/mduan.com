@@ -122,6 +122,31 @@ var resumeData = (function() {
 
   var resumeData = {
     jobs: [{
+      orgId: 'mixpanel',
+      orgName: 'Mixpanel',
+      orgUrl: 'https://mixpanel.com',
+      orgImageUrl: '/static/img/logo_mixpanel.png',
+      title: 'Software Engineer &ndash; Product',
+      timeRange: formatTimeRange({ year: 2016, month: 6 }, null),
+      descriptions: [
+        'Worked on the product features and infrastructural changes for Mixpanel\'s message sending capabilities',
+        'Built out product features for the ML team including Signal and Smart Hub',
+        'Built various user-facing features for the Insights and Cohorts reports',
+      ],
+      skills: [
+        getSkill('tools', 'mac', { hidden: true }),
+        getSkill('tools', 'vim', { hidden: true }),
+        getSkill('tools', 'git', { hidden: true }),
+        getSkill('tools', 'intellij', { hidden: true }),
+        getSkill('languages', 'html'),
+        getSkill('languages', 'css'),
+        getSkill('languages', 'javascript'),
+        getSkill('frameworks', 'django'),
+        getSkill('frameworks', 'webpack'),
+        getSkill('frameworks', 'reactjs')
+      ]
+    }, {
+      hidden: true,
       orgId: 'robinhood',
       orgName: 'Robinhood',
       orgUrl: 'https://robinhood.com',
