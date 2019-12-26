@@ -127,7 +127,7 @@ var resumeData = (function() {
       orgUrl: 'https://mixpanel.com',
       orgImageUrl: '/static/img/logo_mixpanel.png',
       title: 'Software Engineer &ndash; Product',
-      timeRange: formatTimeRange({ year: 2016, month: 6 }, null),
+      timeRange: formatTimeRange({ year: 2016, month: 6 }, { year: 2019, month: 7 }),
       descriptions: [
         'Worked on the product features and infrastructural changes for Mixpanel\'s message sending capabilities',
         'Built out product features for the ML team including Signal and Smart Hub',
